@@ -4,8 +4,8 @@
 
 A hybrid LLM routing system that automatically selects the optimal language model for your specific use case, combining cost efficiency, performance, and quality through semantic prompt analysis and intelligent fallback mechanisms.
 
-[![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)]()
-[![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-77%20passing-brightgreen)]()
+[![Coverage](https://img.shields.io/badge/coverage-97.87%25-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
 
@@ -154,7 +154,7 @@ export LLM_ROUTER_MAX_ROUTING_TIME_MS=2000
 ## 🛠️ Development
 
 ### Built with Modern Practices
-- **🧪 Test-Driven Development**: 54 tests, 100% coverage
+- **🧪 Test-Driven Development**: 77 tests, 97.87% coverage
 - **🔒 Type Safety**: Full Pydantic validation and mypy compatibility
 - **📐 Clean Architecture**: Modular design with clear separation of concerns
 - **🚀 Production Ready**: Comprehensive error handling and observability
@@ -187,10 +187,11 @@ pytest tests/e2e/       # End-to-end tests
 - [x] Configuration system
 - [x] Test infrastructure
 
-### 🔄 Phase 2: Provider Registry (In Progress)
-- [ ] Model capability definitions
-- [ ] Provider data loading
-- [ ] Performance tracking
+### ✅ Phase 2: Provider Registry (In Progress)
+- [x] **Phase 2.1**: Provider data models and registry (Completed)
+- [ ] **Phase 2.2**: Model capability definitions  
+- [ ] **Phase 2.3**: Provider data loading
+- [ ] **Phase 2.4**: Performance tracking
 
 ### 📋 Phase 3: Scoring & Classification
 - [ ] Multi-factor scoring engine
