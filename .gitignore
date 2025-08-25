@@ -1,0 +1,447 @@
+# =======================================================================================
+# LLM Router Project - Comprehensive .gitignore
+# =======================================================================================
+
+# =======================================================================================
+# Python & Environment
+# =======================================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+.coverage_html/
+.coverage_json/
+coverage.json
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+
+# pyenv
+.python-version
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# =======================================================================================
+# FastAPI & Web Development
+# =======================================================================================
+
+# FastAPI specific
+.uvicorn-*
+fastapi_app.log
+api.log
+
+# Session files
+.sessions/
+
+# Static files
+static/uploads/
+media/
+
+# =======================================================================================
+# Machine Learning & AI
+# =======================================================================================
+
+# Model files and checkpoints
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.pth
+*.pt
+*.ckpt
+*.model
+*.bin
+
+# Hugging Face cache
+.cache/huggingface/
+huggingface_hub/
+transformers_cache/
+
+# Sentence transformers cache
+.cache/torch/
+.cache/sentence_transformers/
+
+# Embeddings and vector data
+embeddings/
+*.npy
+*.npz
+vectors/
+vector_cache/
+
+# Training logs and experiments
+logs/
+runs/
+experiments/
+wandb/
+mlruns/
+.mlflow/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+*.ipynb
+
+# TensorBoard logs
+tensorboard_logs/
+
+# =======================================================================================
+# Databases & Vector Stores
+# =======================================================================================
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# PostgreSQL
+*.sql
+pg_data/
+postgres_data/
+
+# ChromaDB
+chroma_db/
+.chroma/
+chromadb/
+*.chroma
+
+# Vector databases
+pinecone_cache/
+weaviate_data/
+qdrant_data/
+
+# Database migrations (if using Alembic)
+# Uncomment if you add Alembic migrations
+# alembic/versions/*.py
+# !alembic/versions/README.md
+
+# =======================================================================================
+# Configuration & Secrets
+# =======================================================================================
+
+# Environment variables and secrets
+.env
+.env.local
+.env.production
+.env.staging
+.env.test
+.env.*
+
+# API keys and secrets
+secrets/
+*.key
+*.pem
+*.crt
+config/secrets.json
+config/local.json
+
+# Application configuration
+config/local.yaml
+config/development.yaml
+config/production.yaml
+local_config.json
+
+# =======================================================================================
+# Testing
+# =======================================================================================
+
+# Test artifacts
+test_results/
+test_reports/
+test_coverage/
+.coverage_html_report/
+
+# Test databases
+test_*.db
+test_*.sqlite
+test_data/
+fixtures/generated/
+
+# Testcontainers
+.testcontainers/
+
+# Property-based testing (Hypothesis)
+.hypothesis/
+
+# Load testing results
+locust_reports/
+performance_results/
+
+# =======================================================================================
+# Monitoring & Logging
+# =======================================================================================
+
+# Log files
+*.log
+*.log.*
+logs/
+log/
+
+# Prometheus metrics
+prometheus_data/
+
+# Application logs
+app.log
+router.log
+classification.log
+scoring.log
+api.log
+error.log
+
+# Structured logs
+*.jsonl
+events.json
+
+# =======================================================================================
+# Development Tools
+# =======================================================================================
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Vim
+.vim/
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# =======================================================================================
+# Build & Deployment
+# =======================================================================================
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Kubernetes
+k8s/secrets/
+*.kubeconfig
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+
+# AWS
+.aws/
+
+# CI/CD
+.github/workflows/secrets/
+
+# =======================================================================================
+# Caching & Temporary Files
+# =======================================================================================
+
+# General cache
+.cache/
+cache/
+tmp/
+temp/
+
+# Application cache
+app_cache/
+classification_cache/
+routing_cache/
+embedding_cache/
+
+# Redis dumps
+dump.rdb
+
+# =======================================================================================
+# Performance & Profiling
+# =======================================================================================
+
+# Profiling data
+*.prof
+*.profile
+profile_results/
+
+# Memory profiling
+*.mprof
+memory_profiler/
+
+# Performance test results
+benchmark_results/
+load_test_results/
+
+# =======================================================================================
+# Documentation
+# =======================================================================================
+
+# Sphinx documentation
+docs/_build/
+docs/build/
+
+# MkDocs
+site/
+
+# =======================================================================================
+# macOS Specific
+# =======================================================================================
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# =======================================================================================
+# Project-Specific Ignores
+# =======================================================================================
+
+# Provider registry data (if sensitive)
+providers/production.json
+providers/staging.json
+
+# Example datasets (if large)
+datasets/large/
+datasets/embeddings/
+
+# Model weights and large files
+models/weights/
+models/checkpoints/
+
+# Experimental scripts
+experiments/
+scratch/
+playground/
+
+# Generated API documentation
+api_docs/
+openapi.json
+
+# Performance benchmarks
+benchmarks/results/
+
+# =======================================================================================
+# Backup Files
+# =======================================================================================
+
+# Backup files
+*.bak
+*.backup
+*~
+*.orig
+
+# Archive files
+*.zip
+*.tar.gz
+*.tar
+*.rar
+
+# =======================================================================================
+# Node.js (if you add any frontend tooling)
+# =======================================================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+
+# =======================================================================================
+# End of .gitignore
+# =======================================================================================
