@@ -459,3 +459,137 @@ class TestProviderRegistryPersistence:
         assert restored_model is not None
         assert restored_model.capabilities == model.capabilities
         assert restored_model.pricing == model.pricing
+
+
+class TestProviderModelMethods:
+    """Test ProviderModel helper methods and edge cases."""
+    
+    def test_should_return_none_quality_score_when_no_quality_scores(self):
+        """Test get_quality_score returns None when quality_scores is None."""
+        from llm_router.registry import ProviderModel
+        
+        model = ProviderModel(
+            provider="test", model="test-model",
+            capabilities=["code"],
+            pricing={"input_tokens_per_1k": 0.001, "output_tokens_per_1k": 0.002},
+            limits={"context_length": 2048},
+            performance={"avg_latency_ms": 500}  # No quality_scores provided
+        )
+        
+        # Should return None when quality_scores is not provided
+        assert model.get_quality_score("code") is None
+        assert model.get_quality_score("creative") is None
+    
+    def test_should_create_model_with_none_quality_scores(self):
+        """Test that models can be created with quality_scores explicitly set to None."""
+        from llm_router.registry import ProviderModel
+        
+        model = ProviderModel(
+            provider="test", model="test-model",
+            capabilities=["qa"],
+            pricing={"input_tokens_per_1k": 0.001, "output_tokens_per_1k": 0.002},
+            limits={"context_length": 2048},
+            performance={"avg_latency_ms": 500, "quality_scores": None}
+        )
+        
+        assert model.performance.quality_scores is None
+        assert model.get_quality_score("qa") is None
+
+
+class TestProviderRegistryConstraints:
+    """Test advanced constraint filtering scenarios."""
+    
+    def test_should_filter_by_max_latency_constraint(self):
+        """Test filtering models by maximum latency constraint."""
+        from llm_router.registry import ProviderRegistry, ProviderModel
+        
+        registry = ProviderRegistry()
+        
+        # Fast model
+        fast_model = ProviderModel(
+            provider="fast", model="speedy",
+            capabilities=["qa"],
+            pricing={"input_tokens_per_1k": 0.002, "output_tokens_per_1k": 0.003},
+            limits={"context_length": 2048},
+            performance={"avg_latency_ms": 200}  # Fast
+        )
+        
+        # Slow model
+        slow_model = ProviderModel(
+            provider="slow", model="turtle", 
+            capabilities=["qa"],
+            pricing={"input_tokens_per_1k": 0.001, "output_tokens_per_1k": 0.002},
+            limits={"context_length": 2048},
+            performance={"avg_latency_ms": 2000}  # Slow
+        )
+        
+        registry.add_model(fast_model)
+        registry.add_model(slow_model)
+        
+        # Filter by max latency
+        fast_models = registry.filter_by_constraints(max_latency_ms=1000)
+        
+        assert len(fast_models) == 1
+        assert fast_models[0].model == "speedy"
+    
+    def test_should_filter_by_safety_level_constraint(self):
+        """Test filtering models by safety level constraint."""
+        from llm_router.registry import ProviderRegistry, ProviderModel
+        
+        registry = ProviderRegistry()
+        
+        # High safety model
+        safe_model = ProviderModel(
+            provider="safe", model="guardian",
+            capabilities=["qa"],
+            pricing={"input_tokens_per_1k": 0.002, "output_tokens_per_1k": 0.003},
+            limits={"context_length": 2048, "safety_level": "high"},
+            performance={"avg_latency_ms": 500}
+        )
+        
+        # Moderate safety model
+        moderate_model = ProviderModel(
+            provider="moderate", model="balanced",
+            capabilities=["qa"],
+            pricing={"input_tokens_per_1k": 0.001, "output_tokens_per_1k": 0.002},
+            limits={"context_length": 2048, "safety_level": "moderate"},
+            performance={"avg_latency_ms": 400}
+        )
+        
+        registry.add_model(safe_model)
+        registry.add_model(moderate_model)
+        
+        # Filter by safety level
+        high_safety_models = registry.filter_by_constraints(safety_level="high")
+        
+        assert len(high_safety_models) == 1
+        assert high_safety_models[0].model == "guardian"
+
+
+class TestProviderRegistryErrorHandling:
+    """Test error handling in provider registry operations."""
+    
+    def test_should_handle_validation_error_in_from_dict(self):
+        """Test that ValidationError is properly re-raised in from_dict."""
+        from llm_router.registry import ProviderRegistry
+        from pydantic import ValidationError
+        
+        # Data with invalid pricing (negative value)
+        invalid_data = {
+            "models": [
+                {
+                    "provider": "test",
+                    "model": "invalid-model",
+                    "capabilities": ["qa"],
+                    "pricing": {
+                        "input_tokens_per_1k": -0.001,  # Invalid: negative
+                        "output_tokens_per_1k": 0.002
+                    },
+                    "limits": {"context_length": 2048},
+                    "performance": {"avg_latency_ms": 500}
+                }
+            ]
+        }
+        
+        with pytest.raises(ValidationError):
+            ProviderRegistry.from_dict(invalid_data)

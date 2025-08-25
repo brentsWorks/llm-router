@@ -12,6 +12,7 @@ class Category(str, Enum):
     QA = "qa"
     SUMMARIZATION = "summarization"
     TOOL_USE = "tool-use"
+    REASONING = "reasoning"
 
 
 # Export valid categories for tests
