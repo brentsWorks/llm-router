@@ -1,8 +1,9 @@
 """Provider registry for managing LLM model capabilities, pricing, and performance data."""
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from pydantic import BaseModel, Field, field_validator, ValidationError
 from llm_router.models import Category, VALID_CATEGORIES
+from llm_router.capabilities import ModelCapabilities, CapabilityRequirement, CapabilityScore, TaskType
 
 
 class PricingInfo(BaseModel):
@@ -58,6 +59,7 @@ class ProviderModel(BaseModel):
     pricing: PricingInfo
     limits: LimitsInfo  
     performance: PerformanceInfo
+    detailed_capabilities: Optional[ModelCapabilities] = Field(default=None, description="Detailed capability model")
     
     @field_validator('capabilities')
     @classmethod
@@ -77,6 +79,43 @@ class ProviderModel(BaseModel):
         if self.performance.quality_scores is None:
             return None
         return self.performance.quality_scores.get(category)
+    
+    @field_validator('detailed_capabilities')
+    @classmethod
+    def validate_capability_sync(cls, v: Optional[ModelCapabilities], info) -> Optional[ModelCapabilities]:
+        """Validate that detailed capabilities are consistent with legacy capabilities."""
+        if v is None:
+            return v
+        
+        # Get legacy capabilities from info.data
+        legacy_capabilities = info.data.get('capabilities', [])
+        
+        # Check that detailed capabilities don't contradict legacy ones
+        for task_type in v.task_expertise:
+            if v.task_expertise[task_type] > 0.0:  # Has expertise in this task
+                task_name = task_type.value
+                if task_name not in legacy_capabilities:
+                    raise ValueError(f"Capability mismatch: detailed capabilities show expertise in '{task_name}' but it's not in legacy capabilities list")
+        
+        return v
+    
+    def calculate_capability_score(self, requirement: CapabilityRequirement) -> CapabilityScore:
+        """Calculate capability score for this model against requirements."""
+        if self.detailed_capabilities is None:
+            # Fallback to legacy scoring if no detailed capabilities
+            from llm_router.capabilities import CapabilityMatcher
+            matcher = CapabilityMatcher()
+            # Create a basic capability model from legacy data
+            basic_capabilities = ModelCapabilities(
+                task_expertise={TaskType(task): 0.8 for task in self.capabilities},
+                context_length_max=self.limits.context_length,
+                safety_level=self.limits.safety_level or "medium"
+            )
+            return matcher.calculate_score(basic_capabilities, requirement)
+        
+        from llm_router.capabilities import CapabilityMatcher
+        matcher = CapabilityMatcher()
+        return matcher.calculate_score(self.detailed_capabilities, requirement)
 
 
 class ProviderRegistry:
@@ -158,6 +197,31 @@ class ProviderRegistry:
             List of models with the specified capability
         """
         return [model for model in self._models.values() if model.has_capability(capability)]
+    
+    def find_models_by_requirements(self, requirement, min_score: float = 0.0) -> List[Tuple[ProviderModel, Any]]:
+        """Find models that match capability requirements.
+        
+        Args:
+            requirement: CapabilityRequirement instance
+            min_score: Minimum overall score required
+            
+        Returns:
+            List of tuples (model, score) sorted by score descending
+        """
+        from llm_router.capabilities import CapabilityMatcher
+        
+        matcher = CapabilityMatcher()
+        matches = []
+        
+        for model in self._models.values():
+            if model.detailed_capabilities is not None:
+                score = matcher.calculate_score(model.detailed_capabilities, requirement)
+                if score.overall_score >= min_score:
+                    matches.append((model, score))
+        
+        # Sort by overall score descending
+        matches.sort(key=lambda x: x[1].overall_score, reverse=True)
+        return matches
     
     def filter_by_constraints(self, min_context_length: Optional[int] = None, 
                             max_latency_ms: Optional[float] = None,
