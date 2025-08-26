@@ -21,7 +21,7 @@ VALID_CATEGORIES = [category.value for category in Category]
 
 class PromptClassification(BaseModel):
     """Classification result for a user prompt."""
-    
+
     category: Category
     subcategory: Optional[str] = None
     confidence: float = Field(ge=0.0, le=1.0)
@@ -31,7 +31,7 @@ class PromptClassification(BaseModel):
 
 class ModelCandidate(BaseModel):
     """A candidate model for routing with scoring information."""
-    
+
     provider: str
     model: str
     score: float = Field(ge=0.0)
@@ -43,7 +43,7 @@ class ModelCandidate(BaseModel):
 
 class RoutingDecision(BaseModel):
     """Complete routing decision with selected model and alternatives."""
-    
+
     selected_model: ModelCandidate
     classification: PromptClassification
     alternatives: List[ModelCandidate] = Field(default_factory=list)
