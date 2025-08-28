@@ -197,8 +197,8 @@ pytest tests/e2e/       # End-to-end tests
 
 ### ✅ Phase 3: Scoring & Classification (In Progress)
 - [x] **Phase 3.1**: Multi-factor scoring engine (Completed)
-- [ ] **Phase 3.2**: Constraint validation (Next)
-- [ ] **Phase 3.3**: Model ranking (Planned)
+- [x] **Phase 3.2**: Constraint validation (Completed)
+- [ ] **Phase 3.3**: Model ranking (Next)
 
 ### 🚀 Phase 4: ML-Based Routing
 - [ ] Semantic prompt analysis

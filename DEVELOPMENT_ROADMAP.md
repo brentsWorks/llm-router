@@ -1,17 +1,17 @@
 # LLM Router - Development Roadmap
 
-## 🎯 Current Status (Updated: Phase 3.1 Complete)
+## 🎯 Current Status (Updated: Phase 3.2 Complete)
 
-**Overall Progress**: 43% Complete (3 of 7 weeks)  
-**Current Phase**: Phase 3.2 - Constraint Validation (Next)  
-**Test Coverage**: 95.61% (130 tests passing)  
-**Last Major Milestone**: ✅ Phase 3.1 - Basic Scoring Function (COMPLETED)
+**Overall Progress**: 57% Complete (4 of 7 weeks)  
+**Current Phase**: Phase 3.3 - Model Ranking (Next)  
+**Test Coverage**: 96.70% (147 tests passing)  
+**Last Major Milestone**: ✅ Phase 3.2 - Constraint Validation (COMPLETED)
 
 ### 🏆 Recent Achievements
-- **✅ Phase 3.1**: Multi-factor scoring engine with cost/latency/quality optimization
-- **✅ Comprehensive Testing**: 130 tests with edge case coverage
-- **✅ Professional Error Handling**: Centralized utilities for clear error messages
-- **✅ High Code Quality**: 95.61% coverage exceeding 90% requirement
+- **✅ Phase 3.2**: Enterprise-grade constraint validation with 6 constraint types
+- **✅ Comprehensive Testing**: 147 tests with 100% coverage on constraints
+- **✅ Multiple Constraint Validation**: Detect all violations simultaneously
+- **✅ High Code Quality**: 96.70% coverage exceeding 90% requirement
 
 ## Overview
 This roadmap breaks down the LLM Router project into atomic, testable tasks following Test-Driven Development (TDD) principles. Each task represents a single Red-Green-Refactor cycle.
@@ -96,12 +96,16 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - [x] **Result**: 130 tests passing, 95.61% coverage, comprehensive edge case handling
 
 ### 3.2 Constraint Validation
-- [ ] **Task**: Implement hard constraint validation
-  - Write tests for context length constraints
-  - Write tests for safety level constraints
-  - Write tests for provider exclusions
-  - Implement constraint validator
-  - **Tests**: `tests/unit/test_scoring.py::test_validate_constraints_*`
+- [x] **Task**: Implement hard constraint validation (COMPLETED)
+  - [x] Write tests for context length constraints
+  - [x] Write tests for safety level constraints
+  - [x] Write tests for provider exclusions
+  - [x] Write tests for model exclusions
+  - [x] Write tests for cost constraints
+  - [x] Write tests for latency constraints
+  - [x] Implement constraint validator
+  - [x] **Tests**: `tests/unit/test_constraints.py` (17 tests, 100% coverage)
+  - [x] **Result**: Enterprise-grade constraint validation with multiple violation detection
 
 ### 3.3 Model Ranking
 - [ ] **Task**: Implement model candidate ranking
