@@ -89,6 +89,7 @@ source = ["llm_router"]
 omit = [
     "*/tests/*",
     "*/test_*.py",
+    "llm_router/utils.py",
 ]
 
 [tool.coverage.report]
