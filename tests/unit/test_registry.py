@@ -3,6 +3,7 @@
 import pytest
 from typing import List
 from pydantic import ValidationError
+from llm_router.utils import format_validation_error
 
 
 class TestProviderModel:
@@ -71,7 +72,9 @@ class TestProviderModel:
                 limits={"context_length": 2048},
                 performance={"avg_latency_ms": 500}
             )
-        assert "output_tokens_per_1k" in str(exc_info.value).lower()
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "output_tokens_per_1k" in error_message.lower()
 
     def test_should_validate_capabilities_are_valid_categories(self):
         """Test that capabilities must be from valid category list."""
@@ -98,14 +101,16 @@ class TestProviderModel:
                 limits={"context_length": 2048},
                 performance={"avg_latency_ms": 500}
             )
-        assert "capability" in str(exc_info.value).lower()
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "capability" in error_message.lower()
 
     def test_should_validate_non_negative_pricing(self):
         """Test that pricing values must be non-negative."""
         from llm_router.registry import ProviderModel
         
         # Negative pricing should raise error
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             ProviderModel(
                 provider="test",
                 model="test-model",
@@ -117,13 +122,16 @@ class TestProviderModel:
                 limits={"context_length": 2048},
                 performance={"avg_latency_ms": 500}
             )
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "input_tokens_per_1k" in error_message
 
     def test_should_validate_positive_context_length(self):
         """Test that context length must be positive."""
         from llm_router.registry import ProviderModel
         
         # Zero or negative context length should raise error
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             ProviderModel(
                 provider="test",
                 model="test-model",
@@ -132,13 +140,16 @@ class TestProviderModel:
                 limits={"context_length": 0},  # Invalid: zero context length
                 performance={"avg_latency_ms": 500}
             )
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "context_length" in error_message
 
     def test_should_validate_quality_scores_bounds(self):
         """Test that quality scores must be between 0 and 1."""
         from llm_router.registry import ProviderModel
         
         # Invalid quality score should raise error
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             ProviderModel(
                 provider="test",
                 model="test-model",
@@ -152,6 +163,9 @@ class TestProviderModel:
                     }
                 }
             )
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "quality_scores" in error_message
 
     def test_should_serialize_to_dict_correctly(self):
         """Test that ProviderModel serializes properly."""
@@ -431,8 +445,11 @@ class TestProviderRegistryPersistence:
             ]
         }
         
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             ProviderRegistry.from_dict(invalid_data)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "models" in error_message
 
     def test_should_roundtrip_serialize_deserialize(self):
         """Test that registry can be serialized and deserialized without loss."""
@@ -591,5 +608,8 @@ class TestProviderRegistryErrorHandling:
             ]
         }
         
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             ProviderRegistry.from_dict(invalid_data)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "input_tokens_per_1k" in error_message

@@ -15,6 +15,7 @@ from llm_router.capabilities import (
     TaskType, SafetyLevel, ModelCapabilities, CapabilityRequirement,
     CapabilityMatcher, CapabilityScore
 )
+from llm_router.utils import format_validation_error
 from llm_router.registry import ProviderModel, PricingInfo, LimitsInfo, PerformanceInfo
 
 
@@ -91,21 +92,27 @@ class TestModelCapabilities:
                 task_expertise={TaskType.CODE: 1.5},  # Invalid score > 1
                 context_length_max=4000
             )
-        assert "between 0.0 and 1.0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "task_expertise" in error_message or "Task expertise score" in error_message
         
         with pytest.raises(ValidationError) as exc_info:
             ModelCapabilities(
                 task_expertise={TaskType.CODE: -0.1},  # Invalid score < 0
                 context_length_max=4000
             )
-        assert "between 0.0 and 1.0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "task_expertise" in error_message or "Task expertise score" in error_message
     
     def test_model_capabilities_validation_context_lengths(self):
         """Test context length validation rules."""
         # context_length_max is required
         with pytest.raises(ValidationError) as exc_info:
             ModelCapabilities(task_expertise={TaskType.CODE: 0.8})
-        assert "context_length_max" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "context_length_max" in error_message
         
         # context_length_optimal cannot exceed context_length_max
         with pytest.raises(ValidationError) as exc_info:
@@ -114,7 +121,9 @@ class TestModelCapabilities:
                 context_length_optimal=8000,
                 context_length_max=4000  # Max < Optimal
             )
-        assert "optimal cannot exceed max" in str(exc_info.value).lower()
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "optimal cannot exceed max" in error_message.lower()
     
     def test_model_capabilities_defaults(self):
         """Test default values for optional fields."""
@@ -183,18 +192,24 @@ class TestCapabilityRequirement:
     def test_capability_requirement_validation(self):
         """Test validation of capability requirements."""
         # min_score must be between 0 and 1
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             CapabilityRequirement(
                 primary_task=TaskType.CODE,
                 min_score=1.5
             )
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "min_score" in error_message
         
         # context_length_needed must be positive
-        with pytest.raises(ValidationError):
+        with pytest.raises(ValidationError) as exc_info:
             CapabilityRequirement(
                 primary_task=TaskType.CODE,
                 context_length_needed=-100
             )
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "context_length_needed" in error_message
     
     def test_capability_requirement_defaults(self):
         """Test default values for capability requirements."""

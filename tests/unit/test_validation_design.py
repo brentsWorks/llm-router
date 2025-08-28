@@ -2,6 +2,7 @@
 
 import pytest
 from pydantic import ValidationError
+from llm_router.utils import format_validation_error
 
 
 class TestValidationDesignDecisions:
@@ -18,13 +19,14 @@ class TestValidationDesignDecisions:
                 embedding=[0.1, 0.2, 0.3]
             )
         
-        error_message = str(exc_info.value)
+        # Use our utility for clear error messages
+        error_message = format_validation_error(exc_info.value)
         # Business requirement: Error should be understandable by non-technical users
-        # Current Pydantic: "Input should be greater than or equal to 0"
-        # Better for business: "Confidence must be between 0.0 and 1.0"
+        # Our utility provides: "confidence must be greater than or equal to 0"
         
-        # For now, verify current behavior
-        assert "Input should be greater than" in error_message
+        # Verify our clear error message
+        assert "confidence" in error_message
+        assert "greater than or equal to" in error_message
     
     def test_should_validate_confidence_bounds_consistently_across_models(self):
         """Test that confidence validation is consistent across all models."""
@@ -41,7 +43,10 @@ class TestValidationDesignDecisions:
         for create_invalid_model in test_cases:
             with pytest.raises(ValidationError) as exc_info:
                 create_invalid_model()
-            assert "should be less than or equal to 1" in str(exc_info.value)
+            # Use our utility for clear error messages
+            error_message = format_validation_error(exc_info.value)
+            assert "confidence" in error_message
+            assert "less than or equal to" in error_message
     
     def _create_routing_decision_with_invalid_confidence(self):
         """Helper to create RoutingDecision with invalid confidence."""
@@ -98,12 +103,15 @@ class TestValidationDesignDecisions:
         ]
         
         for invalid_confidence in invalid_edge_cases:
-            with pytest.raises(ValidationError):
+            with pytest.raises(ValidationError) as exc_info:
                 PromptClassification(
                     category="code",
                     confidence=invalid_confidence,
                     embedding=[0.1, 0.2, 0.3]
                 )
+            # Use our utility for clear error messages
+            error_message = format_validation_error(exc_info.value)
+            assert "confidence" in error_message
 
 
 class TestValidationPerformance:

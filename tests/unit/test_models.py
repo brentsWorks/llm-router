@@ -3,6 +3,7 @@
 import pytest
 from typing import List, Optional
 from pydantic import ValidationError
+from llm_router.utils import format_validation_error
 
 
 class TestPromptClassification:
@@ -53,7 +54,10 @@ class TestPromptClassification:
                 embedding=[0.1, 0.2, 0.3]
             )
         
-        assert "Input should be greater than or equal to 0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "confidence" in error_message
+        assert "greater than or equal to" in error_message
     
     def test_should_reject_invalid_confidence_when_above_one(self):
         """Test that confidence above 1.0 raises ValidationError."""
@@ -66,7 +70,10 @@ class TestPromptClassification:
                 embedding=[0.1, 0.2, 0.3]
             )
         
-        assert "Input should be less than or equal to 1" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "confidence" in error_message
+        assert "less than or equal to" in error_message
     
     def test_should_reject_invalid_category_when_not_in_allowed_list(self):
         """Test that invalid category raises ValidationError."""
@@ -79,7 +86,9 @@ class TestPromptClassification:
                 embedding=[0.1, 0.2, 0.3]
             )
         
-        assert "input should be" in str(exc_info.value).lower()
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "category" in error_message
     
     def test_should_accept_all_valid_categories(self):
         """Test that all valid categories are accepted."""
@@ -175,7 +184,10 @@ class TestModelCandidate:
                 constraint_violations=[]
             )
         
-        assert "Input should be greater than or equal to 0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "score" in error_message
+        assert "greater than or equal to" in error_message
     
     def test_should_reject_negative_cost_when_below_zero(self):
         """Test that negative cost raises ValidationError."""
@@ -192,7 +204,10 @@ class TestModelCandidate:
                 constraint_violations=[]
             )
         
-        assert "Input should be greater than or equal to 0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "estimated_cost" in error_message
+        assert "greater than or equal to" in error_message
     
     def test_should_reject_negative_latency_when_below_zero(self):
         """Test that negative latency raises ValidationError."""
@@ -209,7 +224,10 @@ class TestModelCandidate:
                 constraint_violations=[]
             )
         
-        assert "Input should be greater than or equal to 0" in str(exc_info.value)
+        # Should get clear error message
+        error_message = format_validation_error(exc_info.value)
+        assert "estimated_latency" in error_message
+        assert "greater than or equal to" in error_message
     
     def test_should_support_comparison_by_score_for_sorting(self):
         """Test that ModelCandidates can be sorted by score."""

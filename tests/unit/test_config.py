@@ -4,6 +4,7 @@ import pytest
 import os
 from unittest.mock import patch
 from pydantic import ValidationError
+from llm_router.utils import format_validation_error
 
 
 class TestAppConfig:
@@ -58,7 +59,9 @@ class TestAppConfig:
         with patch.dict(os.environ, {"LLM_ROUTER_LOG_LEVEL": "INVALID"}):
             with pytest.raises(ValidationError) as exc_info:
                 AppConfig()
-            assert "log_level" in str(exc_info.value).lower()
+            # Use our utility for clear error messages
+            error_message = format_validation_error(exc_info.value)
+            assert "log_level" in error_message.lower()
 
     def test_should_validate_confidence_threshold_bounds(self):
         """Test that confidence threshold is validated to be between 0 and 1."""
@@ -76,7 +79,9 @@ class TestAppConfig:
             with patch.dict(os.environ, {"LLM_ROUTER_CONFIDENCE_THRESHOLD": threshold}):
                 with pytest.raises(ValidationError) as exc_info:
                     AppConfig()
-                assert "confidence_threshold" in str(exc_info.value).lower()
+                # Use our utility for clear error messages
+                error_message = format_validation_error(exc_info.value)
+                assert "confidence_threshold" in error_message.lower()
 
     def test_should_validate_max_routing_time_positive(self):
         """Test that max routing time must be positive."""
@@ -94,7 +99,9 @@ class TestAppConfig:
             with patch.dict(os.environ, {"LLM_ROUTER_MAX_ROUTING_TIME_MS": time_ms}):
                 with pytest.raises(ValidationError) as exc_info:
                     AppConfig()
-                assert "max_routing_time_ms" in str(exc_info.value).lower()
+                # Use our utility for clear error messages
+                error_message = format_validation_error(exc_info.value)
+                assert "max_routing_time_ms" in error_message.lower()
 
     def test_should_serialize_config_to_dict(self):
         """Test that configuration can be serialized for logging/debugging."""
@@ -168,7 +175,9 @@ class TestMLConfig:
         with patch.dict(os.environ, {"LLM_ROUTER_VECTOR_STORE_TYPE": "invalid_store"}):
             with pytest.raises(ValidationError) as exc_info:
                 MLConfig()
-            assert "vector_store_type" in str(exc_info.value).lower()
+            # Use our utility for clear error messages
+            error_message = format_validation_error(exc_info.value)
+            assert "vector_store_type" in error_message.lower()
 
     def test_should_validate_similarity_threshold_bounds(self):
         """Test that similarity threshold is between 0 and 1."""
@@ -184,8 +193,11 @@ class TestMLConfig:
         
         for threshold in invalid_thresholds:
             with patch.dict(os.environ, {"LLM_ROUTER_SIMILARITY_THRESHOLD": threshold}):
-                with pytest.raises(ValidationError):
+                with pytest.raises(ValidationError) as exc_info:
                     MLConfig()
+                # Use our utility for clear error messages
+                error_message = format_validation_error(exc_info.value)
+                assert "similarity_threshold" in error_message.lower()
 
 
 class TestConfigFactory:
