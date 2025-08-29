@@ -2,25 +2,23 @@
 
 from typing import List, Optional
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
+
+# Import TaskType from capabilities to maintain consistency
+from llm_router.capabilities import TaskType
 
 
-class Category(str, Enum):
-    """Valid prompt categories for classification."""
-    CODE = "code"
-    CREATIVE = "creative"
-    QA = "qa"
-    SUMMARIZATION = "summarization"
-    TOOL_USE = "tool-use"
-    REASONING = "reasoning"
+# Use TaskType as the single source of truth for categories
+Category = TaskType
 
-
-# Export valid categories for tests
-VALID_CATEGORIES = [category.value for category in Category]
+# Export valid categories for tests (using TaskType values)
+VALID_CATEGORIES = [task_type.value for task_type in TaskType]
 
 
 class PromptClassification(BaseModel):
     """Classification result for a user prompt."""
+
+    model_config = ConfigDict(use_enum_values=True)
 
     category: Category
     subcategory: Optional[str] = None
@@ -43,6 +41,8 @@ class ModelCandidate(BaseModel):
 
 class RoutingDecision(BaseModel):
     """Complete routing decision with selected model and alternatives."""
+
+    model_config = ConfigDict(use_enum_values=True)
 
     selected_model: ModelCandidate
     classification: PromptClassification
