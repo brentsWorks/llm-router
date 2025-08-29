@@ -5,7 +5,6 @@
 A hybrid LLM router that intelligently selects the optimal language model for a given task based on semantic analysis of user prompts, with LLM-assisted fallback for edge cases. The system combines cost efficiency, latency optimization, and quality matching.
 
 **Development Approach**: Test-Driven Development (TDD) with Red-Green-Refactor cycles
-
 **Current Status**: Phase 3.3 Complete - Model Ranking System Implemented (71% Complete)
 
 ## Architecture
@@ -138,13 +137,13 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
   - ✅ Model ranking algorithms
 - **Tools**: pytest, unittest.mock, hypothesis (property-based testing)
 
-#### Integration Tests (20%) - PARTIALLY IMPLEMENTED
+#### Integration Tests (20%) - 🔄 PLANNED
 - **Purpose**: Test component interactions
 - **Scope**: Database operations, external API calls, service integrations
 - **Examples**:
-  - ✅ Provider registry with real data
-  - ✅ Scoring engine with constraints
-  - ✅ Ranking with constraint validation
+  - 🔄 Provider registry with real data (planned)
+  - 🔄 Scoring engine with constraints (planned)
+  - 🔄 Ranking with constraint validation (planned)
   - 🔄 Vector store operations (planned)
   - 🔄 LLM API calls (planned)
 - **Tools**: pytest, pytest-asyncio, testcontainers
@@ -170,8 +169,8 @@ tests/
 │   ├── test_constraints.py        # ✅ Constraint validation tests
 │   ├── test_ranking.py            # ✅ Model ranking tests
 │   └── test_registry.py           # ✅ Provider registry tests
-├── integration/                    # 🔄 PARTIALLY IMPLEMENTED
-│   ├── test_registry.py           # ✅ Provider data loading tests
+├── integration/                    # 🔄 PLANNED
+│   ├── test_registry.py           # 🔄 Provider data loading tests (planned)
 │   ├── test_embeddings.py         # 🔄 Planned
 │   ├── test_vector_store.py       # 🔄 Planned
 │   ├── test_llm_fallback.py       # 🔄 Planned
