@@ -4,8 +4,8 @@
 
 A hybrid LLM routing system that automatically selects the optimal language model for your specific use case, combining cost efficiency, performance, and quality through semantic prompt analysis and intelligent fallback mechanisms.
 
-[![Tests](https://img.shields.io/badge/tests-130%20passing-brightgreen)]()
-[![Coverage](https://img.shields.io/badge/coverage-95.61%25-brightgreen)]()
+[![Tests](https://img.shields.io/badge/tests-147%20passing-brightgreen)]()
+[![Coverage](https://img.shields.io/badge/coverage-96.70%25-brightgreen)]()
 [![Python](https://img.shields.io/badge/python-3.11%2B-blue)]()
 [![License](https://img.shields.io/badge/license-MIT-blue)]()
 
@@ -154,7 +154,7 @@ export LLM_ROUTER_MAX_ROUTING_TIME_MS=2000
 ## 🛠️ Development
 
 ### Built with Modern Practices
-- **🧪 Test-Driven Development**: 130 tests, 95.61% coverage
+- **🧪 Test-Driven Development**: 147 tests, 96.70% coverage
 - **🔒 Type Safety**: Full Pydantic validation and mypy compatibility
 - **📐 Clean Architecture**: Modular design with clear separation of concerns
 - **🚀 Production Ready**: Comprehensive error handling and observability
@@ -195,12 +195,12 @@ pytest tests/e2e/       # End-to-end tests
 - [x] **Phase 2.4**: Performance tracking (Completed)
 - [x] **REFACTOR**: Code quality improvements and line length fixes (Completed)
 
-### ✅ Phase 3: Scoring & Classification (In Progress)
+### ✅ Phase 3: Scoring & Classification (Completed)
 - [x] **Phase 3.1**: Multi-factor scoring engine (Completed)
 - [x] **Phase 3.2**: Constraint validation (Completed)
-- [ ] **Phase 3.3**: Model ranking (Next)
+- [x] **Phase 3.3**: Model ranking (Completed)
 
-### 🚀 Phase 4: ML-Based Routing
+### 🚀 Phase 4: ML-Based Routing (Next)
 - [ ] Semantic prompt analysis
 - [ ] Vector similarity search
 - [ ] LLM fallback classification
