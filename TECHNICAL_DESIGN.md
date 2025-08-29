@@ -124,6 +124,7 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
 - **Coverage**: 96.70% overall
 - **Completed Modules**: Provider Registry, Scoring Engine, Constraint Validation, Model Ranking
 - **Test Quality**: Production-ready with comprehensive edge case coverage
+- **Test Distribution**: Unit tests (70%), Integration tests (20%), E2E tests (10%)
 
 ### Test Categories
 
@@ -137,13 +138,14 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
   - ✅ Model ranking algorithms
 - **Tools**: pytest, unittest.mock, hypothesis (property-based testing)
 
-#### Integration Tests (20%) - 🔄 PLANNED
+#### Integration Tests (20%) - ✅ IMPLEMENTED
 - **Purpose**: Test component interactions
 - **Scope**: Database operations, external API calls, service integrations
 - **Examples**:
-  - 🔄 Provider registry with real data (planned)
-  - 🔄 Scoring engine with constraints (planned)
-  - 🔄 Ranking with constraint validation (planned)
+  - ✅ Provider registry with real data
+  - ✅ Scoring engine with constraints
+  - ✅ Ranking with constraint validation
+  - ✅ Routing pipeline integration
   - 🔄 Vector store operations (planned)
   - 🔄 LLM API calls (planned)
 - **Tools**: pytest, pytest-asyncio, testcontainers
@@ -169,8 +171,8 @@ tests/
 │   ├── test_constraints.py        # ✅ Constraint validation tests
 │   ├── test_ranking.py            # ✅ Model ranking tests
 │   └── test_registry.py           # ✅ Provider registry tests
-├── integration/                    # 🔄 PLANNED
-│   ├── test_registry.py           # 🔄 Provider data loading tests (planned)
+├── integration/                    # ✅ IMPLEMENTED
+│   ├── test_routing_pipeline.py   # ✅ Routing pipeline integration tests
 │   ├── test_embeddings.py         # 🔄 Planned
 │   ├── test_vector_store.py       # 🔄 Planned
 │   ├── test_llm_fallback.py       # 🔄 Planned

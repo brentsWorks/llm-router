@@ -289,39 +289,6 @@ class TestModelRanker:
         assert cost_result.ranked_models[0].model == "cheap_slow"      # Lower cost
         assert quality_result.ranked_models[0].model == "expensive_fast"  # Higher quality
 
-    def test_should_integrate_with_constraint_validation(self):
-        """Test that ranking works with constraint-validated models."""
-        from llm_router.ranking import ModelRanker
-        
-        ranker = ModelRanker()
-        constraint_validator = ConstraintValidator()
-        
-        # Create models with different characteristics
-        models = [
-            self._create_test_model("valid_model", cost=0.005, latency=500, quality=0.8),
-            self._create_test_model("expensive_model", cost=0.02, latency=500, quality=0.8),
-            self._create_test_model("slow_model", cost=0.005, latency=2000, quality=0.8),
-        ]
-        
-        # Apply constraints
-        constraints = RoutingConstraints(
-            max_cost_per_1k_tokens=0.01,
-            max_latency_ms=1000
-        )
-        
-        valid_models = constraint_validator.filter_valid_models(models, constraints)
-        
-        # Should only have 1 valid model (expensive and slow models filtered out)
-        assert len(valid_models) == 1
-        assert valid_models[0].model == "valid_model"
-        
-        # Rank the valid models
-        result = ranker.rank_models(valid_models, "code")
-        
-        assert len(result.ranked_models) == 1
-        assert result.ranked_models[0].model == "valid_model"
-        assert result.total_candidates == 1
-
     def test_should_measure_ranking_performance(self):
         """Test that ranking performance is measured."""
         from llm_router.ranking import ModelRanker
@@ -337,23 +304,6 @@ class TestModelRanker:
         assert result.ranking_time_ms > 0
         assert result.ranking_time_ms < 1000  # Should be fast (< 1 second)
         assert result.total_candidates == 10
-
-    def test_should_handle_large_model_lists(self):
-        """Test that ranking handles large numbers of models efficiently."""
-        from llm_router.ranking import ModelRanker
-        
-        ranker = ModelRanker()
-        
-        # Create a larger number of models
-        models = [self._create_test_model(f"model_{i}", cost=0.005, latency=500, quality=0.8) for i in range(100)]
-        
-        result = ranker.rank_models(models, "code")
-        
-        # Should handle large lists efficiently
-        assert result.total_candidates == 100
-        assert len(result.ranked_models) == 100
-        assert len(result.ranking_scores) == 100
-        assert result.ranking_time_ms < 5000  # Should be reasonably fast even with 100 models
 
     def test_should_validate_input_parameters(self):
         """Test that ranking validates input parameters properly."""

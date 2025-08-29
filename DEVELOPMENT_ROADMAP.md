@@ -142,7 +142,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for "no suitable model" scenarios
   - Write tests for routing decision structure
   - Implement router service
-  - **Tests**: `tests/unit/test_routing.py::test_basic_routing_*`
+  - **Tests**: `tests/integration/test_routing_pipeline.py::test_*_integration`
 
 ### 5.2 Router Error Handling
 - [ ] **Task**: Implement comprehensive error handling
