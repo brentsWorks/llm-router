@@ -75,7 +75,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for handling invalid data
   - Write tests for data validation
   - Implement file-based loading
-  - **Tests**: `tests/integration/test_registry.py::test_load_providers_*`
+  - **Tests**: `tests/unit/test_registry.py::test_load_providers_*`
 
 ### 2.4 REFACTOR Phase
 - [x] **Task**: Code quality improvements and style fixes
@@ -142,7 +142,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for "no suitable model" scenarios
   - Write tests for routing decision structure
   - Implement router service
-  - **Tests**: `tests/integration/test_routing.py::test_basic_routing_*`
+  - **Tests**: `tests/unit/test_routing.py::test_basic_routing_*`
 
 ### 5.2 Router Error Handling
 - [ ] **Task**: Implement comprehensive error handling
@@ -193,7 +193,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for dataset querying
   - Create curated example dataset
   - Implement dataset loader
-  - **Tests**: `tests/integration/test_embeddings.py::test_example_dataset_*`
+  - **Tests**: `tests/unit/test_embeddings.py::test_example_dataset_*`
 
 ### 7.3 Vector Similarity Search
 - [ ] **Task**: Implement semantic similarity search
@@ -201,7 +201,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for k-nearest neighbor search
   - Write tests for confidence scoring based on similarity
   - Implement vector search service
-  - **Tests**: `tests/integration/test_vector_store.py::test_similarity_search_*`
+  - **Tests**: `tests/unit/test_vector_store.py::test_similarity_search_*`
 
 ## Phase 8: LLM Fallback Classification (TDD)
 
@@ -211,7 +211,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for LLM response parsing
   - Write tests for API failures and retries
   - Implement LLM classification service (mocked)
-  - **Tests**: `tests/integration/test_llm_fallback.py::test_llm_classification_*`
+  - **Tests**: `tests/unit/test_llm_fallback.py::test_llm_classification_*`
 
 ### 8.2 Hybrid Classification Logic
 - [ ] **Task**: Implement semantic + LLM fallback logic
@@ -219,7 +219,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for fallback triggering
   - Write tests for combining classification results
   - Implement hybrid classifier
-  - **Tests**: `tests/integration/test_classification.py::test_hybrid_classification_*`
+  - **Tests**: `tests/unit/test_classification.py::test_hybrid_classification_*`
 
 ## Phase 9: Performance & Production (TDD)
 
@@ -229,7 +229,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for cache invalidation
   - Write tests for cache performance
   - Implement caching service
-  - **Tests**: `tests/integration/test_caching.py::test_cache_*`
+  - **Tests**: `tests/unit/test_caching.py::test_cache_*`
 
 ### 9.2 Performance Monitoring
 - [ ] **Task**: Implement performance metrics
@@ -237,7 +237,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for metrics collection
   - Write tests for performance thresholds
   - Implement metrics service
-  - **Tests**: `tests/e2e/test_performance.py::test_performance_metrics_*`
+  - **Tests**: `tests/unit/test_performance.py::test_performance_metrics_*`
 
 ### 9.3 Load Testing
 - [ ] **Task**: Implement load testing suite
@@ -245,7 +245,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for concurrent request handling
   - Write tests for rate limiting
   - Implement load test scenarios
-  - **Tests**: `tests/e2e/test_performance.py::test_load_*`
+  - **Tests**: `tests/unit/test_load.py::test_load_*`
 
 ## Phase 10: Advanced Features (TDD)
 
@@ -262,7 +262,7 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Write tests for traffic splitting
   - Write tests for results collection
   - Implement A/B testing service
-  - **Tests**: `tests/integration/test_ab_testing.py::test_experiments_*`
+  - **Tests**: `tests/unit/test_ab_testing.py::test_experiments_*`
 
 ## Task Completion Checklist
 
