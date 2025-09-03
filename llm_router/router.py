@@ -63,9 +63,18 @@ class RouterService:
             ranking_result = self.ranker.rank_models(available_models, classification.category)
 
             # Step 5: Select the best model (first in ranked list)
-            if ranking_result.ranked_models and ranking_result.ranking_scores:
+            if (ranking_result.ranked_models and
+                ranking_result.ranking_scores and
+                len(ranking_result.ranked_models) > 0 and
+                len(ranking_result.ranking_scores) > 0 and
+                len(ranking_result.ranked_models) == len(ranking_result.ranking_scores)):
+
                 selected_model = ranking_result.ranked_models[0]
                 selected_score = ranking_result.ranking_scores[0]
+
+                # Additional validation: ensure selected_model has required attributes
+                if not hasattr(selected_model, 'provider') or not hasattr(selected_model, 'model'):
+                    return None
 
                 # Step 6: Create and return routing decision
                 # Safely access model attributes with defaults
