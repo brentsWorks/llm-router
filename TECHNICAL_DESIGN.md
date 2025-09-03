@@ -173,11 +173,13 @@ tests/
 │   └── test_registry.py           # ✅ Provider registry tests
 ├── integration/                    # ✅ IMPLEMENTED
 │   ├── test_routing_pipeline.py   # ✅ Routing pipeline integration tests
+│   └── test_classification_integration.py # ✅ Classification integration tests
 │   ├── test_embeddings.py         # 🔄 Planned
 │   ├── test_vector_store.py       # 🔄 Planned
 │   ├── test_llm_fallback.py       # 🔄 Planned
 │   └── test_routing.py            # 🔄 Planned
-├── e2e/                           # 🔄 PLANNED
+├── e2e/                           # ✅ IMPLEMENTED
+│   ├── test_routing_e2e.py        # ✅ End-to-end routing pipeline tests
 │   ├── test_api.py                # 🔄 Planned
 │   ├── test_workflows.py          # 🔄 Planned
 │   └── test_performance.py        # 🔄 Planned
