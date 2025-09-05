@@ -14,9 +14,18 @@ class KeywordClassifier:
     def __init__(self):
         """Initialize the keyword classifier."""
         # Keyword patterns for each category
-        self._code_keywords = ["function", "debug", "algorithm", "python", "code"]
-        self._creative_keywords = ["story", "creative", "imagine", "narrative"]
-        self._qa_keywords = ["what", "how", "why", "explain"]
+        self._code_keywords = [
+            "function", "debug", "algorithm", "python", "code", "programming",
+            "script", "bug", "syntax", "variable", "loop", "class", "method"
+        ]
+        self._creative_keywords = [
+            "story", "creative", "imagine", "narrative", "poem", "poetry",
+            "write", "art", "novel", "character", "plot", "verse", "rhyme"
+        ]
+        self._qa_keywords = [
+            "what", "how", "why", "explain", "tell", "describe", "define",
+            "meaning", "difference", "compare", "help", "understand"
+        ]
 
     def classify(self, prompt: str) -> PromptClassification:
         """
@@ -27,8 +36,15 @@ class KeywordClassifier:
             
         Returns:
             PromptClassification with category, confidence, and reasoning
+            
+        Raises:
+            ValueError: If prompt is empty or contains only whitespace
         """
-        prompt_lower = prompt.lower()
+        # Validate prompt is not empty or just whitespace
+        if not prompt or not prompt.strip():
+            raise ValueError("Prompt cannot be empty or contain only whitespace")
+        
+        prompt_lower = prompt.strip().lower()
         
         # Count matches for each category
         category_scores = {
@@ -42,9 +58,16 @@ class KeywordClassifier:
         best_score = category_scores[best_category]
         
         if best_score > 0:
-            # Calculate confidence based on matches and total keywords in category
+            # Calculate confidence based on matches with higher rewards for multiple matches
             total_keywords = len(getattr(self, f"_{best_category}_keywords"))
-            confidence = min(0.9, 0.3 + (best_score / total_keywords) * 0.6)  # Scale from 0.3 to 0.9
+            
+            # Give exponential boost for multiple matches
+            if best_score >= 3:
+                confidence = min(0.9, 0.7 + (best_score / total_keywords) * 0.2)  # High confidence for 3+ matches
+            elif best_score >= 2:
+                confidence = min(0.8, 0.6 + (best_score / total_keywords) * 0.2)  # Medium-high for 2+ matches (boosted)
+            else:
+                confidence = min(0.6, 0.3 + (best_score / total_keywords) * 0.3)  # Lower for single matches
             
             # Get matched keywords for reasoning
             matched_keywords = [kw for kw in getattr(self, f"_{best_category}_keywords") if kw in prompt_lower]

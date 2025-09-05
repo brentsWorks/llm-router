@@ -181,12 +181,8 @@ class TestKeywordClassifier:
         edge_cases = ["", "   ", "\n\t  \n"]
 
         for prompt in edge_cases:
-            result = classifier.classify(prompt)
-
-            # Should not crash and provide reasonable fallback
-            assert result.category == "code"  # Default category
-            assert result.confidence == 0.1  # Low confidence for edge cases
-            assert len(result.reasoning) > 0  # Should have some reasoning
+            with pytest.raises(ValueError, match="Prompt cannot be empty or contain only whitespace"):
+                classifier.classify(prompt)
 
     def test_should_handle_case_insensitive_matching(self):
         """Test that keyword matching works regardless of case."""
@@ -282,7 +278,7 @@ class TestKeywordClassifier:
             # Low confidence cases (no keywords or edge cases)
             ("Hello world", "low"),
             ("Random text", "low"),
-            ("", "low"),
+            # Note: empty string test is handled separately in test_should_handle_edge_case_empty_prompt
         ]
 
         for prompt, expected_level in test_prompts:

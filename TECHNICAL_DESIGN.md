@@ -2,21 +2,122 @@
 
 ## Overview
 
-A hybrid LLM router that intelligently selects the optimal language model for a given task based on semantic analysis of user prompts, with LLM-assisted fallback for edge cases. The system combines cost efficiency, latency optimization, and quality matching.
+A web application that provides intelligent LLM routing as a service. Users bring their own API keys from providers (OpenAI, Anthropic, Google, etc.) and get intelligent routing decisions. The app routes prompts to optimal models and executes them client-side for maximum security.
 
+**Business Model**: Free/Open Source web app - Users use their own API keys and pay providers directly
 **Development Approach**: Test-Driven Development (TDD) with Red-Green-Refactor cycles
-**Current Status**: Phase 5.2 Complete - Router Error Handling Implemented (90% Complete)
+**Current Status**: Phase 6.1 Complete - Basic API Layer (50% Complete - expanded scope for SaaS platform)
 
 ## Architecture
 
-### High-Level Flow
+### High-Level Client-Side Flow
 ```
-User Prompt → Semantic Classification → Model Selection → Fallback (if needed) → Route to Provider
+Frontend: User Prompt → Route API Call → Routing Decision → Client-Side Provider API Call → Return Response
+Backend: Route Request → Prompt Analysis → Model Selection → Return Routing Decision
+```
+
+### Security Architecture
+```
+User API Keys → Stay in Browser → Direct Provider API Calls → Never Touch Our Servers
+```
+
+## Client-Side Security Architecture
+
+### API Key Handling
+```javascript
+// Secure client-side key management
+class SecureKeyManager {
+  constructor() {
+    this.keys = new Map(); // In-memory storage only
+    this.setupSecurityFeatures();
+  }
+  
+  storeKey(provider, apiKey) {
+    // Validate key format before storage
+    if (!this.validateKeyFormat(provider, apiKey)) {
+      throw new Error('Invalid API key format');
+    }
+    
+    // Store in memory only (never localStorage)
+    this.keys.set(provider, apiKey);
+    
+    // Auto-clear after inactivity
+    this.resetInactivityTimer();
+  }
+  
+  getKey(provider) {
+    return this.keys.get(provider);
+  }
+  
+  clearAllKeys() {
+    this.keys.clear();
+  }
+}
+```
+
+### Request Flow
+```javascript
+// Complete client-side routing and execution
+class LLMRouter {
+  async routeAndExecute(prompt, userKeys, preferences = {}) {
+    // 1. Get routing decision from our backend (no keys sent)
+    const routingResponse = await fetch('/api/route', {
+      method: 'POST',
+      body: JSON.stringify({ prompt, preferences }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    const routing = await routingResponse.json();
+    
+    // 2. Execute directly on provider (keys never leave browser)
+    const provider = routing.selected_model.provider;
+    const apiKey = userKeys.get(provider);
+    
+    if (!apiKey) {
+      throw new Error(`No API key configured for ${provider}`);
+    }
+    
+    // 3. Direct provider API call from browser
+    return await this.callProvider(provider, routing.selected_model, prompt, apiKey);
+  }
+  
+  async callProvider(provider, model, prompt, apiKey) {
+    switch (provider) {
+      case 'openai':
+        return await this.callOpenAI(model, prompt, apiKey);
+      case 'anthropic':
+        return await this.callAnthropic(model, prompt, apiKey);
+      case 'google':
+        return await this.callGoogle(model, prompt, apiKey);
+      default:
+        throw new Error(`Unsupported provider: ${provider}`);
+    }
+  }
+}
 ```
 
 ### Core Components
 
-#### 1. Semantic Classifier (Primary Route) - PLANNED
+#### 1. Frontend Client-Side Integration - PLANNED (Phase 9.1)
+- **Purpose**: Execute prompts on providers directly from browser using user's API keys
+- **Components**:
+  - JavaScript SDK for provider API calls
+  - OpenAI Client (browser-compatible)
+  - Anthropic Client (browser-compatible) 
+  - Google/Gemini Client (browser-compatible)
+  - Client-side error handling and retries
+  - Secure API key management in browser storage
+
+#### 2. Backend Routing Service - ✅ MOSTLY COMPLETE
+- **Purpose**: Analyze prompts and return optimal model selection
+- **Components**:
+  - Prompt classification and analysis
+  - Model scoring and ranking
+  - Provider registry and capabilities
+  - Routing decision API endpoints
+  - No API key handling (security by design)
+
+#### 3. Semantic Classifier (Primary Route) - PLANNED (Phase 7)
 - **Purpose**: Fast, accurate classification based on prompt embeddings
 - **Technology**: RAG with vector similarity search
 - **Components**:
@@ -25,15 +126,15 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
   - Example Dataset (curated prompt examples with labels)
   - Confidence Scorer
 
-#### 2. LLM-Assisted Classifier (Fallback Route) - PLANNED
+#### 4. LLM-Assisted Classifier (Fallback Route) - PLANNED (Phase 8)
 - **Purpose**: Handle edge cases where semantic classification confidence is low
-- **Technology**: Fast, cheap LLM for classification
+- **Technology**: Fast, cheap LLM for classification (using our provider APIs)
 - **Components**:
   - Classification Prompt Template
   - Confidence Threshold Manager
   - Classification Cache
 
-#### 3. Provider Registry - ✅ COMPLETED
+#### 5. Provider Registry - ✅ COMPLETED
 - **Purpose**: Central repository of available models and their capabilities
 - **Status**: Fully implemented with comprehensive testing
 - **Schema**:
@@ -63,7 +164,7 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
   }
   ```
 
-#### 4. Scoring Engine - ✅ COMPLETED
+#### 6. Scoring Engine - ✅ COMPLETED
 - **Purpose**: Calculate optimal model based on weighted preferences
 - **Status**: Fully implemented with comprehensive testing
 - **Scoring Function**:
@@ -120,7 +221,7 @@ User Prompt → Semantic Classification → Model Selection → Fallback (if nee
 4. **Fast Feedback**: Tests must be fast and reliable for continuous development
 
 ### Current Test Status
-- **Total Tests**: 238 tests passing
+d - **Total Tests**: 238 tests passing
 - **Coverage**: 96.33% overall
 - **Completed Modules**: Provider Registry, Scoring Engine, Constraint Validation, Model Ranking, Classification, Router
 - **Test Quality**: Production-ready with comprehensive edge case coverage

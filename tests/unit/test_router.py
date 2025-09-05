@@ -278,13 +278,13 @@ class TestRouterService:
             Mock(provider="openai", model="gpt-4", capabilities=["code"]),
             Mock(provider="anthropic", model="claude-3", capabilities=["code"])
         ]
-        mock_registry.get_models_for_category.return_value = mock_models
+        mock_registry.get_models_by_capability.return_value = mock_models
 
         # Call route method
         router.route("Write a Python function")
 
         # Verify registry was called with correct category
-        mock_registry.get_models_for_category.assert_called_once_with("code")
+        mock_registry.get_models_by_capability.assert_called_once_with("code")
 
     def test_should_call_ranker_with_filtered_models(self):
         """Test that router passes filtered models to the ranker."""
@@ -311,7 +311,7 @@ class TestRouterService:
 
         # Mock registry response
         mock_models = [Mock(capabilities=["creative"]), Mock(capabilities=["creative"])]
-        mock_registry.get_models_for_category.return_value = mock_models
+        mock_registry.get_models_by_capability.return_value = mock_models
 
         # Mock ranker response
         mock_ranker.rank_models.return_value = Mock(
@@ -924,7 +924,7 @@ class TestRouterService:
         mock_classifier.classify.return_value = mock_classification
 
         mock_models = [Mock(), Mock()]
-        mock_registry.get_models_for_category.return_value = mock_models
+        mock_registry.get_models_by_capability.return_value = mock_models
 
         # Mock ranker response
         mock_ranking = Mock()

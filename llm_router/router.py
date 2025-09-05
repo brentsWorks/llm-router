@@ -53,7 +53,7 @@ class RouterService:
             classification = self.classifier.classify(prompt)
 
             # Step 2: Get suitable models from registry based on category
-            available_models = self.registry.get_models_for_category(classification.category)
+            available_models = self.registry.get_models_by_capability(classification.category)
 
             # Step 3: Check if any models are available
             if not available_models:

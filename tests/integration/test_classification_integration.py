@@ -131,10 +131,9 @@ class TestClassificationIntegration:
             "What is AI?",
             "Random text with no keywords",
             "Multiple function debug algorithm code keywords",
-            "",  # Empty prompt
             "A" * 1000,  # Very long prompt
         ]
-        
+
         for prompt in test_prompts:
             result = classifier.classify(prompt)
             
