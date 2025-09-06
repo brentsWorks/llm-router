@@ -48,8 +48,8 @@ In today's AI landscape, choosing the right language model is increasingly compl
 
 ### 🚀 Next Up
 - **Phase 6.2: Enhanced Routing API** - Advanced preferences and constraints
-- **Phase 7-8: ML Classification** - Embeddings and LLM fallback
-- **Phase 9: LLM Execution** - Real API integration and prompt execution
+- **Phase 7-8: ML Classification** - Embeddings and LLM fallback (2 weeks)
+- **Phase 9: Frontend & LLM Integration** - React web app + OpenAI/Claude/Gemini APIs (2 weeks)
 
 ### 🏗️ Architecture Status
 - **✅ Foundation**: Core data models, configuration, and validation
@@ -59,10 +59,12 @@ In today's AI landscape, choosing the right language model is increasingly compl
 - **✅ Classification**: Rule-based classifier with confidence scoring
 - **✅ Router Orchestration**: Complete routing service with error handling
 - **✅ API Layer**: FastAPI endpoints with comprehensive testing
-- **🔄 ML Classification**: Embeddings and vector search (planned)
-- **🔄 LLM Fallback**: Hybrid classification logic (planned)
-- **🔄 Performance**: Caching, monitoring, load testing (planned)
-- **🔄 Advanced Features**: Dynamic optimization, A/B testing (planned)
+- **🔄 ML Classification**: Embeddings and vector search (Phase 7-8)
+- **🔄 LLM Fallback**: Hybrid classification logic (Phase 7-8)
+- **🔄 Frontend Web App**: React/Vue interface (Phase 9.2)
+- **🔄 LLM API Integration**: OpenAI, Claude, Gemini connections (Phase 9.1)
+- **🔄 Performance**: Caching, monitoring, load testing (Phase 10)
+- **🔄 Advanced Features**: Dynamic optimization, A/B testing (Phase 11)
 
 ---
 
@@ -128,12 +130,13 @@ graph TD
 ```
 
 ### Core Components
-- **🧠 Semantic Classifier**: Fast prompt analysis using embeddings (planned)
-- **🤖 LLM Fallback**: Intelligent analysis for edge cases (planned)
-- **📊 Scoring Engine**: Multi-factor optimization with constraints
-- **🏪 Provider Registry**: Model capabilities and performance data
-- **🔌 Provider Integration**: Direct API calls to OpenAI, Anthropic, etc.
-- **🎛️ Configuration System**: Environment-based API key management
+- **🧠 Semantic Classifier**: Fast prompt analysis using embeddings (Phase 7-8)
+- **🤖 LLM Fallback**: Intelligent analysis for edge cases (Phase 7-8)
+- **📊 Scoring Engine**: Multi-factor optimization with constraints ✅
+- **🏪 Provider Registry**: Model capabilities and performance data ✅
+- **🔌 Provider Integration**: Direct API calls to OpenAI, Claude, Gemini (Phase 9.1)
+- **🌐 Frontend Web App**: React/Vue interface for users (Phase 9.2)
+- **🎛️ Configuration System**: Client-side API key management (Phase 9.1)
 
 ---
 
@@ -269,23 +272,28 @@ pytest tests/e2e/       # End-to-end tests
 - [ ] **Phase 6.2**: Enhanced routing API with preferences
 - [ ] **Phase 6.3**: API performance monitoring
 
-### 🏭 Phase 7: ML-Based Classification
-- [ ] Embedding service implementation
-- [ ] Example dataset creation
-- [ ] Vector similarity search
+### 🏭 Phase 7-8: ML-Based Classification (2 weeks)
+- [ ] **Phase 7**: Embedding service and vector similarity search
+- [ ] **Phase 8**: LLM fallback classification and hybrid logic
 
+### 🚀 Phase 9: Frontend & LLM Integration (2 weeks)
+- [ ] **Phase 9.1**: Client-side provider integration
+  - OpenAI API (GPT-3.5, GPT-4, GPT-4o)
+  - Anthropic API (Claude-3-Haiku, Claude-3-Sonnet, Claude-3-Opus)
+  - Google/Gemini API (Gemini Pro, Gemini Flash)
+  - Secure browser-based API key management
+- [ ] **Phase 9.2**: Frontend web application
+  - React/Vue interface for prompt execution
+  - Routing preferences and constraints UI
+  - Real-time response display and error handling
+- [ ] **Phase 9.3**: Client-side error handling and fallbacks
 
-
-### 🤖 Phase 8: LLM Fallback Classification
-- [ ] LLM classification service
-- [ ] Hybrid classification logic
-
-### ⚡ Phase 9: Performance & Production
+### ⚡ Phase 10: Performance & Production (1 week)
 - [ ] Caching layer implementation
-- [ ] Performance monitoring
+- [ ] Performance monitoring and analytics
 - [ ] Load testing suite
 
-### 🚀 Phase 10: Advanced Features
+### 🎯 Phase 11: Advanced Features (1 week)
 - [ ] Dynamic weight adjustment
 - [ ] A/B testing framework
 
