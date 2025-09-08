@@ -136,7 +136,7 @@ class TestMLConfig:
         
         # Should have ML-specific defaults
         assert config.embedding_model == "sentence-transformers/all-MiniLM-L6-v2"
-        assert config.vector_store_type == "chromadb"
+        assert config.vector_store_type == "pinecone"
         assert config.max_embedding_batch_size == 32
         assert config.similarity_threshold == 0.7
 

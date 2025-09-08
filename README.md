@@ -11,6 +11,26 @@ A hybrid LLM routing system that automatically selects the optimal language mode
 
 ---
 
+## 📁 Project Structure
+
+```
+llm-router/
+├── llm_router/                 # Core package
+│   ├── api/                   # FastAPI application
+│   ├── config/                # Configuration and model data
+│   ├── data/                  # Example datasets
+│   ├── vector_stores/         # Vector store implementations
+│   └── *.py                   # Core modules
+├── tests/                     # Test suite
+│   ├── unit/                  # Unit tests
+│   ├── integration/           # Integration tests
+│   └── e2e/                   # End-to-end tests
+├── scripts/                   # Utility scripts
+├── docs/                      # Documentation
+├── examples/                  # Example usage
+└── venv/                      # Virtual environment
+```
+
 ## 🚀 The Problem
 
 In today's AI landscape, choosing the right language model is increasingly complex:
@@ -35,7 +55,7 @@ In today's AI landscape, choosing the right language model is increasingly compl
 ## 🎯 Current Status
 
 **Phase 6 Complete - Production-Ready API Layer Implemented**
-**Overall Progress: 75% Complete (Phase 6 of 8 phases completed)**
+**Overall Progress: 55% Complete (Phase 6 of 11 phases completed)**
 
 ### ✅ Recently Completed
 - **Phase 6.3: API Error Handling & Monitoring** - Comprehensive error handling with structured logging

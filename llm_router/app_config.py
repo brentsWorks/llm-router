@@ -29,7 +29,8 @@ class AppConfig(BaseSettings):
         env_prefix="LLM_ROUTER_",
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"
     )
 
     # Application settings
@@ -50,7 +51,8 @@ class MLConfig(BaseSettings):
         env_prefix="LLM_ROUTER_",
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=False
+        case_sensitive=False,
+        extra="ignore"
     )
 
     # Embedding settings
@@ -58,8 +60,13 @@ class MLConfig(BaseSettings):
     max_embedding_batch_size: int = Field(default=32, gt=0)
 
     # Vector store settings 
-    vector_store_type: VectorStoreType = VectorStoreType.CHROMADB
+    vector_store_type: VectorStoreType = VectorStoreType.PINECONE
     similarity_threshold: float = Field(default=0.7, ge=0.0, le=1.0)
+    
+    # Pinecone settings
+    pinecone_api_key: Optional[str] = None
+    pinecone_environment: Optional[str] = None
+    pinecone_index_name: str = "llm-router"
 
 
 class Config(BaseModel):
