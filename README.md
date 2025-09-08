@@ -271,8 +271,8 @@ pytest tests/e2e/       # End-to-end tests
 
 ### ✅ Phase 6: API Layer (Completed)
 - [x] **Phase 6.1**: FastAPI setup and health checks (Completed)
-- [ ] **Phase 6.2**: Enhanced routing API with preferences
-- [ ] **Phase 6.3**: API performance monitoring
+- [x] **Phase 6.2**: Enhanced routing API with preferences
+- [x] **Phase 6.3**: API performance monitoring
 
 ### 🏭 Phase 7-8: ML-Based Classification (2 weeks)
 - [ ] **Phase 7**: Embedding service and vector similarity search
