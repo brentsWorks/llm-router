@@ -19,8 +19,6 @@ class VectorStoreError(Exception):
 class SimilarityMetric(Enum):
     """Supported similarity metrics."""
     COSINE = "cosine"
-    DOT_PRODUCT = "dot_product"
-    EUCLIDEAN = "euclidean"
 
 
 @dataclass
@@ -35,8 +33,6 @@ class SearchResult:
 class VectorStoreBackend(Enum):
     """Supported vector store backends."""
     PINECONE = "pinecone"
-    CHROMA = "chroma"
-    WEAVIATE = "weaviate"
 
 
 @dataclass
@@ -191,10 +187,6 @@ class VectorStoreFactory:
         if backend == VectorStoreBackend.PINECONE:
             from .vector_store_pinecone import PineconeVectorStore
             return PineconeVectorStore(dimension=dimension, **kwargs)
-        
-        elif backend == VectorStoreBackend.CHROMA:
-            from .vector_store_chroma import ChromaVectorStore
-            return ChromaVectorStore(dimension=dimension, **kwargs)
         
         else:
             raise VectorStoreError(f"Unsupported backend: {backend}")

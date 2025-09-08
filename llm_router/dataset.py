@@ -22,14 +22,13 @@ class DatasetError(Exception):
 
 class PromptCategory(Enum):
     """Categories of prompts for classification."""
-    CREATIVE_WRITING = "creative_writing"
-    CODE_GENERATION = "code_generation"
-    DATA_ANALYSIS = "data_analysis"
-    QUESTION_ANSWERING = "question_answering"
+    CREATIVE = "creative"
+    CODE = "code"
+    ANALYSIS = "analysis"
+    QA = "qa"
     SUMMARIZATION = "summarization"
     TRANSLATION = "translation"
     REASONING = "reasoning"
-    CONVERSATION = "conversation"
 
 
 @dataclass

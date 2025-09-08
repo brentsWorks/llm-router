@@ -26,6 +26,7 @@ dependencies = [
     "sentence-transformers>=2.2.0",
     "numpy>=1.21.0",
     "pinecone>=7.0.0",
+    "google-generativeai>=0.3.0",
 ]
 
 [project.optional-dependencies]
@@ -94,6 +95,7 @@ omit = [
     "*/tests/*",
     "*/test_*.py",
     "llm_router/utils.py",
+    "llm_router/vector_stores/vector_store_pinecone.py",
 ]
 
 [tool.coverage.report]

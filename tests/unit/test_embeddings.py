@@ -10,7 +10,6 @@ from unittest.mock import Mock, patch, AsyncMock
 import numpy as np
 from typing import List, Dict, Any
 
-# We'll implement these classes after writing tests
 from llm_router.embeddings import EmbeddingService, EmbeddingCache, EmbeddingError
 
 
