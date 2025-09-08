@@ -3,6 +3,6 @@
 __version__ = "0.1.0"
 
 from llm_router.core import Router
-from llm_router.config import get_config
+from llm_router.config import create_configured_registry
 
-__all__ = ["Router", "get_config", "__version__"]
+__all__ = ["Router", "create_configured_registry", "__version__"]

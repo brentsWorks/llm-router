@@ -17,139 +17,302 @@ Current Structure:
 
 from fastapi import FastAPI, HTTPException, Depends, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.responses import JSONResponse
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 import time
 import logging
 import uuid
+import json
+from datetime import datetime, timezone
 
 # Import our existing services
 from ..router import RouterService
 from ..classification import KeywordClassifier
-from ..registry import ProviderRegistry
 from ..ranking import ModelRanker
 from ..models import RoutingDecision
+from ..scoring import ScoringWeights
+from ..constraints import RoutingConstraints
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Import configuration
+from ..config import create_configured_registry
 
-# Pydantic models for API (start simple, expand later)
-class RouteRequest(BaseModel):
-    prompt: str = Field(..., min_length=1, max_length=10000)
-    preferences: Optional[Dict[str, Any]] = Field(default_factory=dict)
+# Import API models
+from .models import (
+    RouteRequest, RouteResponse, HealthResponse, MetricsResponse,
+    ModelsResponse, ModelInfo, ClassifyRequest, ClassifyResponse,
+    ErrorResponse, ErrorDetail
+)
 
-class RouteResponse(BaseModel):
-    selected_model: Dict[str, Any]
-    classification: Dict[str, Any]
-    confidence: float
-    routing_time_ms: float
-    reasoning: Optional[str] = None
-    # Client-side execution guidance
-    provider_info: Optional[Dict[str, Any]] = None  # API endpoints, model params
-    fallback_models: Optional[List[Dict[str, Any]]] = None  # Backup options
+# Import our enhanced logger
+from .logger import get_api_logger
 
-class HealthResponse(BaseModel):
-    status: str
-    service: str
-    version: str
-    uptime_seconds: float
-    total_models: int
-    total_requests: Optional[int] = None
+# Get the API logger instance
+api_logger = get_api_logger()
+logger = api_logger.logger  # For backwards compatibility
 
-class MetricsResponse(BaseModel):
-    total_requests: int
-    avg_response_time_ms: float
-    classification_stats: Dict[str, int]
-    model_selection_stats: Dict[str, int]
-    uptime_seconds: float
+# API models are now imported from .models module
 
 # Global service instances (later move to dependency injection)
 classifier = KeywordClassifier()
-registry = ProviderRegistry()
+registry = create_configured_registry()  # Load models from configuration
 ranker = ModelRanker()
-
-# Add some mock models for Phase 6.1 testing
-from ..registry import ProviderModel, PricingInfo, LimitsInfo, PerformanceInfo
-
-# Mock OpenAI GPT-3.5 Turbo
-gpt35_model = ProviderModel(
-    provider="openai",
-    model="gpt-3.5-turbo",
-    capabilities=["code", "creative", "qa"],
-    pricing=PricingInfo(input_tokens_per_1k=0.001, output_tokens_per_1k=0.002),
-    limits=LimitsInfo(context_length=4096, rate_limit=3500, safety_level="moderate"),
-    performance=PerformanceInfo(
-        avg_latency_ms=800,
-        quality_scores={"code": 0.85, "creative": 0.90, "qa": 0.88}
-    )
-)
-
-# Mock OpenAI GPT-4
-gpt4_model = ProviderModel(
-    provider="openai", 
-    model="gpt-4",
-    capabilities=["code", "creative", "qa"],
-    pricing=PricingInfo(input_tokens_per_1k=0.03, output_tokens_per_1k=0.06),
-    limits=LimitsInfo(context_length=8192, rate_limit=500, safety_level="high"),
-    performance=PerformanceInfo(
-        avg_latency_ms=1200,
-        quality_scores={"code": 0.95, "creative": 0.92, "qa": 0.94}
-    )
-)
-
-# Mock Anthropic Claude
-claude_model = ProviderModel(
-    provider="anthropic",
-    model="claude-3-haiku",
-    capabilities=["code", "creative", "qa"],
-    pricing=PricingInfo(input_tokens_per_1k=0.00025, output_tokens_per_1k=0.00125),
-    limits=LimitsInfo(context_length=200000, rate_limit=1000, safety_level="high"),
-    performance=PerformanceInfo(
-        avg_latency_ms=600,
-        quality_scores={"code": 0.82, "creative": 0.95, "qa": 0.90}
-    )
-)
-
-# Add models to registry
-registry.add_model(gpt35_model)
-registry.add_model(gpt4_model)
-registry.add_model(claude_model)
 
 router_service = RouterService(classifier, registry, ranker)
 
 # FastAPI app
 app = FastAPI(
     title="LLM Router API",
-    description="Intelligent model selection for optimal LLM routing",
+    description="""
+    **Intelligent Model Selection for Optimal LLM Routing**
+    
+    The LLM Router API automatically selects the best language model for your specific use case 
+    based on your preferences and constraints.
+    
+    ## 🎯 Key Features
+    - **Intelligent Classification**: Automatically categorizes prompts (code, creative, Q&A)
+    - **Flexible Preferences**: Optimize for cost, latency, or quality with custom weights
+    - **Smart Constraints**: Filter models by cost, speed, safety, providers, and more
+    - **Multiple Providers**: Support for OpenAI, Anthropic, and other LLM providers
+    - **Real-time Routing**: Fast model selection with sub-100ms response times
+    
+    ## 🚀 Getting Started
+    1. Check available models: `GET /models`
+    2. Route your first prompt: `POST /route`
+    """,
     version="0.1.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    contact={
+        "name": "LLM Router",
+        "url": "https://github.com/brentsworks/llm-router",
+    },
+    license_info={
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT",
+    },
 )
 
-# Add request logging middleware
+# Custom Exception Handlers
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    """Handle Pydantic validation errors with custom format and monitoring."""
+    request_id = getattr(request.state, 'request_id', str(uuid.uuid4())[:8])
+    
+    # Convert Pydantic errors to our custom format
+    details = []
+    field_names = []
+    for error in exc.errors():
+        field_path = " -> ".join(str(loc) for loc in error["loc"] if loc != "body")
+        field_names.append(field_path or "request")
+        # Handle non-serializable values (like bytes)
+        input_value = error.get("input")
+        if isinstance(input_value, bytes):
+            input_value = f"<bytes: {len(input_value)} bytes>"
+        elif not isinstance(input_value, (str, int, float, bool, list, dict, type(None))):
+            input_value = str(input_value)
+        
+        details.append(ErrorDetail(
+            field=field_path or "request",
+            message=error["msg"],
+            type=error["type"],
+            value=input_value
+        ))
+    
+    # Create a more descriptive message
+    fields_str = ", ".join(field_names) if field_names else "request"
+    message = f"Validation failed for field(s): {fields_str}"
+    
+    # Log validation error with enhanced context
+    api_logger.log_validation_error(
+        request_id=request_id,
+        path=str(request.url.path),
+        field_errors=field_names
+    )
+    
+    error_response = ErrorResponse(
+        error="Validation Error",
+        message=message,
+        details=details,
+        request_id=request_id,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        path=str(request.url.path)
+    )
+    
+    return JSONResponse(
+        status_code=422,
+        content=error_response.model_dump()
+    )
+
+
+@app.exception_handler(StarletteHTTPException)
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    """Handle HTTP exceptions with custom format."""
+    request_id = getattr(request.state, 'request_id', str(uuid.uuid4())[:8])
+    
+    # Map status codes to error types
+    error_types = {
+        400: "Bad Request",
+        401: "Unauthorized", 
+        403: "Forbidden",
+        404: "Not Found",
+        405: "Method Not Allowed",
+        422: "Unprocessable Entity",
+        500: "Internal Server Error",
+        502: "Bad Gateway",
+        503: "Service Unavailable"
+    }
+    
+    error_response = ErrorResponse(
+        error=error_types.get(exc.status_code, "HTTP Error"),
+        message=exc.detail,
+        request_id=request_id,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        path=str(request.url.path)
+    )
+    
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=error_response.model_dump()
+    )
+
+
+@app.exception_handler(json.JSONDecodeError)
+async def json_decode_exception_handler(request: Request, exc: json.JSONDecodeError):
+    """Handle malformed JSON requests."""
+    request_id = getattr(request.state, 'request_id', str(uuid.uuid4())[:8])
+    
+    error_response = ErrorResponse(
+        error="Bad Request",
+        message=f"Invalid JSON format: {str(exc)}",
+        request_id=request_id,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        path=str(request.url.path)
+    )
+    
+    return JSONResponse(
+        status_code=400,
+        content=error_response.model_dump()
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    """Handle all unhandled exceptions with secure error responses and monitoring."""
+    request_id = getattr(request.state, 'request_id', str(uuid.uuid4())[:8])
+    
+    # Log the actual error with enhanced monitoring
+    api_logger.log_internal_error(
+        request_id=request_id,
+        path=str(request.url.path),
+        error=exc
+    )
+    
+    # Return a generic error response that doesn't expose internal details
+    error_response = ErrorResponse(
+        error="Internal Server Error",
+        message="An internal server error occurred. Please try again later.",
+        request_id=request_id,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+        path=str(request.url.path)
+    )
+    
+    return JSONResponse(
+        status_code=500,
+        content=error_response.model_dump()
+    )
+
+
+# Enhanced request validation and logging middleware
 @app.middleware("http")
-async def log_requests(request: Request, call_next):
-    """Log all API requests with timing and request ID."""
+async def enhanced_request_middleware(request: Request, call_next):
+    """Enhanced middleware for request validation, logging, and error context."""
     request_id = str(uuid.uuid4())[:8]
     start_time = time.time()
     
-    # Log request
-    logger.info(f"[{request_id}] {request.method} {request.url.path} - Started")
+    # Store request ID in request state for error handlers
+    request.state.request_id = request_id
     
-    # Process request
-    response = await call_next(request)
+    # Get client context
+    client_ip = request.client.host if request.client else "unknown"
+    user_agent = request.headers.get("user-agent", "unknown")
     
-    # Calculate duration
-    duration = time.time() - start_time
+    # Log request start with enhanced context
+    api_logger.log_request_start(
+        request_id=request_id,
+        method=request.method,
+        path=str(request.url.path),
+        client_ip=client_ip,
+        user_agent=user_agent
+    )
     
-    # Log response
-    logger.info(f"[{request_id}] {request.method} {request.url.path} - {response.status_code} ({duration:.3f}s)")
-    
-    # Add request ID to response headers
-    response.headers["X-Request-ID"] = request_id
-    
-    return response
+    # Request validation and sanitization
+    try:
+        # Validate request size (basic protection against large payloads)
+        content_length = request.headers.get("content-length")
+        if content_length and int(content_length) > 1024 * 1024:  # 1MB limit
+            api_logger.log_large_request_blocked(request_id, content_length)
+            return JSONResponse(
+                status_code=413,
+                content={
+                    "error": "Request Too Large",
+                    "message": "Request payload exceeds maximum size limit (1MB)",
+                    "request_id": request_id,
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
+                    "path": str(request.url.path)
+                }
+            )
+        
+        # Process request
+        response = await call_next(request)
+        
+        # Calculate duration and log response
+        duration = time.time() - start_time
+        
+        # Log request completion
+        api_logger.log_request_end(
+            request_id=request_id,
+            method=request.method,
+            path=str(request.url.path),
+            status_code=response.status_code,
+            duration=duration
+        )
+        
+        # Add enhanced headers
+        response.headers["X-Request-ID"] = request_id
+        response.headers["X-Response-Time"] = f"{duration:.3f}s"
+        
+        # Add monitoring metrics if available
+        if hasattr(request.state, 'metrics'):
+            response.headers["X-Classification-Time"] = f"{request.state.metrics.get('classification_time', 0):.3f}ms"
+            response.headers["X-Routing-Time"] = f"{request.state.metrics.get('routing_time', 0):.3f}ms"
+        
+        return response
+        
+    except Exception as e:
+        # Log middleware errors
+        duration = time.time() - start_time
+        api_logger.log_middleware_error(
+            request_id=request_id,
+            method=request.method,
+            path=str(request.url.path),
+            error=e,
+            duration=duration
+        )
+        
+        # Return error response
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "Internal Server Error",
+                "message": "An error occurred processing your request",
+                "request_id": request_id,
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "path": str(request.url.path)
+            }
+        )
 
 # Add CORS middleware
 app.add_middleware(
@@ -177,9 +340,8 @@ async def health_check():
     """Check if the service is healthy."""
     return HealthResponse(
         status="healthy",
-        service="llm-router",
         version="0.1.0",
-        uptime_seconds=time.time() - START_TIME,
+        timestamp=time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
         total_models=len(registry.get_all_models()),
         total_requests=REQUEST_METRICS["total_requests"]
     )
@@ -194,11 +356,32 @@ async def get_metrics():
     
     return MetricsResponse(
         total_requests=REQUEST_METRICS["total_requests"],
-        avg_response_time_ms=avg_response_time * 1000,  # Convert to ms
+        average_response_time_ms=avg_response_time * 1000,  # Convert to ms
         classification_stats=REQUEST_METRICS["classification_counts"].copy(),
         model_selection_stats=REQUEST_METRICS["model_selection_counts"].copy(),
         uptime_seconds=time.time() - START_TIME
     )
+
+
+@app.get("/monitoring/errors")
+async def get_error_metrics():
+    """Get detailed error metrics for monitoring and alerting."""
+    return api_logger.get_error_metrics()
+
+
+@app.get("/monitoring/health")
+async def get_health_status():
+    """Get health status based on error rates and system status."""
+    health_data = api_logger.get_health_status()
+    
+    # Add additional health checks
+    health_data.update({
+        "uptime_seconds": time.time() - START_TIME,
+        "total_models": len(registry.get_all_models()),
+        "total_requests": REQUEST_METRICS["total_requests"]
+    })
+    
+    return health_data
 
 # Main routing endpoint
 @app.post("/route", response_model=RouteResponse)
@@ -206,17 +389,44 @@ async def route_prompt(request: RouteRequest):
     """
     Route a prompt to the optimal LLM model.
 
-    This endpoint analyzes the prompt, classifies it, and selects the best model
-    based on capabilities, cost, latency, and quality preferences.
+    This endpoint intelligently analyzes your prompt and selects the best available model
+    based on your specified preferences and constraints.
+
+    ## Request Parameters
+    - **prompt** (required): The text prompt to route
+    - **preferences** (optional): Scoring weights for optimization
+      - `cost_weight`: Weight for cost optimization (0.0-1.0)
+      - `latency_weight`: Weight for latency optimization (0.0-1.0) 
+      - `quality_weight`: Weight for quality optimization (0.0-1.0)
+      - Note: Weights must sum to 1.0
+    - **constraints** (optional): Filtering constraints
+      - `max_cost_per_1k_tokens`: Maximum cost per 1K tokens
+      - `max_latency_ms`: Maximum acceptable latency in milliseconds
+      - `max_context_length`: Maximum context length required
+      - `min_safety_level`: Minimum safety level ("low", "moderate", "high")
+      - `excluded_providers`: List of providers to exclude
+      - `excluded_models`: List of specific models to exclude
+
+    ## Response
+    Returns detailed information about the selected model, classification results,
+    confidence scores, and routing performance metrics.
+
+    ## Examples
+    See `examples/api_usage_examples.py` for comprehensive usage examples.
     """
     try:
         start_time = time.time()
         logger.info(f"Routing prompt: {request.prompt[:50]}...")
 
         # Route the prompt using our service
-        result = router_service.route(request.prompt)
+        result = router_service.route(request.prompt, preferences=request.preferences, constraints=request.constraints)
 
         if result is None:
+            # Log routing error
+            api_logger.log_routing_error(
+                request_id=getattr(request, 'state', {}).get('request_id', 'unknown'),
+                error_message="Failed to route prompt - no suitable model found"
+            )
             raise HTTPException(
                 status_code=500,
                 detail="Failed to route prompt - no suitable model found"
@@ -251,45 +461,69 @@ async def route_prompt(request: RouteRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"Routing error: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Internal routing error: {str(e)}"
-        )
+        # Let the general exception handler deal with this
+        # It will log appropriately and return a secure error response
+        raise
 
 # Optional: Add a simple route listing endpoint
-@app.get("/models")
+@app.get("/models", response_model=ModelsResponse)
 async def list_available_models():
     """List all available models (for debugging/exploration)."""
     try:
         models = registry.get_all_models()
-        return {
-            "total_models": len(models),
-            "models": [
-                {
-                    "provider": model.provider,
-                    "model": model.model,
-                    "capabilities": model.capabilities,
+        model_info_list = []
+        
+        for model in models:
+            model_info = ModelInfo(
+                provider=model.provider,
+                model=model.model,
+                capabilities=model.capabilities,
+                pricing={
+                    "input_tokens_per_1k": model.pricing.input_tokens_per_1k,
+                    "output_tokens_per_1k": model.pricing.output_tokens_per_1k
+                },
+                limits={
+                    "context_length": model.limits.context_length,
+                    "rate_limit": model.limits.rate_limit,
+                    "safety_level": model.limits.safety_level
+                },
+                performance={
                     "avg_latency_ms": model.performance.avg_latency_ms,
-                    "cost_per_1k_input": model.pricing.input_tokens_per_1k,
-                    "quality_scores": model.performance.quality_scores
+                    "quality_scores": model.performance.quality_scores or {}
                 }
-                for model in models
-            ]
-        }
+            )
+            model_info_list.append(model_info)
+        
+        return ModelsResponse(
+            models=model_info_list,
+            total_count=len(models)
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 # Optional: Add a classification testing endpoint
-@app.post("/classify")
-async def classify_prompt(request: RouteRequest):
+@app.post("/classify", response_model=ClassifyResponse)
+async def classify_prompt(request: ClassifyRequest):
     """Classify a prompt without full routing (for testing)."""
     try:
+        start_time = time.time()
         classification = classifier.classify(request.prompt)
+        classification_time = (time.time() - start_time) * 1000  # Convert to ms
+        
         if classification is None:
+            # Log classification error
+            api_logger.log_classification_error(
+                request_id=getattr(request, 'state', {}).get('request_id', 'unknown'),
+                error_message="Classification failed - no result returned"
+            )
             raise HTTPException(status_code=500, detail="Classification failed")
 
-        return classification.model_dump()
+        return ClassifyResponse(
+            category=classification.category,
+            confidence=classification.confidence,
+            reasoning=classification.reasoning,
+            classification_time_ms=classification_time
+        )
     except HTTPException:
         raise
     except Exception as e:

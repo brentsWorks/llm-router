@@ -231,8 +231,9 @@ class TestAPIEndToEnd:
             assert response.status_code == scenario["expected_status"], \
                 f"Wrong status for {scenario['description']}"
             
-            # Should have error details
-            assert "detail" in response.json()
+            # Should have error details (using our custom error format)
+            error_data = response.json()
+            assert "error" in error_data or "detail" in error_data, f"Missing error info in response: {error_data}"
 
     def test_service_resilience_e2e(self, client):
         """Test service resilience under various conditions."""

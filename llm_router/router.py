@@ -4,8 +4,12 @@ This module implements the RouterService that orchestrates the entire LLM routin
 bringing together classification, model selection, and routing decisions.
 """
 
-from typing import Optional
-from llm_router.models import RoutingDecision, PromptClassification
+from typing import Optional, TYPE_CHECKING
+from llm_router.models import RoutingDecision
+
+if TYPE_CHECKING:
+    from llm_router.scoring import ScoringWeights
+    from llm_router.constraints import RoutingConstraints
 from llm_router.classification import KeywordClassifier
 from llm_router.registry import ProviderRegistry
 from llm_router.ranking import ModelRanker
@@ -33,17 +37,19 @@ class RouterService:
         self.registry = registry
         self.ranker = ranker
 
-    def route(self, prompt: str) -> Optional[RoutingDecision]:
+    def route(self, prompt: str, preferences: Optional['ScoringWeights'] = None, constraints: Optional['RoutingConstraints'] = None) -> Optional[RoutingDecision]:
         """Route a user prompt to the most suitable LLM model.
 
         This method orchestrates the complete routing pipeline:
         1. Classify the prompt
         2. Select suitable models
-        3. Rank models based on constraints
+        3. Rank models based on preferences and constraints
         4. Return routing decision
 
         Args:
             prompt: The user's input prompt
+            preferences: Optional scoring weights for cost/latency/quality optimization
+            constraints: Optional routing constraints for filtering models
 
         Returns:
             RoutingDecision with the selected model and reasoning, or None if no suitable model found
@@ -59,8 +65,15 @@ class RouterService:
             if not available_models:
                 return None
 
-            # Step 4: Rank models based on category and constraints
-            ranking_result = self.ranker.rank_models(available_models, classification.category)
+            # Step 4: Rank models based on category, preferences, and constraints
+            if constraints is not None:
+                ranking_result = self.ranker.rank_models_with_constraints(
+                    available_models, classification.category, constraints, weights=preferences
+                )
+            else:
+                ranking_result = self.ranker.rank_models(
+                    available_models, classification.category, weights=preferences
+                )
 
             # Step 5: Select the best model (first in ranked list)
             if (ranking_result.ranked_models and

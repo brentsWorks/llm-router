@@ -12,7 +12,7 @@ class TestAppConfig:
 
     def test_should_create_config_with_default_values(self):
         """Test that config can be created with sensible defaults."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         config = AppConfig()
         
@@ -26,7 +26,7 @@ class TestAppConfig:
 
     def test_should_load_config_from_environment_variables(self):
         """Test that config loads values from environment variables."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         env_vars = {
             "LLM_ROUTER_DEBUG": "true",
@@ -45,7 +45,7 @@ class TestAppConfig:
 
     def test_should_validate_log_level_values(self):
         """Test that only valid log levels are accepted."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         valid_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
         
@@ -65,7 +65,7 @@ class TestAppConfig:
 
     def test_should_validate_confidence_threshold_bounds(self):
         """Test that confidence threshold is validated to be between 0 and 1."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         # Valid threshold should work
         with patch.dict(os.environ, {"LLM_ROUTER_CONFIDENCE_THRESHOLD": "0.75"}):
@@ -85,7 +85,7 @@ class TestAppConfig:
 
     def test_should_validate_max_routing_time_positive(self):
         """Test that max routing time must be positive."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         # Valid time should work
         with patch.dict(os.environ, {"LLM_ROUTER_MAX_ROUTING_TIME_MS": "2000"}):
@@ -105,7 +105,7 @@ class TestAppConfig:
 
     def test_should_serialize_config_to_dict(self):
         """Test that configuration can be serialized for logging/debugging."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         config = AppConfig()
         config_dict = config.model_dump()
@@ -130,7 +130,7 @@ class TestMLConfig:
 
     def test_should_create_ml_config_with_defaults(self):
         """Test that ML config has sensible defaults."""
-        from llm_router.config import MLConfig
+        from llm_router.app_config import MLConfig
         
         config = MLConfig()
         
@@ -142,7 +142,7 @@ class TestMLConfig:
 
     def test_should_load_ml_config_from_environment(self):
         """Test that ML config loads from environment variables."""
-        from llm_router.config import MLConfig
+        from llm_router.app_config import MLConfig
         
         env_vars = {
             "LLM_ROUTER_EMBEDDING_MODEL": "custom-embedding-model",
@@ -161,7 +161,7 @@ class TestMLConfig:
 
     def test_should_validate_vector_store_type(self):
         """Test that only supported vector store types are allowed."""
-        from llm_router.config import MLConfig
+        from llm_router.app_config import MLConfig
         
         valid_stores = ["chromadb", "pinecone", "memory"]
         
@@ -181,7 +181,7 @@ class TestMLConfig:
 
     def test_should_validate_similarity_threshold_bounds(self):
         """Test that similarity threshold is between 0 and 1."""
-        from llm_router.config import MLConfig
+        from llm_router.app_config import MLConfig
         
         # Valid threshold should work
         with patch.dict(os.environ, {"LLM_ROUTER_SIMILARITY_THRESHOLD": "0.6"}):
@@ -205,7 +205,7 @@ class TestConfigFactory:
 
     def test_should_create_full_config_with_all_sections(self):
         """Test that factory creates complete configuration."""
-        from llm_router.config import create_config
+        from llm_router.app_config import create_config
         
         config = create_config()
         
@@ -219,7 +219,7 @@ class TestConfigFactory:
 
     def test_should_provide_singleton_config_access(self):
         """Test that get_config returns same instance."""
-        from llm_router.config import get_config
+        from llm_router.app_config import get_config
         
         config1 = get_config()
         config2 = get_config()
@@ -229,7 +229,7 @@ class TestConfigFactory:
 
     def test_should_allow_config_override_for_testing(self):
         """Test that config can be overridden for testing purposes."""
-        from llm_router.config import get_config, _reset_config
+        from llm_router.app_config import get_config, _reset_config
         
         # Get initial config
         config1 = get_config()
@@ -247,7 +247,7 @@ class TestConfigFactory:
 
     def test_should_serialize_full_config_for_debugging(self):
         """Test that entire config can be serialized safely."""
-        from llm_router.config import get_config
+        from llm_router.app_config import get_config
         
         config = get_config()
         config_dict = config.model_dump()
@@ -267,7 +267,7 @@ class TestConfigValidation:
 
     def test_should_handle_missing_optional_env_vars(self):
         """Test that config works when optional env vars are missing."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         # Clear all LLM_ROUTER_ env vars
         env_backup = {}
@@ -290,7 +290,7 @@ class TestConfigValidation:
 
     def test_should_validate_type_conversions(self):
         """Test that string env vars are properly converted to correct types."""
-        from llm_router.config import AppConfig
+        from llm_router.app_config import AppConfig
         
         env_vars = {
             "LLM_ROUTER_DEBUG": "false",  # String to bool

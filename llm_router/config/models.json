@@ -1,0 +1,70 @@
+{
+  "models": [
+    {
+      "provider": "openai",
+      "model": "gpt-3.5-turbo",
+      "capabilities": ["code", "creative", "qa"],
+      "pricing": {
+        "input_tokens_per_1k": 0.001,
+        "output_tokens_per_1k": 0.002
+      },
+      "limits": {
+        "context_length": 4096,
+        "rate_limit": 3500,
+        "safety_level": "moderate"
+      },
+      "performance": {
+        "avg_latency_ms": 800,
+        "quality_scores": {
+          "code": 0.85,
+          "creative": 0.90,
+          "qa": 0.88
+        }
+      }
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-4",
+      "capabilities": ["code", "creative", "qa"],
+      "pricing": {
+        "input_tokens_per_1k": 0.03,
+        "output_tokens_per_1k": 0.06
+      },
+      "limits": {
+        "context_length": 8192,
+        "rate_limit": 500,
+        "safety_level": "high"
+      },
+      "performance": {
+        "avg_latency_ms": 1200,
+        "quality_scores": {
+          "code": 0.95,
+          "creative": 0.92,
+          "qa": 0.94
+        }
+      }
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-3-haiku",
+      "capabilities": ["code", "creative", "qa"],
+      "pricing": {
+        "input_tokens_per_1k": 0.00025,
+        "output_tokens_per_1k": 0.00125
+      },
+      "limits": {
+        "context_length": 200000,
+        "rate_limit": 1000,
+        "safety_level": "high"
+      },
+      "performance": {
+        "avg_latency_ms": 600,
+        "quality_scores": {
+          "code": 0.82,
+          "creative": 0.95,
+          "qa": 0.90
+        }
+      }
+    }
+  ]
+}
