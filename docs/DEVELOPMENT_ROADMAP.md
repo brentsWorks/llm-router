@@ -273,38 +273,37 @@ This roadmap breaks down the LLM Router project into atomic, testable tasks foll
   - Implement hybrid classifier
   - **Tests**: `tests/unit/test_classification.py::test_hybrid_classification_*`
 
-## Phase 9: LLM Execution Integration (TDD)
+## Phase 9: OpenRouter Integration & Frontend (TDD)
 
-### 9.1 Client-Side Provider Integration
-- [ ] **Task**: Implement browser-based LLM provider connections
-  - Write tests for client-side OpenAI API integration
-  - Write tests for client-side Anthropic API integration  
-  - Write tests for client-side Google/Gemini API integration
-  - Write tests for CORS handling and browser compatibility
-  - Write tests for client-side error handling and retries
-  - Write tests for secure API key management in browser
-  - Implement JavaScript SDK for provider API calls
-  - **Tests**: `tests/frontend/test_client_integration.js::test_provider_calls_*`
+### 9.1 OpenRouter API Integration
+- [ ] **Task**: Implement OpenRouter unified LLM API integration
+  - Write tests for OpenRouter API client with multiple model support
+  - Write tests for model mapping between our routing decisions and OpenRouter models
+  - Write tests for unified request/response handling across all providers
+  - Write tests for OpenRouter rate limiting and error handling
+  - Write tests for cost tracking and usage analytics through OpenRouter
+  - Implement OpenRouter service with fallback and retry logic
+  - **Tests**: `tests/unit/test_openrouter_integration.py::test_openrouter_*`
 
 ### 9.2 Frontend Web Application
 - [ ] **Task**: Implement React/Vue frontend for the web app
   - Write tests for routing UI components
-  - Write tests for API key input and validation
   - Write tests for prompt execution and response display
   - Write tests for error handling and user feedback
   - Write tests for routing preferences and constraints UI
+  - Write tests for real-time response streaming from OpenRouter
   - Implement complete web application frontend
   - **Tests**: `tests/frontend/test_ui_components.js::test_routing_interface_*`
 
-### 9.3 Client-Side Error Handling & Fallbacks
-- [ ] **Task**: Implement robust client-side error management
-  - Write tests for provider API failures and retries
-  - Write tests for rate limit detection and fallback
-  - Write tests for network error handling
-  - Write tests for invalid API key detection
-  - Write tests for provider fallback chains
-  - Implement client-side resilience features
-  - **Tests**: `tests/frontend/test_error_handling.js::test_fallback_chains_*`
+### 9.3 Server-Side LLM Execution
+- [ ] **Task**: Implement server-side prompt execution through OpenRouter
+  - Write tests for prompt execution service with OpenRouter backend
+  - Write tests for response streaming and real-time updates
+  - Write tests for cost calculation and usage tracking
+  - Write tests for error handling and fallback mechanisms
+  - Write tests for concurrent request handling and rate limiting
+  - Implement server-side execution pipeline
+  - **Tests**: `tests/unit/test_llm_execution.py::test_execution_*`
 
 ## Phase 10: Production & Monitoring (TDD)
 
@@ -373,7 +372,7 @@ For each task, ensure:
 - **Phase 6**: API Layer (1 week) ✅ **COMPLETED**
 - **Phase 7**: ML Classification (1 week) ✅ **COMPLETED** (7.1-7.4)
 - **Phase 8**: LLM Fallback Classification (1 week) - **NEXT**
-- **Phase 9**: LLM Execution Integration (2 weeks) - **PLANNED** 
+- **Phase 9**: OpenRouter Integration & Frontend (2 weeks) - **PLANNED** 
 - **Phase 10**: Production & Monitoring (1 week) - **PLANNED**
 - **Phase 11**: Advanced Features (1 week) - **PLANNED**
 
@@ -402,9 +401,9 @@ For each task, ensure:
 - [x] Comprehensive error handling and graceful degradation
 
 ### Business Metrics (SaaS Platform)
-- [ ] OpenAI-compatible API endpoints functional
+- [ ] OpenRouter API integration functional with unified model access
 - [ ] User authentication and billing system operational
-- [ ] Real LLM provider integration working (OpenAI, Anthropic, Cohere)
+- [ ] Server-side LLM execution through OpenRouter working seamlessly
 - [ ] Cost optimization delivering 20-40% savings vs direct provider usage
 - [ ] 99.9% uptime with proper monitoring and alerting
 

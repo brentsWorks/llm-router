@@ -77,8 +77,7 @@ In today's AI landscape, choosing the right language model is increasingly compl
 
 ### 🚀 Next Up
 - **Phase 8: LLM Fallback Classification** - Direct LLM classification for edge cases and novel prompt types
-- **Test Coverage Improvement** - Fix remaining 18 test failures (category name updates)
-- **Phase 9: Frontend & LLM Integration** - React web app + OpenAI/Claude/Gemini APIs (2 weeks)
+- **Phase 9: OpenRouter Integration & Frontend** - Unified LLM access via OpenRouter + React web app (2 weeks)
 
 ### 📊 Current Test Status
 - **✅ 402 tests passing** - Full functionality verified (18 minor failures to fix)
@@ -98,8 +97,8 @@ In today's AI landscape, choosing the right language model is increasingly compl
 - **✅ Vector Store**: Pinecone deployment with similarity search (Phase 7.3)
 - **✅ RAG Integration**: Hybrid classification with semantic retrieval and Gemini (Phase 7.4)
 - **🔄 LLM Fallback**: Direct LLM classification for edge cases (Phase 8)
-- **🔄 Frontend Web App**: React/Vue interface (Phase 9.2)
-- **🔄 LLM API Integration**: OpenAI, Claude, Gemini connections (Phase 9.1)
+- **🔄 OpenRouter Integration**: Unified LLM access via OpenRouter API (Phase 9.1)
+- **🔄 Frontend Web App**: React/Vue interface with server-side execution (Phase 9.2)
 - **🔄 Performance**: Caching, monitoring, load testing (Phase 10)
 - **🔄 Advanced Features**: Dynamic optimization, A/B testing (Phase 11)
 
@@ -107,7 +106,18 @@ In today's AI landscape, choosing the right language model is increasingly compl
 
 ## 💡 Our Solution
 
-**LLM Router** automatically selects the optimal model for each task and executes your prompts:
+**LLM Router** automatically selects the optimal model for each task and executes your prompts through OpenRouter's unified API:
+
+### 🔄 **New Architecture Flow**
+```
+User Prompt → Hybrid Classification → Model Selection → OpenRouter API → LLM Response
+```
+
+1. **User submits prompt** to our intelligent routing system
+2. **Hybrid classifier** analyzes the prompt using RAG + rule-based classification
+3. **Scoring engine** selects the optimal model based on cost, performance, and quality
+4. **OpenRouter integration** executes the prompt on the selected model
+5. **Response streaming** delivers real-time results back to the user
 
 ### 🔍 Intelligent Model Selection
 - **Semantic Analysis**: Understands your prompt content and intent automatically
@@ -125,10 +135,10 @@ In today's AI landscape, choosing the right language model is increasingly compl
 - **Dynamic Learning**: Improves routing decisions based on results
 
 ### ⚡ Simple Integration
-- **Easy Setup**: Configure with your own API keys from providers
-- **Automatic Execution**: Returns actual LLM responses, not just model selection
+- **Easy Setup**: No API key management needed - we handle all provider connections
+- **Automatic Execution**: Returns actual LLM responses through OpenRouter's unified API
 - **Graceful Degradation**: Handles rate limits and API failures elegantly
-- **Multiple Providers**: Works with OpenAI, Anthropic, Cohere, and more
+- **Multiple Providers**: Access to 100+ models from OpenAI, Anthropic, Google, and more via OpenRouter
 
 ---
 
@@ -157,27 +167,26 @@ In today's AI landscape, choosing the right language model is increasingly compl
 
 ```mermaid
 graph TD
-    A[User Prompt] --> B[Semantic Classifier]
-    B --> C{Confidence > Threshold?}
-    C -->|Yes| D[Model Selection]
-    C -->|No| E[LLM Fallback Analysis]
-    E --> D
-    D --> F[Scoring Engine]
-    F --> G[Provider Registry]
-    G --> H[Optimal Model Selected]
-    H --> I[Execute on Provider API]
-    I --> J[Return Response]
+    A[User Prompt] --> B[Hybrid Classifier]
+    B --> C{RAG + Rule-based Classification}
+    C --> D[Model Selection Engine]
+    D --> E[Scoring & Ranking]
+    E --> F[Provider Registry]
+    F --> G[Optimal Model Selected]
+    G --> H[OpenRouter API]
+    H --> I[Unified LLM Execution]
+    I --> J[Stream Response to User]
 ```
 
 ### Core Components
-- **🧠 Semantic Classifier**: Fast prompt analysis using embeddings ✅
+- **🧠 Hybrid Classifier**: RAG + rule-based classification with confidence thresholds ✅
 - **🔍 Vector Search**: Pinecone similarity search with curated examples ✅
 - **🤖 LLM Fallback**: Intelligent analysis for edge cases (Phase 8)
 - **📊 Scoring Engine**: Multi-factor optimization with constraints ✅
 - **🏪 Provider Registry**: Model capabilities and performance data ✅
-- **🔌 Provider Integration**: Direct API calls to OpenAI, Claude, Gemini (Phase 9.1)
-- **🌐 Frontend Web App**: React/Vue interface for users (Phase 9.2)
-- **🎛️ Configuration System**: Client-side API key management (Phase 9.1)
+- **🔌 OpenRouter Integration**: Unified access to 100+ models from all providers (Phase 9.1)
+- **🌐 Frontend Web App**: React/Vue interface with server-side execution (Phase 9.2)
+- **⚡ Server-Side Execution**: Real-time LLM execution through OpenRouter (Phase 9.3)
 
 ---
 
@@ -325,17 +334,19 @@ pytest tests/e2e/       # End-to-end tests
 - [ ] **Phase 8.1**: LLM fallback classification for edge cases
 - [ ] **Phase 8.2**: Hybrid classification logic integration
 
-### 🚀 Phase 9: Frontend & LLM Integration (2 weeks)
-- [ ] **Phase 9.1**: Client-side provider integration
-  - OpenAI API (GPT-3.5, GPT-4, GPT-4o)
-  - Anthropic API (Claude-3-Haiku, Claude-3-Sonnet, Claude-3-Opus)
-  - Google/Gemini API (Gemini Pro, Gemini Flash)
-  - Secure browser-based API key management
+### 🚀 Phase 9: OpenRouter Integration & Frontend (2 weeks)
+- [ ] **Phase 9.1**: OpenRouter API integration
+  - Unified access to 100+ models from all major providers
+  - Server-side LLM execution with cost tracking
+  - Model mapping between routing decisions and OpenRouter models
 - [ ] **Phase 9.2**: Frontend web application
   - React/Vue interface for prompt execution
   - Routing preferences and constraints UI
-  - Real-time response display and error handling
-- [ ] **Phase 9.3**: Client-side error handling and fallbacks
+  - Real-time response streaming from OpenRouter
+- [ ] **Phase 9.3**: Server-side execution pipeline
+  - Prompt execution service with OpenRouter backend
+  - Response streaming and real-time updates
+  - Error handling and fallback mechanisms
 
 ### ⚡ Phase 10: Performance & Production (1 week)
 - [ ] Caching layer implementation
