@@ -58,7 +58,7 @@ class TestVectorServicePineconeIntegration:
         return [
             ExamplePrompt(
                 text="Write a Python function to calculate factorial",
-                category=PromptCategory.CODE_GENERATION,
+                category=PromptCategory.CODE,
                 preferred_models=["codex", "gpt-4"],
                 description="Math function example",
                 difficulty="medium",
@@ -68,7 +68,7 @@ class TestVectorServicePineconeIntegration:
             ),
             ExamplePrompt(
                 text="Write a creative story about space exploration",
-                category=PromptCategory.CREATIVE_WRITING,
+                category=PromptCategory.CREATIVE,
                 preferred_models=["gpt-4", "claude"],
                 description="Creative writing example",
                 difficulty="easy",
@@ -78,7 +78,7 @@ class TestVectorServicePineconeIntegration:
             ),
             ExamplePrompt(
                 text="Explain quantum computing principles",
-                category=PromptCategory.QUESTION_ANSWERING,
+                category=PromptCategory.QA,
                 preferred_models=["gpt-4", "claude"],
                 description="Technical explanation",
                 difficulty="hard",
@@ -453,7 +453,7 @@ class TestVectorServiceErrorHandlingIntegration:
                 service = VectorService()
                 example = ExamplePrompt(
                     text="Test prompt",
-                    category=PromptCategory.CODE_GENERATION,
+                    category=PromptCategory.CODE,
                     preferred_models=["gpt-4"]
                 )
 

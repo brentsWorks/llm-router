@@ -10,15 +10,24 @@ from llm_router.models import RoutingDecision
 if TYPE_CHECKING:
     from llm_router.scoring import ScoringWeights
     from llm_router.constraints import RoutingConstraints
-from llm_router.classification import KeywordClassifier
+from typing import Protocol
+from llm_router.models import PromptClassification
 from llm_router.registry import ProviderRegistry
 from llm_router.ranking import ModelRanker
+
+
+class ClassifierProtocol(Protocol):
+    """Protocol for any classifier that can be used by RouterService."""
+    
+    def classify(self, prompt: str) -> PromptClassification:
+        """Classify a prompt and return PromptClassification."""
+        ...
 
 
 class RouterService:
     """Service that orchestrates the complete LLM routing pipeline."""
 
-    def __init__(self, classifier: KeywordClassifier, registry: ProviderRegistry, ranker: ModelRanker):
+    def __init__(self, classifier: ClassifierProtocol, registry: ProviderRegistry, ranker: ModelRanker):
         """Initialize the RouterService with required dependencies.
 
         Args:

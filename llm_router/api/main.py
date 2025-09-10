@@ -35,6 +35,7 @@ from ..ranking import ModelRanker
 from ..models import RoutingDecision
 from ..scoring import ScoringWeights
 from ..constraints import RoutingConstraints
+from ..classifier_factory import create_classifier, get_classifier_info
 
 # Import configuration
 from ..config import create_configured_registry
@@ -56,7 +57,7 @@ logger = api_logger.logger  # For backwards compatibility
 # API models are now imported from .models module
 
 # Global service instances (later move to dependency injection)
-classifier = KeywordClassifier()
+classifier = create_classifier("hybrid")  # Try hybrid, fallback to keyword if needed
 registry = create_configured_registry()  # Load models from configuration
 ranker = ModelRanker()
 
@@ -466,6 +467,20 @@ async def route_prompt(request: RouteRequest):
         raise
 
 # Optional: Add a simple route listing endpoint
+@app.get("/classifier")
+async def get_classifier_info_endpoint() -> Dict[str, Any]:
+    """Get information about the currently active classifier."""
+    try:
+        classifier_info = get_classifier_info(classifier)
+        return {
+            "classifier": classifier_info,
+            "status": "active",
+            "timestamp": datetime.now(timezone.utc).isoformat()
+        }
+    except Exception as e:
+        logger.error(f"Error getting classifier info: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get classifier information")
+
 @app.get("/models", response_model=ModelsResponse)
 async def list_available_models():
     """List all available models (for debugging/exploration)."""

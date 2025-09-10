@@ -62,7 +62,7 @@ class TestVectorService:
                     # Create example
                     example = ExamplePrompt(
                         text="Write a Python function",
-                        category=PromptCategory.CODE_GENERATION,
+                        category=PromptCategory.CODE,
                         preferred_models=["codex", "gpt-4"]
                     )
                     
@@ -82,7 +82,7 @@ class TestVectorService:
                     # Check metadata
                     metadata = call_args[0][2]
                     assert metadata["text"] == "Write a Python function"
-                    assert metadata["category"] == "code_generation"
+                    assert metadata["category"] == "code"
                     assert metadata["preferred_models"] == ["codex", "gpt-4"]
     
     def test_should_find_similar_examples(self):

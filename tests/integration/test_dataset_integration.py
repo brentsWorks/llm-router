@@ -20,8 +20,8 @@ class TestDatasetEmbeddingIntegration:
         from llm_router.embeddings import EmbeddingService
         
         examples = [
-            ExamplePrompt("Generate Python code", PromptCategory.CODE_GENERATION, ["codex"]),
-            ExamplePrompt("Write a story", PromptCategory.CREATIVE_WRITING, ["gpt-4"])
+            ExamplePrompt("Generate Python code", PromptCategory.CODE, ["codex"]),
+            ExamplePrompt("Write a story", PromptCategory.CREATIVE, ["gpt-4"])
         ]
         dataset = ExampleDataset(examples)
         
@@ -42,8 +42,8 @@ class TestDatasetEmbeddingIntegration:
         from llm_router.embeddings import EmbeddingService
         
         examples = [
-            ExamplePrompt("Same text", PromptCategory.CODE_GENERATION, ["codex"]),
-            ExamplePrompt("Same text", PromptCategory.CREATIVE_WRITING, ["gpt-4"])  # Duplicate text
+            ExamplePrompt("Same text", PromptCategory.CODE, ["codex"]),
+            ExamplePrompt("Same text", PromptCategory.CREATIVE, ["gpt-4"])  # Duplicate text
         ]
         dataset = ExampleDataset(examples)
         

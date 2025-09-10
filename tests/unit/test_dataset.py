@@ -26,7 +26,7 @@ class TestExampleDataset:
         """Test creating dataset with valid example data."""
         example = ExamplePrompt(
             text="Write a creative story about a robot",
-            category=PromptCategory.CREATIVE_WRITING,
+            category=PromptCategory.CREATIVE,
             preferred_models=["gpt-4", "claude-3"]
         )
         
@@ -42,7 +42,7 @@ class TestExampleDataset:
             "examples": [
                 {
                     "text": "Explain quantum physics",
-                    "category": "question_answering",
+                    "category": "qa",
                     "preferred_models": ["gpt-4"]
                 }
             ]
@@ -58,13 +58,13 @@ class TestExampleDataset:
         assert len(dataset) == 1
         example = list(dataset)[0]
         assert example.text == "Explain quantum physics"
-        assert example.category == PromptCategory.QUESTION_ANSWERING
+        assert example.category == PromptCategory.QA
     
     def test_should_validate_dataset_structure(self):
         """Test dataset validation for required fields."""
         valid_example = ExamplePrompt(
             text="Generate Python code",
-            category=PromptCategory.CODE_GENERATION,
+            category=PromptCategory.CODE,
             preferred_models=["codex", "gpt-4"]
         )
         
@@ -117,7 +117,7 @@ class TestExamplePrompt:
         with pytest.raises(DatasetError) as exc_info:
             ExamplePrompt(
                 text="",
-                category=PromptCategory.CREATIVE_WRITING,
+                category=PromptCategory.CREATIVE,
                 preferred_models=["gpt-4"]
             )
         assert "empty" in str(exc_info.value)
@@ -126,7 +126,7 @@ class TestExamplePrompt:
         with pytest.raises(DatasetError) as exc_info:
             ExamplePrompt(
                 text="Valid text",
-                category=PromptCategory.CREATIVE_WRITING,
+                category=PromptCategory.CREATIVE,
                 preferred_models=[]
             )
         assert "preferred model" in str(exc_info.value)
@@ -135,7 +135,7 @@ class TestExamplePrompt:
         """Test handling of optional metadata fields."""
         prompt = ExamplePrompt(
             text="Analyze this data",
-            category=PromptCategory.DATA_ANALYSIS,
+            category=PromptCategory.ANALYSIS,
             preferred_models=["gpt-4"],
             description="Data analysis example",
             difficulty="medium",
@@ -157,23 +157,23 @@ class TestDatasetQuerying:
     def test_should_query_by_category(self):
         """Test querying examples by category."""
         examples = [
-            ExamplePrompt("Write a story", PromptCategory.CREATIVE_WRITING, ["gpt-4"]),
-            ExamplePrompt("Generate code", PromptCategory.CODE_GENERATION, ["codex"]),
-            ExamplePrompt("Write a poem", PromptCategory.CREATIVE_WRITING, ["claude-3"])
+            ExamplePrompt("Write a story", PromptCategory.CREATIVE, ["gpt-4"]),
+            ExamplePrompt("Generate code", PromptCategory.CODE, ["codex"]),
+            ExamplePrompt("Write a poem", PromptCategory.CREATIVE, ["claude-3"])
         ]
         dataset = ExampleDataset(examples)
         
-        creative_examples = dataset.query_by_category(PromptCategory.CREATIVE_WRITING)
+        creative_examples = dataset.query_by_category(PromptCategory.CREATIVE)
         
         assert len(creative_examples) == 2
-        assert all(ex.category == PromptCategory.CREATIVE_WRITING for ex in creative_examples)
+        assert all(ex.category == PromptCategory.CREATIVE for ex in creative_examples)
     
     def test_should_query_by_model_preference(self):
         """Test querying examples by preferred model."""
         examples = [
-            ExamplePrompt("Write a story", PromptCategory.CREATIVE_WRITING, ["gpt-4", "claude-3"]),
-            ExamplePrompt("Generate code", PromptCategory.CODE_GENERATION, ["codex"]),
-            ExamplePrompt("Analyze data", PromptCategory.DATA_ANALYSIS, ["gpt-4"])
+            ExamplePrompt("Write a story", PromptCategory.CREATIVE, ["gpt-4", "claude-3"]),
+            ExamplePrompt("Generate code", PromptCategory.CODE, ["codex"]),
+            ExamplePrompt("Analyze data", PromptCategory.ANALYSIS, ["gpt-4"])
         ]
         dataset = ExampleDataset(examples)
         
@@ -185,8 +185,8 @@ class TestDatasetQuerying:
     def test_should_get_all_examples(self):
         """Test retrieving all examples."""
         examples = [
-            ExamplePrompt("Example 1", PromptCategory.CREATIVE_WRITING, ["gpt-4"]),
-            ExamplePrompt("Example 2", PromptCategory.CODE_GENERATION, ["codex"])
+            ExamplePrompt("Example 1", PromptCategory.CREATIVE, ["gpt-4"]),
+            ExamplePrompt("Example 2", PromptCategory.CODE, ["codex"])
         ]
         dataset = ExampleDataset(examples)
         
@@ -198,12 +198,12 @@ class TestDatasetQuerying:
     def test_should_handle_empty_query_results(self):
         """Test handling when query returns no results."""
         examples = [
-            ExamplePrompt("Example 1", PromptCategory.CREATIVE_WRITING, ["gpt-4"])
+            ExamplePrompt("Example 1", PromptCategory.CREATIVE, ["gpt-4"])
         ]
         dataset = ExampleDataset(examples)
         
         # Query for non-existent category
-        code_examples = dataset.query_by_category(PromptCategory.CODE_GENERATION)
+        code_examples = dataset.query_by_category(PromptCategory.CODE)
         assert len(code_examples) == 0
         
         # Query for non-existent model
@@ -213,8 +213,8 @@ class TestDatasetQuerying:
     def test_should_support_text_embedding_access(self):
         """Test that examples can provide text for embedding."""
         examples = [
-            ExamplePrompt("  Text with spaces  ", PromptCategory.CREATIVE_WRITING, ["gpt-4"]),
-            ExamplePrompt("Another example", PromptCategory.CODE_GENERATION, ["codex"])
+            ExamplePrompt("  Text with spaces  ", PromptCategory.CREATIVE, ["gpt-4"]),
+            ExamplePrompt("Another example", PromptCategory.CODE, ["codex"])
         ]
         dataset = ExampleDataset(examples)
         

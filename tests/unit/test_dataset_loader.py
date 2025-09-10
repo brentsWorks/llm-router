@@ -24,7 +24,7 @@ class TestDatasetLoader:
         """Test loading the default dataset."""
         # Mock the dataset loading to avoid file system dependency
         mock_dataset = ExampleDataset([
-            ExamplePrompt("Test prompt", PromptCategory.CREATIVE_WRITING, ["gpt-4"])
+            ExamplePrompt("Test prompt", PromptCategory.CREATIVE, ["gpt-4"])
         ])
         
         with patch.object(ExampleDataset, 'from_json_file', return_value=mock_dataset) as mock_load:
@@ -37,7 +37,7 @@ class TestDatasetLoader:
         """Test loading dataset from custom path."""
         custom_path = Path("/custom/dataset.json")
         mock_dataset = ExampleDataset([
-            ExamplePrompt("Custom prompt", PromptCategory.CODE_GENERATION, ["codex"])
+            ExamplePrompt("Custom prompt", PromptCategory.CODE, ["codex"])
         ])
         
         with patch.object(ExampleDataset, 'from_json_file', return_value=mock_dataset) as mock_load:
@@ -58,9 +58,9 @@ class TestDatasetLoader:
     def test_should_get_dataset_info(self):
         """Test getting dataset information and statistics."""
         examples = [
-            ExamplePrompt("Creative prompt", PromptCategory.CREATIVE_WRITING, ["gpt-4", "claude-3"]),
-            ExamplePrompt("Code prompt", PromptCategory.CODE_GENERATION, ["codex"]),
-            ExamplePrompt("Another creative", PromptCategory.CREATIVE_WRITING, ["gpt-4"])
+            ExamplePrompt("Creative prompt", PromptCategory.CREATIVE, ["gpt-4", "claude-3"]),
+            ExamplePrompt("Code prompt", PromptCategory.CODE, ["codex"]),
+            ExamplePrompt("Another creative", PromptCategory.CREATIVE, ["gpt-4"])
         ]
         dataset = ExampleDataset(examples)
         
@@ -68,10 +68,10 @@ class TestDatasetLoader:
         
         assert info["total_examples"] == 3
         assert info["categories"]["count"] == 2
-        assert "creative_writing" in info["categories"]["types"]
-        assert "code_generation" in info["categories"]["types"]
-        assert info["categories"]["distribution"]["creative_writing"] == 2
-        assert info["categories"]["distribution"]["code_generation"] == 1
+        assert "creative" in info["categories"]["types"]
+        assert "code" in info["categories"]["types"]
+        assert info["categories"]["distribution"]["creative"] == 2
+        assert info["categories"]["distribution"]["code"] == 1
         
         assert info["models"]["count"] == 3
         assert "gpt-4" in info["models"]["types"]
