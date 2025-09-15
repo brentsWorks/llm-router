@@ -128,12 +128,16 @@ class ScoringEngine:
             normalized_quality=normalized_quality
         )
 
+    def calculate_actual_cost(self, model: ProviderModel, estimated_tokens: int) -> float:
+        """Calculate actual cost for estimated tokens."""
+        input_cost = (estimated_tokens / 1000) * model.pricing.input_tokens_per_1k
+        output_cost = (estimated_tokens / 1000) * model.pricing.output_tokens_per_1k
+        return input_cost + output_cost
+
     def _calculate_cost_score(self, model: ProviderModel, estimated_tokens: int) -> float:
         """Calculate cost score (0=expensive, 1=cheap)."""
         # Calculate total cost for estimated tokens
-        input_cost = (estimated_tokens / 1000) * model.pricing.input_tokens_per_1k
-        output_cost = (estimated_tokens / 1000) * model.pricing.output_tokens_per_1k
-        total_cost = input_cost + output_cost
+        total_cost = self.calculate_actual_cost(model, estimated_tokens)
         
         # Handle zero cost (e.g., local models)
         if total_cost == 0.0:

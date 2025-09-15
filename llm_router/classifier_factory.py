@@ -13,6 +13,7 @@ from typing import Optional, Union
 from .classification import KeywordClassifier
 from .hybrid_classification import HybridClassifier, create_hybrid_classifier
 from .rag_classification import RAGClassifier, create_rag_classifier
+from .llm_fallback import LLMFallbackClassifier
 from .vector_service import create_vector_service
 
 logger = logging.getLogger(__name__)
@@ -59,7 +60,7 @@ def create_keyword_classifier() -> KeywordClassifier:
 
 
 def create_rag_classifier_from_env(
-    confidence_threshold: float = 0.7,
+    confidence_threshold: float = 0.5,
     max_similar_examples: int = 3
 ) -> Optional[RAGClassifier]:
     """Create a RAG classifier using environment variables.
@@ -108,41 +109,77 @@ def create_rag_classifier_from_env(
         return None
 
 
+def create_llm_fallback_from_env() -> Optional[LLMFallbackClassifier]:
+    """Create LLM fallback classifier using environment variables.
+    
+    Returns:
+        LLMFallbackClassifier if API key is available, otherwise None
+    """
+    try:
+        from .llm_fallback import LLMFallbackClassifier
+        import google.generativeai as genai
+        
+        # Get Gemini API key
+        gemini_key = os.getenv("GEMINI_API_KEY")
+        
+        if not gemini_key:
+            logger.warning("GEMINI_API_KEY not found, LLM fallback unavailable")
+            return None
+        
+        # Configure Gemini API
+        genai.configure(api_key=gemini_key)
+        
+        # Create Gemini client
+        gemini_client = genai.GenerativeModel("gemini-1.5-flash")
+        
+        llm_fallback = LLMFallbackClassifier(
+            llm_client=gemini_client,
+            api_key=gemini_key,
+            model_name="gemini-1.5-flash"
+        )
+        
+        logger.info("LLM fallback classifier created successfully with real Gemini API")
+        return llm_fallback
+        
+    except Exception as e:
+        logger.error(f"Failed to create LLM fallback classifier: {e}")
+        return None
+
+
 def create_hybrid_classifier_from_env(
-    rag_threshold: float = 0.7,
-    rule_threshold: float = 0.5
+    rag_threshold: float = 0.5
 ) -> Union[HybridClassifier, KeywordClassifier]:
-    """Create a hybrid classifier using environment variables.
+    """Create a simplified hybrid classifier (RAG → LLM Fallback) using environment variables.
     
     Falls back to keyword classifier if RAG components are not available.
     
     Args:
         rag_threshold: Minimum confidence for using RAG classification
-        rule_threshold: Minimum confidence for using rule-based classification
         
     Returns:
         HybridClassifier if RAG is available, otherwise KeywordClassifier
     """
-    # Try to create RAG classifier
-    rag_classifier = create_rag_classifier_from_env()
+    # Try to create RAG classifier with matching threshold
+    rag_classifier = create_rag_classifier_from_env(confidence_threshold=rag_threshold)
     
     if rag_classifier is None:
         logger.warning("RAG classifier unavailable, falling back to keyword classifier")
         return create_keyword_classifier()
     
-    # Create rule-based classifier
-    rule_classifier = create_keyword_classifier()
+    # Try to create LLM fallback classifier
+    llm_fallback = create_llm_fallback_from_env()
     
-    # Create hybrid classifier
+    # Create simplified hybrid classifier (RAG → LLM Fallback)
     try:
-        hybrid_classifier = create_hybrid_classifier(
+        from .hybrid_classification import HybridClassifier
+        
+        hybrid_classifier = HybridClassifier(
             rag_classifier=rag_classifier,
-            rule_classifier=rule_classifier,
-            rag_threshold=rag_threshold,
-            rule_threshold=rule_threshold
+            llm_fallback=llm_fallback,
+            rag_threshold=rag_threshold
         )
         
-        logger.info("Hybrid classifier created successfully")
+        logger.info("Simplified hybrid classifier created successfully (RAG → LLM Fallback)")
         return hybrid_classifier
         
     except Exception as e:

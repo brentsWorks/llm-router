@@ -436,15 +436,267 @@ benchmarks/results/
 *.rar
 
 # =======================================================================================
-# Node.js (if you add any frontend tooling)
+# Frontend & Node.js
 # =======================================================================================
 
+# Dependencies
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Package manager lock files (keep one, ignore others)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
 .npm
+
+# Optional eslint cache
 .eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+public
+
+# Vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# =======================================================================================
+# React & Frontend Build
+# =======================================================================================
+
+# Build outputs
+dist/
+build/
+out/
+
+# Vite
+.vite/
+
+# Webpack
+.webpack/
+
+# Rollup
+.rollup.cache/
+
+# Storybook build outputs
+storybook-static/
+
+# Temporary folders
+tmp/
+temp/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =======================================================================================
+# Frontend Testing
+# =======================================================================================
+
+# Jest
+coverage/
+.nyc_output/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# =======================================================================================
+# Frontend Dependencies & Caching
+# =======================================================================================
+
+# Package manager caches
+.npm
+.yarn
+.pnpm-store/
+
+# Turbo
+.turbo/
+
+# Vercel
+.vercel
+
+# Netlify
+.netlify/
+
+# =======================================================================================
+# Frontend Environment & Config
+# =======================================================================================
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Frontend specific config
+frontend/.env
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# =======================================================================================
+# Frontend Assets & Media
+# =======================================================================================
+
+# Generated assets
+public/generated/
+src/assets/generated/
+
+# Large media files (uncomment if needed)
+# *.mp4
+# *.mov
+# *.avi
+# *.mkv
+# *.webm
+
+# =======================================================================================
+# Frontend Development Tools
+# =======================================================================================
+
+# ESLint
+.eslintcache
+
+# Prettier
+.prettierignore
+
+# Stylelint
+.stylelintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Bundle analyzer
+bundle-analyzer-report.html
+
+# =======================================================================================
+# Frontend Deployment
+# =======================================================================================
+
+# Deployment configs
+.vercel
+.netlify
+.firebase
+.surge
+
+# Docker for frontend
+frontend/Dockerfile
+frontend/docker-compose.yml
+frontend/.dockerignore
 
 # =======================================================================================
 # End of .gitignore

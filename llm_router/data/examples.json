@@ -3,408 +3,778 @@
     "version": "1.0",
     "description": "Curated example prompts for LLM Router classification",
     "created": "2024-01-01",
-    "total_examples": 40
+    "total_examples": 45
   },
   "examples": [
     {
       "text": "Write a creative short story about a robot discovering emotions for the first time",
       "category": "creative",
-      "preferred_models": ["claude-3-haiku", "gpt-4"],
+      "preferred_models": [
+        "claude-3-haiku",
+        "gpt-4"
+      ],
       "description": "Creative fiction writing requiring imagination and narrative skills",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "literature",
-      "tags": ["fiction", "narrative", "character_development"]
+      "tags": [
+        "fiction",
+        "narrative",
+        "character_development"
+      ]
     },
     {
       "text": "Generate a Python function to calculate the Fibonacci sequence using dynamic programming",
       "category": "code",
-      "preferred_models": ["gpt-4", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
       "description": "Algorithm implementation requiring programming knowledge",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "programming",
-      "tags": ["python", "algorithms", "dynamic_programming"]
+      "tags": [
+        "python",
+        "algorithms",
+        "dynamic_programming"
+      ]
     },
     {
       "text": "Analyze the quarterly sales data and identify trends in customer purchasing behavior",
       "category": "analysis",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Business data analysis requiring analytical thinking",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "business",
-      "tags": ["analytics", "trends", "business_intelligence"]
+      "tags": [
+        "analytics",
+        "trends",
+        "business_intelligence"
+      ]
     },
     {
       "text": "What is the capital of France and what are its main tourist attractions?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
+      ],
       "description": "Factual question requiring general knowledge",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "geography",
-      "tags": ["facts", "geography", "tourism"]
+      "tags": [
+        "facts",
+        "geography",
+        "tourism"
+      ]
     },
     {
       "text": "Summarize the key points from this 10-page research paper on climate change",
       "category": "summarization",
-      "preferred_models": ["claude-3-haiku", "gpt-4"],
+      "preferred_models": [
+        "claude-3-haiku",
+        "gpt-4"
+      ],
       "description": "Document summarization requiring comprehension and synthesis",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "academic",
-      "tags": ["summarization", "research", "climate"]
+      "tags": [
+        "summarization",
+        "research",
+        "climate"
+      ]
     },
     {
       "text": "Translate this English paragraph to French: 'The weather today is beautiful and sunny.'",
       "category": "translation",
-      "preferred_models": ["claude-3-haiku", "gpt-4"],
+      "preferred_models": [
+        "claude-3-haiku",
+        "gpt-4"
+      ],
       "description": "Language translation task",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "linguistics",
-      "tags": ["translation", "french", "language"]
+      "tags": [
+        "translation",
+        "french",
+        "language"
+      ]
     },
     {
       "text": "If all birds can fly, and penguins are birds, why can't penguins fly? Explain the logical fallacy.",
       "category": "reasoning",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Logical reasoning and critical thinking",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "logic",
-      "tags": ["logic", "fallacy", "reasoning"]
+      "tags": [
+        "logic",
+        "fallacy",
+        "reasoning"
+      ]
     },
     {
       "text": "Hello! I'm feeling stressed about my upcoming job interview. Can you help me prepare?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
+      ],
       "description": "Conversational support and advice",
       "difficulty": "easy",
       "expected_length": "medium",
       "domain": "counseling",
-      "tags": ["conversation", "support", "career"]
+      "tags": [
+        "conversation",
+        "support",
+        "career"
+      ]
     },
     {
       "text": "Compose a haiku about autumn leaves falling",
       "category": "creative",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Poetry creation with specific format constraints",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "poetry",
-      "tags": ["poetry", "haiku", "nature"]
+      "tags": [
+        "poetry",
+        "haiku",
+        "nature"
+      ]
     },
     {
       "text": "Create a REST API endpoint in Node.js for user authentication using JWT tokens",
       "category": "code",
-      "preferred_models": ["gpt-4"],
+      "preferred_models": [
+        "gpt-4"
+      ],
       "description": "Web API development task",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "web_development",
-      "tags": ["nodejs", "api", "authentication", "jwt"]
+      "tags": [
+        "nodejs",
+        "api",
+        "authentication",
+        "jwt"
+      ]
     },
     {
       "text": "Compare the performance metrics of our three marketing campaigns and recommend the best strategy",
       "category": "analysis",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Comparative analysis and strategic recommendation",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "marketing",
-      "tags": ["comparison", "metrics", "strategy"]
+      "tags": [
+        "comparison",
+        "metrics",
+        "strategy"
+      ]
     },
     {
       "text": "How does photosynthesis work at the molecular level?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Scientific explanation requiring detailed knowledge",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "biology",
-      "tags": ["science", "biology", "photosynthesis"]
+      "tags": [
+        "science",
+        "biology",
+        "photosynthesis"
+      ]
     },
     {
       "text": "Create a one-page executive summary of our Q3 financial results",
       "category": "summarization",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Business document creation from data",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "finance",
-      "tags": ["executive_summary", "finance", "reporting"]
+      "tags": [
+        "executive_summary",
+        "finance",
+        "reporting"
+      ]
     },
     {
       "text": "Translate this technical manual from German to English while preserving technical terminology",
       "category": "translation",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Technical translation requiring domain expertise",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "technical",
-      "tags": ["translation", "german", "technical"]
+      "tags": [
+        "translation",
+        "german",
+        "technical"
+      ]
     },
     {
       "text": "Solve this logic puzzle: Three friends have different favorite colors. Alice doesn't like red. Bob's favorite isn't blue. Charlie likes green. What color does each person prefer?",
       "category": "reasoning",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Deductive reasoning puzzle",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "puzzles",
-      "tags": ["puzzle", "deduction", "logic"]
+      "tags": [
+        "puzzle",
+        "deduction",
+        "logic"
+      ]
     },
     {
       "text": "I'm planning a dinner party for 8 people. Can you help me create a menu and shopping list?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
       "description": "Practical planning assistance",
       "difficulty": "easy",
       "expected_length": "medium",
       "domain": "lifestyle",
-      "tags": ["planning", "cooking", "entertainment"]
+      "tags": [
+        "planning",
+        "cooking",
+        "entertainment"
+      ]
     },
     {
       "text": "Write an epic fantasy novel opening chapter featuring a young mage discovering their powers",
       "category": "creative",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Long-form creative writing with world-building",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "fantasy",
-      "tags": ["fantasy", "novel", "world_building", "magic"]
+      "tags": [
+        "fantasy",
+        "novel",
+        "world_building",
+        "magic"
+      ]
     },
     {
       "text": "Implement a binary search tree in Java with insertion, deletion, and traversal methods",
       "category": "code",
-      "preferred_models": ["gpt-4"],
+      "preferred_models": [
+        "gpt-4"
+      ],
       "description": "Data structure implementation",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "computer_science",
-      "tags": ["java", "data_structures", "algorithms"]
+      "tags": [
+        "java",
+        "data_structures",
+        "algorithms"
+      ]
     },
     {
       "text": "Analyze the correlation between website traffic and sales conversion rates over the past year",
       "category": "analysis",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Statistical analysis and correlation study",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "analytics",
-      "tags": ["correlation", "statistics", "conversion"]
+      "tags": [
+        "correlation",
+        "statistics",
+        "conversion"
+      ]
     },
     {
       "text": "What's the difference between machine learning and artificial intelligence?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
+      ],
       "description": "Conceptual explanation of related technical terms",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "technology",
-      "tags": ["ai", "machine_learning", "concepts"]
+      "tags": [
+        "ai",
+        "machine_learning",
+        "concepts"
+      ]
     },
     {
       "text": "Condense this 50-page legal document into key legal obligations and requirements",
       "category": "summarization",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Legal document analysis and summarization",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "legal",
-      "tags": ["legal", "contracts", "compliance"]
+      "tags": [
+        "legal",
+        "contracts",
+        "compliance"
+      ]
     },
     {
       "text": "Translate this poem from Spanish to English while maintaining the rhyme scheme and meter",
       "category": "translation",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Literary translation with artistic constraints",
       "difficulty": "hard",
       "expected_length": "medium",
       "domain": "literature",
-      "tags": ["translation", "spanish", "poetry"]
+      "tags": [
+        "translation",
+        "spanish",
+        "poetry"
+      ]
     },
     {
       "text": "Given that the trolley problem has no clear ethical solution, how should autonomous vehicles be programmed to make decisions in unavoidable accident scenarios?",
       "category": "reasoning",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Complex ethical reasoning and practical application",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "ethics",
-      "tags": ["ethics", "autonomous_vehicles", "philosophy"]
+      "tags": [
+        "ethics",
+        "autonomous_vehicles",
+        "philosophy"
+      ]
     },
     {
       "text": "I'm feeling overwhelmed with work and personal responsibilities. How can I better manage my time and stress?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Personal advice and emotional support",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "wellness",
-      "tags": ["stress_management", "productivity", "wellness"]
+      "tags": [
+        "stress_management",
+        "productivity",
+        "wellness"
+      ]
     },
     {
       "text": "Write a limerick about a programmer who loves coffee",
       "category": "creative",
-      "preferred_models": ["gpt-4", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
       "description": "Humorous poetry with specific format",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "humor",
-      "tags": ["limerick", "humor", "programming"]
+      "tags": [
+        "limerick",
+        "humor",
+        "programming"
+      ]
     },
     {
       "text": "Build a React component for a responsive navigation menu with dropdown submenus",
       "category": "code",
-      "preferred_models": ["gpt-4"],
+      "preferred_models": [
+        "gpt-4"
+      ],
       "description": "Frontend component development",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "frontend",
-      "tags": ["react", "navigation", "responsive", "ui"]
+      "tags": [
+        "react",
+        "navigation",
+        "responsive",
+        "ui"
+      ]
     },
     {
       "text": "Identify patterns in customer churn data and predict which customers are most likely to cancel",
       "category": "analysis",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Predictive analytics and pattern recognition",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "machine_learning",
-      "tags": ["churn_prediction", "patterns", "analytics"]
+      "tags": [
+        "churn_prediction",
+        "patterns",
+        "analytics"
+      ]
     },
     {
       "text": "Why do cats purr?",
       "category": "qa",
-      "preferred_models": ["gpt-3.5-turbo", "gpt-4"],
+      "preferred_models": [
+        "gpt-3.5-turbo",
+        "gpt-4"
+      ],
       "description": "Simple factual question about animal behavior",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "biology",
-      "tags": ["animals", "cats", "behavior"]
+      "tags": [
+        "animals",
+        "cats",
+        "behavior"
+      ]
     },
     {
       "text": "Extract the main findings and methodology from this scientific research paper",
       "category": "summarization",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Academic paper analysis and extraction",
       "difficulty": "hard",
       "expected_length": "medium",
       "domain": "research",
-      "tags": ["research", "methodology", "findings"]
+      "tags": [
+        "research",
+        "methodology",
+        "findings"
+      ]
     },
     {
       "text": "Convert this English business email to formal Japanese business correspondence",
       "category": "translation",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Business translation with cultural adaptation",
       "difficulty": "hard",
       "expected_length": "medium",
       "domain": "business",
-      "tags": ["translation", "japanese", "business", "formal"]
+      "tags": [
+        "translation",
+        "japanese",
+        "business",
+        "formal"
+      ]
     },
     {
       "text": "A farmer has 17 sheep. All but 9 die. How many sheep are left? Explain your reasoning.",
       "category": "reasoning",
-      "preferred_models": ["gpt-4", "claude-3-haiku", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
+      ],
       "description": "Word problem requiring careful reading and logic",
       "difficulty": "easy",
       "expected_length": "short",
       "domain": "math",
-      "tags": ["word_problem", "logic", "math"]
+      "tags": [
+        "word_problem",
+        "logic",
+        "math"
+      ]
     },
     {
       "text": "Can you recommend some good books similar to 'The Hitchhiker's Guide to the Galaxy'?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
       "description": "Recommendation request based on preferences",
       "difficulty": "easy",
       "expected_length": "medium",
       "domain": "literature",
-      "tags": ["recommendations", "books", "science_fiction"]
+      "tags": [
+        "recommendations",
+        "books",
+        "science_fiction"
+      ]
     },
     {
       "text": "Create a detailed character backstory for a cyberpunk detective in Neo-Tokyo",
       "category": "creative",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Character development for specific genre and setting",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "cyberpunk",
-      "tags": ["character_development", "cyberpunk", "detective", "worldbuilding"]
+      "tags": [
+        "character_development",
+        "cyberpunk",
+        "detective",
+        "worldbuilding"
+      ]
     },
     {
       "text": "Write a SQL query to find the top 10 customers by total purchase amount in the last 6 months",
       "category": "code",
-      "preferred_models": ["gpt-4"],
+      "preferred_models": [
+        "gpt-4"
+      ],
       "description": "Database query for business analytics",
       "difficulty": "medium",
       "expected_length": "short",
       "domain": "database",
-      "tags": ["sql", "analytics", "database"]
+      "tags": [
+        "sql",
+        "analytics",
+        "database"
+      ]
     },
     {
       "text": "Create a statistical model to forecast next quarter's revenue based on historical data",
       "category": "analysis",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Financial forecasting and statistical modeling",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "finance",
-      "tags": ["forecasting", "statistics", "revenue"]
+      "tags": [
+        "forecasting",
+        "statistics",
+        "revenue"
+      ]
     },
     {
       "text": "Explain quantum computing in simple terms that a high school student could understand",
       "category": "qa",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Complex technical explanation simplified for general audience",
       "difficulty": "medium",
       "expected_length": "long",
       "domain": "physics",
-      "tags": ["quantum_computing", "education", "simplification"]
+      "tags": [
+        "quantum_computing",
+        "education",
+        "simplification"
+      ]
     },
     {
       "text": "Summarize the key takeaways from our 2-hour board meeting into actionable next steps",
       "category": "summarization",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Meeting summary with action item extraction",
       "difficulty": "medium",
       "expected_length": "medium",
       "domain": "business",
-      "tags": ["meeting_summary", "action_items", "business"]
+      "tags": [
+        "meeting_summary",
+        "action_items",
+        "business"
+      ]
     },
     {
       "text": "Translate this medical diagnosis from Latin medical terms to plain English for patient understanding",
       "category": "translation",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Medical translation and simplification",
       "difficulty": "hard",
       "expected_length": "medium",
       "domain": "medical",
-      "tags": ["medical", "latin", "patient_communication"]
+      "tags": [
+        "medical",
+        "latin",
+        "patient_communication"
+      ]
     },
     {
       "text": "If you could travel back in time and change one historical event, what would it be and what might be the consequences?",
       "category": "reasoning",
-      "preferred_models": ["gpt-4", "claude-3-haiku"],
+      "preferred_models": [
+        "gpt-4",
+        "claude-3-haiku"
+      ],
       "description": "Hypothetical reasoning about historical cause and effect",
       "difficulty": "hard",
       "expected_length": "long",
       "domain": "history",
-      "tags": ["history", "hypothetical", "cause_effect"]
+      "tags": [
+        "history",
+        "hypothetical",
+        "cause_effect"
+      ]
     },
     {
       "text": "I'm new to gardening. What vegetables are easiest to grow for a beginner?",
       "category": "qa",
-      "preferred_models": ["gpt-4", "gpt-3.5-turbo"],
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
       "description": "Practical advice for beginners",
       "difficulty": "easy",
       "expected_length": "medium",
       "domain": "gardening",
-      "tags": ["gardening", "beginner", "vegetables"]
+      "tags": [
+        "gardening",
+        "beginner",
+        "vegetables"
+      ]
+    },
+    {
+      "text": "Write a Python function to sort a list of numbers",
+      "category": "code",
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
+      "description": "Basic Python sorting function",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "programming",
+      "tags": [
+        "python",
+        "sorting",
+        "basic"
+      ]
+    },
+    {
+      "text": "Create a simple Python function to reverse a string",
+      "category": "code",
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
+      "description": "Basic string manipulation in Python",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "programming",
+      "tags": [
+        "python",
+        "string",
+        "basic"
+      ]
+    },
+    {
+      "text": "Write a Python function to find the maximum number in a list",
+      "category": "code",
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
+      "description": "Basic list processing in Python",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "programming",
+      "tags": [
+        "python",
+        "list",
+        "basic"
+      ]
+    },
+    {
+      "text": "Create a Python function to check if a number is prime",
+      "category": "code",
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
+      "description": "Basic mathematical function in Python",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "programming",
+      "tags": [
+        "python",
+        "math",
+        "basic"
+      ]
+    },
+    {
+      "text": "Write a Python function to count words in a string",
+      "category": "code",
+      "preferred_models": [
+        "gpt-4",
+        "gpt-3.5-turbo"
+      ],
+      "description": "Basic text processing in Python",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "programming",
+      "tags": [
+        "python",
+        "text",
+        "basic"
+      ]
     }
   ]
 }

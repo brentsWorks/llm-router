@@ -30,7 +30,7 @@ class RAGClassifier:
         vector_service: VectorService,
         gemini_client: Optional[Any] = None,
         api_key: str = "",
-        confidence_threshold: float = 0.7,
+        confidence_threshold: float = 0.5,
         max_similar_examples: int = 3,
         model_name: str = "gemini-2.5-flash-lite"
     ):
@@ -90,14 +90,22 @@ class RAGClassifier:
             # Find similar examples using vector search
             similar_examples = self._get_similar_examples(prompt)
             
-            # Generate classification using Gemini Pro
-            gemini_response = self._query_gemini(prompt, similar_examples)
+            # Calculate confidence based on similarity scores
+            rag_confidence = self._calculate_similarity_confidence(similar_examples)
             
-            # Parse and validate response
-            classification_data = self._parse_gemini_response(gemini_response)
-            
-            # Create PromptClassification object
-            return self._create_classification(classification_data)
+            # Only use Gemini if we have good similarity matches
+            if rag_confidence >= self.confidence_threshold:
+                # Generate classification using Gemini Pro
+                gemini_response = self._query_gemini(prompt, similar_examples)
+                
+                # Parse and validate response
+                classification_data = self._parse_gemini_response(gemini_response)
+                
+                # Create PromptClassification object with similarity-based confidence
+                return self._create_classification(classification_data, rag_confidence)
+            else:
+                # Low similarity - RAG is not confident enough
+                raise RAGClassificationError(f"RAG confidence too low: {rag_confidence:.3f} < {self.confidence_threshold}")
             
         except Exception as e:
             if isinstance(e, RAGClassificationError):
@@ -129,6 +137,29 @@ class RAGClassifier:
         except Exception as e:
             logger.error(f"Vector search failed: {e}")
             raise RAGClassificationError(f"Vector search error: {str(e)}") from e
+
+    def _calculate_similarity_confidence(self, similar_examples: List[SearchResult]) -> float:
+        """Calculate confidence based on similarity scores.
+        
+        Args:
+            similar_examples: List of similar examples with similarity scores
+            
+        Returns:
+            Confidence score based on similarity (0.0-1.0)
+        """
+        if not similar_examples:
+            return 0.0
+        
+        # Use the highest similarity score as the base confidence
+        max_similarity = max(example.similarity for example in similar_examples)
+        
+        # Apply a scaling factor to convert similarity to confidence
+        # Similarity scores are typically 0.0-1.0, but we want to be more conservative
+        # Scale by 2.0 to make the threshold more meaningful for our similarity range
+        confidence = min(max_similarity * 2.0, 1.0)
+        
+        logger.debug(f"Similarity confidence: {confidence:.3f} (max similarity: {max_similarity:.3f})")
+        return confidence
 
     def _query_gemini(self, prompt: str, similar_examples: List[SearchResult]) -> str:
         """Query Gemini Pro for classification.
@@ -279,11 +310,12 @@ Respond with ONLY the JSON object, no additional text."""
             logger.error(f"Invalid JSON response from Gemini: {response_text}")
             raise RAGClassificationError(f"Invalid response format from Gemini: {str(e)}") from e
 
-    def _create_classification(self, data: Dict[str, Any]) -> PromptClassification:
+    def _create_classification(self, data: Dict[str, Any], similarity_confidence: float) -> PromptClassification:
         """Create PromptClassification object from parsed data.
         
         Args:
             data: Parsed classification data from Gemini
+            similarity_confidence: Confidence based on similarity scores
             
         Returns:
             PromptClassification object
@@ -296,9 +328,10 @@ Respond with ONLY the JSON object, no additional text."""
         if recommended_models:
             reasoning += f" (Recommended models: {', '.join(recommended_models)})"
         
+        # Use similarity-based confidence instead of Gemini's confidence
         classification = PromptClassification(
             category=data["category"],
-            confidence=float(data["confidence"]),
+            confidence=similarity_confidence,  # Use similarity-based confidence
             embedding=[],  # Empty for RAG classification
             reasoning=reasoning
         )

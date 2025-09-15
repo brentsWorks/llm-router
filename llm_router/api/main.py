@@ -27,6 +27,10 @@ import logging
 import uuid
 import json
 from datetime import datetime, timezone
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Import our existing services
 from ..router import RouterService
@@ -42,13 +46,16 @@ from ..config import create_configured_registry
 
 # Import API models
 from .models import (
-    RouteRequest, RouteResponse, HealthResponse, MetricsResponse,
+    RouteRequest, RouteResponse, ExecuteResponse, HealthResponse, MetricsResponse,
     ModelsResponse, ModelInfo, ClassifyRequest, ClassifyResponse,
     ErrorResponse, ErrorDetail
 )
 
 # Import our enhanced logger
 from .logger import get_api_logger
+
+# Import OpenRouter service
+from ..openrouter_service import OpenRouterService, LLMExecutionRequest, LLMExecutionResponse
 
 # Get the API logger instance
 api_logger = get_api_logger()
@@ -62,6 +69,11 @@ registry = create_configured_registry()  # Load models from configuration
 ranker = ModelRanker()
 
 router_service = RouterService(classifier, registry, ranker)
+
+# Initialize OpenRouter service
+from ..openrouter_client import OpenRouterClient
+openrouter_client = OpenRouterClient()
+openrouter_service = OpenRouterService(openrouter_client)
 
 # FastAPI app
 app = FastAPI(
@@ -457,6 +469,107 @@ async def route_prompt(request: RouteRequest):
         REQUEST_METRICS["model_selection_counts"][model_key] = REQUEST_METRICS["model_selection_counts"].get(model_key, 0) + 1
 
         logger.info(f"Routed to {response.selected_model['provider']}/{response.selected_model['model']} ({routing_duration:.3f}s)")
+        return response
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Let the general exception handler deal with this
+        # It will log appropriately and return a secure error response
+        raise
+
+# Execute endpoint with OpenRouter integration
+@app.post("/execute", response_model=ExecuteResponse)
+async def execute_prompt(request: RouteRequest):
+    """
+    Route a prompt to the optimal LLM model and execute it via OpenRouter.
+
+    This endpoint provides end-to-end LLM execution:
+    1. Classifies your prompt using RAG/LLM fallback
+    2. Selects the best model based on preferences/constraints
+    3. Executes the prompt via OpenRouter API
+    4. Returns both routing decision AND actual LLM response
+
+    ## Request Parameters
+    Same as `/route` endpoint:
+    - **prompt** (required): The text prompt to route and execute
+    - **preferences** (optional): Scoring weights for optimization
+    - **constraints** (optional): Filtering constraints
+
+    ## Response
+    Returns the routing decision plus the actual LLM response content,
+    execution time, and usage information.
+
+    ## Examples
+    ```json
+    {
+      "prompt": "Write a Python function to calculate fibonacci numbers",
+      "preferences": {"quality_weight": 0.8, "cost_weight": 0.2}
+    }
+    ```
+    """
+    try:
+        start_time = time.time()
+        logger.info(f"Executing prompt: {request.prompt[:50]}...")
+
+        # First, route the prompt using our service
+        routing_result = router_service.route(
+            request.prompt, 
+            preferences=request.preferences, 
+            constraints=request.constraints
+        )
+
+        if routing_result is None:
+            # Log routing error
+            api_logger.log_routing_error(
+                request_id=getattr(request, 'state', {}).get('request_id', 'unknown'),
+                error_message="Failed to route prompt - no suitable model found"
+            )
+            raise HTTPException(
+                status_code=500,
+                detail="Failed to route prompt - no suitable model found"
+            )
+
+        # Create execution request for OpenRouter
+        execution_request = LLMExecutionRequest(
+            prompt=request.prompt,
+            routing_decision=routing_result,
+            temperature=0.7,
+            max_tokens=1000
+        )
+
+        # Execute via OpenRouter
+        execution_result = openrouter_service.execute_prompt(execution_request)
+
+        # Convert to response format
+        response = ExecuteResponse(
+            selected_model=routing_result.selected_model.model_dump(),
+            classification=routing_result.classification.model_dump(),
+            confidence=routing_result.confidence,
+            routing_time_ms=routing_result.routing_time_ms,
+            reasoning=getattr(routing_result, 'reasoning', None),
+            llm_response=execution_result.content,
+            model_used=execution_result.model_used,
+            execution_time_ms=execution_result.execution_time_ms,
+            usage=execution_result.usage,
+            finish_reason=execution_result.finish_reason
+        )
+
+        # Update metrics
+        total_duration = time.time() - start_time
+        REQUEST_METRICS["total_requests"] += 1
+        REQUEST_METRICS["total_response_time"] += total_duration
+        
+        # Track classification stats
+        category = routing_result.classification.category
+        if category in REQUEST_METRICS["classification_counts"]:
+            REQUEST_METRICS["classification_counts"][category] += 1
+        
+        # Track model selection stats
+        model_key = f"{routing_result.selected_model.provider}/{routing_result.selected_model.model}"
+        REQUEST_METRICS["model_selection_counts"][model_key] = REQUEST_METRICS["model_selection_counts"].get(model_key, 0) + 1
+
+        logger.info(f"Executed with {response.model_used} ({total_duration:.3f}s total, {execution_result.execution_time_ms:.1f}ms LLM)")
         return response
 
     except HTTPException:

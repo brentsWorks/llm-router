@@ -118,13 +118,23 @@ class RouterService:
                     except:
                         return default
 
+                # Calculate actual cost using the scoring engine
+                estimated_tokens = 1000  # Default token estimate
+                actual_cost = self.ranker.scoring_engine.calculate_actual_cost(selected_model, estimated_tokens)
+                
+                # Calculate actual latency from performance data
+                actual_latency = safe_getattr(selected_model.performance, 'avg_latency_ms', 100.0)
+                
+                # Calculate quality match from the scoring result
+                quality_match = safe_getattr(selected_model, 'quality_match', 0.8)
+
                 model_candidate = ModelCandidate(
                     provider=safe_getattr(selected_model, 'provider', 'unknown'),
                     model=safe_getattr(selected_model, 'model', 'unknown'),
                     score=selected_score,
-                    estimated_cost=safe_getattr(selected_model, 'estimated_cost', 0.0),
-                    estimated_latency=safe_getattr(selected_model, 'estimated_latency', 100.0),
-                    quality_match=safe_getattr(selected_model, 'quality_match', 0.8)
+                    estimated_cost=actual_cost,
+                    estimated_latency=actual_latency,
+                    quality_match=quality_match
                 )
 
                 return RoutingDecision(

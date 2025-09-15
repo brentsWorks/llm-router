@@ -43,6 +43,21 @@ class RouteResponse(BaseModel):
     )
 
 
+class ExecuteResponse(BaseModel):
+    """Response model for the /execute endpoint with LLM execution."""
+    selected_model: Dict[str, Any] = Field(..., description="The selected model information")
+    classification: Dict[str, Any] = Field(..., description="Prompt classification details")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Classification confidence score")
+    routing_time_ms: float = Field(..., ge=0.0, description="Time taken for routing decision")
+    reasoning: Optional[str] = Field(default=None, description="Reasoning for the routing decision")
+    # LLM execution results
+    llm_response: str = Field(..., description="The actual LLM response content")
+    model_used: str = Field(..., description="The model that was actually used for execution")
+    execution_time_ms: float = Field(..., ge=0.0, description="Time taken for LLM execution")
+    usage: Optional[Dict[str, Any]] = Field(default=None, description="Token usage information")
+    finish_reason: Optional[str] = Field(default=None, description="Reason the LLM finished generating")
+
+
 class HealthResponse(BaseModel):
     """Response model for the /health endpoint."""
     status: str = Field(..., description="Service health status")

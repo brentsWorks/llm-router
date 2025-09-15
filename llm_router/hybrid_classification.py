@@ -12,6 +12,7 @@ from enum import Enum
 from .models import PromptClassification
 from .rag_classification import RAGClassifier, RAGClassificationError
 from .classification import KeywordClassifier
+from .llm_fallback import LLMFallbackClassifier, LLMFallbackError
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class ClassificationMethod(Enum):
     """Classification methods used by hybrid classifier."""
     RAG = "rag"
     RULE = "rule"
+    LLM_FALLBACK = "llm_fallback"
     FALLBACK = "fallback"
     ERROR = "error"
 
@@ -42,17 +44,15 @@ class HybridClassifier:
     def __init__(
         self,
         rag_classifier: RAGClassifier,
-        rule_classifier: KeywordClassifier,
-        rag_threshold: float = 0.7,
-        rule_threshold: float = 0.5
+        llm_fallback: Optional[LLMFallbackClassifier] = None,
+        rag_threshold: float = 0.7
     ):
         """Initialize hybrid classifier.
         
         Args:
             rag_classifier: RAG classifier instance
-            rule_classifier: Rule-based classifier instance
+            llm_fallback: Optional LLM fallback classifier for edge cases
             rag_threshold: Minimum confidence for using RAG classification
-            rule_threshold: Minimum confidence for using rule-based classification
             
         Raises:
             HybridClassificationError: If configuration is invalid
@@ -63,22 +63,15 @@ class HybridClassifier:
                 f"RAG threshold must be between 0.0 and 1.0, got: {rag_threshold}"
             )
         
-        if not isinstance(rule_threshold, (int, float)) or not (0.0 <= rule_threshold <= 1.0):
-            raise HybridClassificationError(
-                f"Rule threshold must be between 0.0 and 1.0, got: {rule_threshold}"
-            )
-        
         self.rag_classifier = rag_classifier
-        self.rule_classifier = rule_classifier
+        self.llm_fallback = llm_fallback
         self.rag_threshold = rag_threshold
-        self.rule_threshold = rule_threshold
         
         # Track last classification method used
         self._last_method = None
         
         logger.info(
-            f"Hybrid classifier initialized with RAG threshold: {rag_threshold}, "
-            f"Rule threshold: {rule_threshold}"
+            f"Hybrid classifier initialized with RAG threshold: {rag_threshold}"
         )
 
     def classify(self, prompt: str) -> PromptClassification:
@@ -87,10 +80,8 @@ class HybridClassifier:
         Decision logic:
         1. Try RAG classification first
         2. If RAG confidence >= rag_threshold, use RAG result
-        3. Otherwise, try rule-based classification
-        4. If rule confidence >= rule_threshold, use rule result
-        5. Otherwise, use whichever has higher confidence (fallback)
-        6. If both fail, raise error
+        3. Otherwise, try LLM fallback if available
+        4. If LLM fallback fails or unavailable, raise error
         
         Args:
             prompt: The input prompt to classify
@@ -110,13 +101,10 @@ class HybridClassifier:
         
         prompt = prompt.strip()
         
-        # Initialize variables
-        rag_result = None
-        rule_result = None
-        rag_error = None
-        rule_error = None
-        
         # Try RAG classification first
+        rag_result = None
+        rag_error = None
+        
         try:
             logger.debug("Attempting RAG classification")
             rag_result = self.rag_classifier.classify(prompt)
@@ -130,71 +118,39 @@ class HybridClassifier:
                     method="RAG",
                     reason=f"High confidence RAG classification (≥{self.rag_threshold})"
                 )
-                
-        except Exception as e:
-            rag_error = e
-            logger.warning(f"RAG classification failed: {e}")
-        
-        # Try rule-based classification
-        try:
-            logger.debug("Attempting rule-based classification")
-            rule_result = self.rule_classifier.classify(prompt)
-            logger.debug(f"Rule classification: {rule_result.category} (confidence: {rule_result.confidence})")
-            
-            # If rule confidence is high enough, use it
-            if rule_result.confidence >= self.rule_threshold:
-                self._last_method = ClassificationMethod.RULE
-                return self._create_hybrid_result(
-                    rule_result,
-                    method="rule-based",
-                    reason=f"Rule-based classification (≥{self.rule_threshold})"
-                )
-                
-        except Exception as e:
-            rule_error = e
-            logger.warning(f"Rule-based classification failed: {e}")
-        
-        # Fallback logic: use whichever has higher confidence
-        if rag_result is not None and rule_result is not None:
-            self._last_method = ClassificationMethod.FALLBACK
-            
-            if rag_result.confidence >= rule_result.confidence:
-                return self._create_hybrid_result(
-                    rag_result,
-                    method="RAG fallback",
-                    reason=f"Fallback to RAG (confidence: {rag_result.confidence} > {rule_result.confidence})"
-                )
             else:
+                logger.debug(f"RAG confidence too low ({rag_result.confidence} < {self.rag_threshold}), trying LLM fallback")
+                
+        except Exception as e:
+            logger.warning(f"RAG classification failed: {e}")
+            rag_result = None
+            rag_error = e
+        
+        # Try LLM fallback if RAG had low confidence or failed
+        if self.llm_fallback is not None:
+            try:
+                logger.debug("Attempting LLM fallback classification")
+                llm_result = self.llm_fallback.classify(prompt)
+                logger.debug(f"LLM fallback classification: {llm_result.category} (confidence: {llm_result.confidence})")
+                
+                self._last_method = ClassificationMethod.LLM_FALLBACK
                 return self._create_hybrid_result(
-                    rule_result,
-                    method="rule-based fallback",
-                    reason=f"Fallback to rule-based (confidence: {rule_result.confidence} > {rag_result.confidence})"
+                    llm_result,
+                    method="LLM fallback",
+                    reason=f"LLM fallback after RAG {'failed' if rag_result is None else f'low confidence ({rag_result.confidence})'}"
                 )
+                
+            except Exception as e:
+                logger.warning(f"LLM fallback classification failed: {e}")
+                # Fall through to error case
         
-        # Use RAG result if only it succeeded
-        elif rag_result is not None:
-            self._last_method = ClassificationMethod.FALLBACK
-            return self._create_hybrid_result(
-                rag_result,
-                method="RAG fallback",
-                reason=f"RAG fallback after rule-based error: {rule_error}"
-            )
-        
-        # Use rule result if only it succeeded
-        elif rule_result is not None:
-            self._last_method = ClassificationMethod.FALLBACK
-            return self._create_hybrid_result(
-                rule_result,
-                method="rule-based fallback",
-                reason=f"Rule-based fallback after RAG error: {rag_error}"
-            )
-        
-        # Both failed
-        else:
-            self._last_method = ClassificationMethod.ERROR
-            error_msg = f"Both classifiers failed. RAG error: {rag_error}, Rule error: {rule_error}"
-            logger.error(error_msg)
-            raise HybridClassificationError(error_msg)
+        # All methods failed
+        self._last_method = ClassificationMethod.ERROR
+        error_msg = f"All classifiers failed. RAG error: {rag_error if 'rag_error' in locals() else 'N/A'}"
+        if self.llm_fallback is not None:
+            error_msg += f", LLM fallback unavailable"
+        logger.error(error_msg)
+        raise HybridClassificationError(error_msg)
 
     def _create_hybrid_result(
         self,
