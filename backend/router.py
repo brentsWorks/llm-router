@@ -5,15 +5,15 @@ bringing together classification, model selection, and routing decisions.
 """
 
 from typing import Optional, TYPE_CHECKING
-from llm_router.models import RoutingDecision
+from .models import RoutingDecision
 
 if TYPE_CHECKING:
-    from llm_router.scoring import ScoringWeights
-    from llm_router.constraints import RoutingConstraints
+    from .scoring import ScoringWeights
+    from .constraints import RoutingConstraints
 from typing import Protocol
-from llm_router.models import PromptClassification
-from llm_router.registry import ProviderRegistry
-from llm_router.ranking import ModelRanker
+from .models import PromptClassification
+from .registry import ProviderRegistry
+from .ranking import ModelRanker
 
 
 class ClassifierProtocol(Protocol):
@@ -104,7 +104,7 @@ class RouterService:
                 model = getattr(selected_model, 'model', 'unknown')
 
                 # Create proper ModelCandidate from selected model
-                from llm_router.models import ModelCandidate
+                from .models import ModelCandidate
 
                 # Extract model information safely
                 def safe_getattr(obj, attr, default):

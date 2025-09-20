@@ -5,7 +5,7 @@ prompts into task types without requiring ML or embeddings.
 """
 
 from typing import List
-from llm_router.models import PromptClassification
+from .models import PromptClassification
 
 
 class KeywordClassifier:

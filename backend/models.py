@@ -5,7 +5,7 @@ from enum import Enum
 from pydantic import BaseModel, Field, ConfigDict
 
 # Import TaskType from capabilities to maintain consistency
-from llm_router.capabilities import TaskType
+from .capabilities import TaskType
 
 
 # Use TaskType as the single source of truth for categories

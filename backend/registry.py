@@ -3,8 +3,8 @@
 
 from typing import List, Dict, Any, Optional, Tuple
 from pydantic import BaseModel, Field, field_validator, ValidationError
-from llm_router.models import VALID_CATEGORIES
-from llm_router.capabilities import (
+from .models import VALID_CATEGORIES
+from .capabilities import (
     ModelCapabilities,
     CapabilityRequirement,
     CapabilityScore,
@@ -127,7 +127,7 @@ class ProviderModel(BaseModel):
         self, requirement: CapabilityRequirement
     ) -> CapabilityScore:
         """Calculate capability score for this model against requirements."""
-        from llm_router.capabilities import CapabilityMatcher
+        from .capabilities import CapabilityMatcher
 
         matcher = CapabilityMatcher()
 
@@ -238,7 +238,7 @@ class ProviderRegistry:
         Returns:
             List of tuples (model, score) sorted by score descending
         """
-        from llm_router.capabilities import CapabilityMatcher
+        from .capabilities import CapabilityMatcher
 
         matcher = CapabilityMatcher()
         matches = []

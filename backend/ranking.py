@@ -9,9 +9,9 @@ from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, Field, model_validator
 
-from llm_router.scoring import ScoringEngine, ScoringWeights
-from llm_router.constraints import RoutingConstraints
-from llm_router.registry import ProviderModel
+from .scoring import ScoringEngine, ScoringWeights
+from .constraints import RoutingConstraints
+from .registry import ProviderModel
 
 
 class RankingStrategy(str, Enum):
@@ -147,7 +147,7 @@ class ModelRanker:
         Returns:
             RankingResult with constraint-validated and ranked models
         """
-        from llm_router.constraints import ConstraintValidator
+        from .constraints import ConstraintValidator
         
         # Apply constraints first
         validator = ConstraintValidator()

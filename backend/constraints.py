@@ -8,7 +8,7 @@ from enum import Enum
 from typing import List, Optional, Any
 from pydantic import BaseModel, Field, field_validator
 
-from llm_router.registry import ProviderModel
+from .registry import ProviderModel
 
 
 class ConstraintType(str, Enum):

@@ -6,8 +6,8 @@ for optimal model selection in LLM routing.
 
 from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, field_validator, model_validator
-from llm_router.registry import ProviderModel
-from llm_router.models import VALID_CATEGORIES
+from .registry import ProviderModel
+from .models import VALID_CATEGORIES
 
 
 

@@ -13,7 +13,7 @@ Usage:
 
 import argparse
 import uvicorn
-from llm_router.api.main import app
+from backend.api.main import app
 
 def main():
     parser = argparse.ArgumentParser(description="LLM Router API Server")
@@ -31,7 +31,7 @@ def main():
     print("=" * 50)
 
     uvicorn.run(
-        "llm_router.api.main:app",
+        "backend.api.main:app",
         host=args.host,
         port=args.port,
         reload=args.reload,

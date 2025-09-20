@@ -7,8 +7,8 @@ when RAG + rule-based classification fails or has low confidence.
 
 import json
 from typing import Dict, Any, Optional
-from llm_router.models import PromptClassification
-from llm_router.capabilities import TaskType
+from .models import PromptClassification
+from .capabilities import TaskType
 
 
 class LLMFallbackError(Exception):
