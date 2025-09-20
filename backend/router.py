@@ -128,13 +128,22 @@ class RouterService:
                 # Calculate quality match from the scoring result
                 quality_match = safe_getattr(selected_model, 'quality_match', 0.8)
 
+                # Get constraint violations if constraints were applied
+                constraint_violations = []
+                if constraints is not None:
+                    from .constraints import ConstraintValidator
+                    validator = ConstraintValidator()
+                    violations = validator.validate_model(selected_model, constraints)
+                    constraint_violations = [v.message for v in violations]
+
                 model_candidate = ModelCandidate(
                     provider=safe_getattr(selected_model, 'provider', 'unknown'),
                     model=safe_getattr(selected_model, 'model', 'unknown'),
                     score=selected_score,
                     estimated_cost=actual_cost,
                     estimated_latency=actual_latency,
-                    quality_match=quality_match
+                    quality_match=quality_match,
+                    constraint_violations=constraint_violations
                 )
 
                 return RoutingDecision(

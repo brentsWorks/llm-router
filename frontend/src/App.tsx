@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { PromptInput, RoutingResults, PreferencesPanel, ResponseDisplay } from './components/features';
+import { PromptInput, RoutingResults, PreferencesPanel, ResponseDisplay, About } from './components/features';
 import { apiService } from './services/api.ts';
 import type { RouteResponse, ExecuteResponse } from './types/api.ts';
 
 
 function App() {
+  const [currentTab, setCurrentTab] = useState<'router' | 'about'>('router');
   const [currentPrompt, setCurrentPrompt] = useState<string>('');
   const [routingResults, setRoutingResults] = useState<RouteResponse | null>(null);
   const [executionResults, setExecutionResults] = useState<ExecuteResponse | null>(null);
@@ -15,6 +16,12 @@ function App() {
     cost_weight: 0.3,
     latency_weight: 0.3,
     quality_weight: 0.4,
+    max_cost_per_1k_tokens: undefined,
+    max_latency_ms: undefined,
+    max_context_length: undefined,
+    min_safety_level: undefined,
+    excluded_providers: [],
+    excluded_models: [],
   });
 
   const handlePromptSubmit = async (prompt: string) => {
@@ -30,6 +37,14 @@ function App() {
           cost_weight: preferences.cost_weight,
           latency_weight: preferences.latency_weight,
           quality_weight: preferences.quality_weight,
+        },
+        constraints: {
+          max_cost_per_1k_tokens: preferences.max_cost_per_1k_tokens,
+          max_latency_ms: preferences.max_latency_ms,
+          max_context_length: preferences.max_context_length,
+          min_safety_level: preferences.min_safety_level,
+          excluded_providers: preferences.excluded_providers,
+          excluded_models: preferences.excluded_models,
         }
       });
       setRoutingResults(results);
@@ -50,6 +65,12 @@ function App() {
       cost_weight: 0.33,
       latency_weight: 0.33,
       quality_weight: 0.34,
+      max_cost_per_1k_tokens: undefined,
+      max_latency_ms: undefined,
+      max_context_length: undefined,
+      min_safety_level: undefined,
+      excluded_providers: [],
+      excluded_models: [],
     });
   };
 
@@ -73,6 +94,14 @@ function App() {
           cost_weight: preferences.cost_weight,
           latency_weight: preferences.latency_weight,
           quality_weight: preferences.quality_weight,
+        },
+        constraints: {
+          max_cost_per_1k_tokens: preferences.max_cost_per_1k_tokens,
+          max_latency_ms: preferences.max_latency_ms,
+          max_context_length: preferences.max_context_length,
+          min_safety_level: preferences.min_safety_level,
+          excluded_providers: preferences.excluded_providers,
+          excluded_models: preferences.excluded_models,
         }
       });
       setExecutionResults(results);
@@ -104,6 +133,14 @@ function App() {
           cost_weight: preferences.cost_weight,
           latency_weight: preferences.latency_weight,
           quality_weight: preferences.quality_weight,
+        },
+        constraints: {
+          max_cost_per_1k_tokens: preferences.max_cost_per_1k_tokens,
+          max_latency_ms: preferences.max_latency_ms,
+          max_context_length: preferences.max_context_length,
+          min_safety_level: preferences.min_safety_level,
+          excluded_providers: preferences.excluded_providers,
+          excluded_models: preferences.excluded_models,
         }
       });
       setExecutionResults(results);
@@ -118,39 +155,77 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header - Fixed */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="bg-gradient-to-r from-slate-50 via-gray-50 to-zinc-50 border-b border-gray-100 sticky top-0 z-10 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                LLM Router
-              </h1>
-              <p className="text-sm text-gray-600">
-                Intelligent model selection for optimal LLM routing
-              </p>
+              <div className="flex items-center space-x-4 mb-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-slate-400 to-slate-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white text-2xl">🧠</span>
+                </div>
+                <div>
+                  <h1 className="text-3xl font-light bg-gradient-to-r from-slate-700 to-slate-500 bg-clip-text text-transparent">
+                    LLM Router
+                  </h1>
+                  <p className="text-sm text-slate-500 font-light">
+                    Intelligent model selection for optimal LLM routing
+                  </p>
+                </div>
+              </div>
+              
+              {/* Tab Navigation */}
+              <div className="flex space-x-2 mt-4">
+                <button
+                  onClick={() => setCurrentTab('router')}
+                  className={`px-5 py-2.5 text-sm font-light rounded-xl transition-all duration-300 ${
+                    currentTab === 'router'
+                      ? 'bg-slate-600 text-white shadow-lg'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  Router
+                </button>
+                <button
+                  onClick={() => setCurrentTab('about')}
+                  className={`px-5 py-2.5 text-sm font-light rounded-xl transition-all duration-300 ${
+                    currentTab === 'about'
+                      ? 'bg-slate-600 text-white shadow-lg'
+                      : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                  }`}
+                >
+                  About
+                </button>
+              </div>
             </div>
             
             {/* Quick Status */}
             <div className="flex items-center space-x-4">
-              {routingResults && (
+              {routingResults ? (
                 <div className="flex items-center space-x-3">
                   <div className="text-sm">
-                    <span className="text-gray-500">Selected:</span>
-                    <span className="ml-1 font-medium text-gray-900">
+                    <span className="text-slate-400">Selected:</span>
+                    <span className="ml-1 font-medium text-slate-700">
                       {routingResults.selected_model.model}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                    <span className="px-3 py-1.5 text-xs font-medium bg-slate-100 text-slate-700 rounded-full shadow-sm">
                       Score: {(routingResults.selected_model.score * 100).toFixed(0)}%
                     </span>
                   </div>
                 </div>
+              ) : (
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-slate-50 rounded-lg flex items-center justify-center mx-auto mb-2 border border-slate-200">
+                    <div className="w-6 h-6 bg-slate-300 rounded-sm animate-pulse"></div>
+                  </div>
+                  <p className="text-xs text-slate-400 font-light animate-pulse">Awaiting prompt</p>
+                </div>
               )}
               {executionResults && (
                 <div className="text-sm">
-                  <span className="text-gray-500">Response:</span>
-                  <span className="ml-1 font-medium text-green-600">
+                  <span className="text-slate-400">Response:</span>
+                  <span className="ml-1 font-medium text-slate-600">
                     Ready
                   </span>
                 </div>
@@ -161,9 +236,12 @@ function App() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Main Content - Takes up more space */}
-          <div className="lg:col-span-3 space-y-4">
+        {currentTab === 'about' ? (
+          <About />
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Main Content - Takes up more space */}
+            <div className="lg:col-span-3 space-y-4">
             {/* Prompt Input - Compact */}
             <div className="bg-white rounded-lg border border-gray-200 p-4">
               <PromptInput 
@@ -222,8 +300,9 @@ function App() {
                 onReset={handleResetPreferences}
               />
             </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

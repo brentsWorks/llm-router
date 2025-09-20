@@ -177,8 +177,8 @@
       "model": "claude-sonnet-4",
       "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math", "science"],
       "pricing": {
-        "input_tokens_per_1k": 3.0,
-        "output_tokens_per_1k": 15.0
+        "input_tokens_per_1k": 0.003,
+        "output_tokens_per_1k": 0.015
       },
       "limits": {
         "context_length": 200000,
@@ -207,8 +207,8 @@
       "model": "gpt-5",
       "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math", "science", "tool_use"],
       "pricing": {
-        "input_tokens_per_1k": 5.0,
-        "output_tokens_per_1k": 15.0
+        "input_tokens_per_1k": 0.005,
+        "output_tokens_per_1k": 0.015
       },
       "limits": {
         "context_length": 128000,

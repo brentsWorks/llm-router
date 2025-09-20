@@ -32,7 +32,7 @@ const PROVIDERS = [
   { value: 'openai', label: 'OpenAI' },
   { value: 'anthropic', label: 'Anthropic' },
   { value: 'google', label: 'Google' },
-  { value: 'cohere', label: 'Cohere' },
+  { value: 'x-ai', label: 'xAI' },
 ];
 
 export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
