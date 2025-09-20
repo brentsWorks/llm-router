@@ -16,9 +16,13 @@
       "performance": {
         "avg_latency_ms": 800,
         "quality_scores": {
-          "code": 0.85,
-          "creative": 0.90,
-          "qa": 0.88
+          "code": 0.60,
+          "creative": 0.70,
+          "qa": 0.70,
+          "reasoning": 0.60,
+          "analysis": 0.60,
+          "summarization": 0.60,
+          "translation": 0.70
         }
       }
     },
@@ -38,16 +42,24 @@
       "performance": {
         "avg_latency_ms": 1200,
         "quality_scores": {
-          "code": 0.95,
-          "creative": 0.92,
-          "qa": 0.94
+          "code": 0.90,
+          "creative": 0.90,
+          "qa": 0.90,
+          "reasoning": 0.90,
+          "analysis": 0.90,
+          "summarization": 0.90,
+          "translation": 0.90,
+          "writing": 0.90,
+          "conversation": 0.90,
+          "math": 0.85,
+          "science": 0.85
         }
       }
     },
     {
       "provider": "anthropic",
       "model": "claude-3-haiku",
-      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation"],
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation"],
       "pricing": {
         "input_tokens_per_1k": 0.00025,
         "output_tokens_per_1k": 0.00125
@@ -60,9 +72,164 @@
       "performance": {
         "avg_latency_ms": 600,
         "quality_scores": {
-          "code": 0.82,
+          "code": 0.70,
+          "creative": 0.80,
+          "qa": 0.80,
+          "reasoning": 0.80,
+          "analysis": 0.80,
+          "summarization": 0.80,
+          "translation": 0.80,
+          "writing": 0.80,
+          "conversation": 0.80
+        }
+      }
+    },
+    {
+      "provider": "x-ai",
+      "model": "grok-4-fast:free",
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math"],
+      "pricing": {
+        "input_tokens_per_1k": 0.0,
+        "output_tokens_per_1k": 0.0
+      },
+      "limits": {
+        "context_length": 128000,
+        "rate_limit": 1000,
+        "safety_level": "moderate"
+      },
+      "performance": {
+        "avg_latency_ms": 500,
+        "quality_scores": {
+          "code": 0.88,
+          "creative": 0.85,
+          "qa": 0.87,
+          "reasoning": 0.84,
+          "analysis": 0.82,
+          "summarization": 0.83,
+          "translation": 0.80,
+          "writing": 0.86,
+          "conversation": 0.88,
+          "math": 0.89
+        }
+      }
+    },
+    {
+      "provider": "google",
+      "model": "gemini-2.0-flash-001",
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math", "science"],
+      "pricing": {
+        "input_tokens_per_1k": 0.00075,
+        "output_tokens_per_1k": 0.003
+      },
+      "limits": {
+        "context_length": 1000000,
+        "rate_limit": 1500,
+        "safety_level": "high"
+      },
+      "performance": {
+        "avg_latency_ms": 400,
+        "quality_scores": {
+          "code": 0.92,
+          "creative": 0.94,
+          "qa": 0.93,
+          "reasoning": 0.91,
+          "analysis": 0.90,
+          "summarization": 0.89,
+          "translation": 0.87,
+          "writing": 0.93,
+          "conversation": 0.92,
+          "math": 0.88,
+          "science": 0.90
+        }
+      }
+    },
+    {
+      "provider": "google",
+      "model": "gemini-2.5-flash-lite",
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math"],
+      "pricing": {
+        "input_tokens_per_1k": 0.00025,
+        "output_tokens_per_1k": 0.001
+      },
+      "limits": {
+        "context_length": 1000000,
+        "rate_limit": 2000,
+        "safety_level": "moderate"
+      },
+      "performance": {
+        "avg_latency_ms": 300,
+        "quality_scores": {
+          "code": 0.89,
+          "creative": 0.91,
+          "qa": 0.90,
+          "reasoning": 0.88,
+          "analysis": 0.86,
+          "summarization": 0.87,
+          "translation": 0.85,
+          "writing": 0.90,
+          "conversation": 0.89,
+          "math": 0.87
+        }
+      }
+    },
+    {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4",
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math", "science"],
+      "pricing": {
+        "input_tokens_per_1k": 3.0,
+        "output_tokens_per_1k": 15.0
+      },
+      "limits": {
+        "context_length": 200000,
+        "rate_limit": 500,
+        "safety_level": "high"
+      },
+      "performance": {
+        "avg_latency_ms": 1000,
+        "quality_scores": {
+          "code": 0.95,
+          "creative": 0.92,
+          "qa": 0.94,
+          "reasoning": 0.93,
+          "analysis": 0.91,
+          "summarization": 0.90,
+          "translation": 0.88,
+          "writing": 0.94,
+          "conversation": 0.93,
+          "math": 0.89,
+          "science": 0.87
+        }
+      }
+    },
+    {
+      "provider": "openai",
+      "model": "gpt-5",
+      "capabilities": ["code", "creative", "qa", "reasoning", "analysis", "summarization", "translation", "writing", "conversation", "math", "science", "tool_use"],
+      "pricing": {
+        "input_tokens_per_1k": 5.0,
+        "output_tokens_per_1k": 15.0
+      },
+      "limits": {
+        "context_length": 128000,
+        "rate_limit": 300,
+        "safety_level": "high"
+      },
+      "performance": {
+        "avg_latency_ms": 1500,
+        "quality_scores": {
+          "code": 0.96,
           "creative": 0.95,
-          "qa": 0.90
+          "qa": 0.96,
+          "reasoning": 0.95,
+          "analysis": 0.94,
+          "summarization": 0.93,
+          "translation": 0.92,
+          "writing": 0.95,
+          "conversation": 0.94,
+          "math": 0.93,
+          "science": 0.92,
+          "tool_use": 0.97
         }
       }
     }

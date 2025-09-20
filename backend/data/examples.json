@@ -1,17 +1,38 @@
 {
   "metadata": {
-    "version": "1.0",
-    "description": "Curated example prompts for LLM Router classification",
-    "created": "2024-01-01",
-    "total_examples": 45
+    "version": "2.0",
+    "description": "Comprehensive example prompts for LLM Router classification covering all capabilities",
+    "created": "2025-09-20",
+    "updated": "2024-09-20",
+    "total_examples": 120,
+    "capabilities_covered": [
+      "code",
+      "creative",
+      "qa",
+      "reasoning",
+      "analysis",
+      "summarization",
+      "translation",
+      "math",
+      "science",
+      "writing",
+      "conversation",
+      "tool_use"
+    ]
   },
   "examples": [
     {
       "text": "Write a creative short story about a robot discovering emotions for the first time",
       "category": "creative",
       "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4",
+        "gemini-2.5-flash-lite",
+        "gpt-4",
+        "grok-4-fast:free",
         "claude-3-haiku",
-        "gpt-4"
+        "gpt-3.5-turbo"
       ],
       "description": "Creative fiction writing requiring imagination and narrative skills",
       "difficulty": "medium",
@@ -27,8 +48,9 @@
       "text": "Generate a Python function to calculate the Fibonacci sequence using dynamic programming",
       "category": "code",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Algorithm implementation requiring programming knowledge",
       "difficulty": "medium",
@@ -44,8 +66,9 @@
       "text": "Analyze the quarterly sales data and identify trends in customer purchasing behavior",
       "category": "analysis",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gpt-4"
       ],
       "description": "Business data analysis requiring analytical thinking",
       "difficulty": "medium",
@@ -61,7 +84,12 @@
       "text": "What is the capital of France and what are its main tourist attractions?",
       "category": "qa",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
         "claude-3-haiku",
         "gpt-3.5-turbo"
       ],
@@ -79,8 +107,9 @@
       "text": "Summarize the key points from this 10-page research paper on climate change",
       "category": "summarization",
       "preferred_models": [
-        "claude-3-haiku",
-        "gpt-4"
+        "gpt-5",
+        "gpt-4",
+        "claude-sonnet-4"
       ],
       "description": "Document summarization requiring comprehension and synthesis",
       "difficulty": "medium",
@@ -96,8 +125,9 @@
       "text": "Translate this English paragraph to French: 'The weather today is beautiful and sunny.'",
       "category": "translation",
       "preferred_models": [
-        "claude-3-haiku",
-        "gpt-4"
+        "gpt-5",
+        "gpt-4",
+        "gemini-2.5-flash-lite"
       ],
       "description": "Language translation task",
       "difficulty": "easy",
@@ -113,8 +143,14 @@
       "text": "If all birds can fly, and penguins are birds, why can't penguins fly? Explain the logical fallacy.",
       "category": "reasoning",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
-        "claude-3-haiku"
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Logical reasoning and critical thinking",
       "difficulty": "medium",
@@ -128,11 +164,11 @@
     },
     {
       "text": "Hello! I'm feeling stressed about my upcoming job interview. Can you help me prepare?",
-      "category": "qa",
+      "category": "conversation",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Conversational support and advice",
       "difficulty": "easy",
@@ -148,8 +184,9 @@
       "text": "Compose a haiku about autumn leaves falling",
       "category": "creative",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
       ],
       "description": "Poetry creation with specific format constraints",
       "difficulty": "easy",
@@ -165,7 +202,14 @@
       "text": "Create a REST API endpoint in Node.js for user authentication using JWT tokens",
       "category": "code",
       "preferred_models": [
-        "gpt-4"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Web API development task",
       "difficulty": "hard",
@@ -182,8 +226,9 @@
       "text": "Compare the performance metrics of our three marketing campaigns and recommend the best strategy",
       "category": "analysis",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.5-flash-lite"
       ],
       "description": "Comparative analysis and strategic recommendation",
       "difficulty": "hard",
@@ -197,10 +242,11 @@
     },
     {
       "text": "How does photosynthesis work at the molecular level?",
-      "category": "qa",
+      "category": "science",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
       ],
       "description": "Scientific explanation requiring detailed knowledge",
       "difficulty": "hard",
@@ -214,9 +260,14 @@
     },
     {
       "text": "Create a one-page executive summary of our Q3 financial results",
-      "category": "summarization",
+      "category": "writing",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
         "claude-3-haiku"
       ],
       "description": "Business document creation from data",
@@ -233,8 +284,9 @@
       "text": "Translate this technical manual from German to English while preserving technical terminology",
       "category": "translation",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4"
       ],
       "description": "Technical translation requiring domain expertise",
       "difficulty": "hard",
@@ -250,8 +302,9 @@
       "text": "Solve this logic puzzle: Three friends have different favorite colors. Alice doesn't like red. Bob's favorite isn't blue. Charlie likes green. What color does each person prefer?",
       "category": "reasoning",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Deductive reasoning puzzle",
       "difficulty": "medium",
@@ -265,10 +318,15 @@
     },
     {
       "text": "I'm planning a dinner party for 8 people. Can you help me create a menu and shopping list?",
-      "category": "qa",
+      "category": "conversation",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
-        "gpt-3.5-turbo"
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
       ],
       "description": "Practical planning assistance",
       "difficulty": "easy",
@@ -284,8 +342,9 @@
       "text": "Write an epic fantasy novel opening chapter featuring a young mage discovering their powers",
       "category": "creative",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
       ],
       "description": "Long-form creative writing with world-building",
       "difficulty": "hard",
@@ -302,7 +361,9 @@
       "text": "Implement a binary search tree in Java with insertion, deletion, and traversal methods",
       "category": "code",
       "preferred_models": [
-        "gpt-4"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Data structure implementation",
       "difficulty": "hard",
@@ -318,8 +379,14 @@
       "text": "Analyze the correlation between website traffic and sales conversion rates over the past year",
       "category": "analysis",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
         "gpt-4",
-        "claude-3-haiku"
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Statistical analysis and correlation study",
       "difficulty": "hard",
@@ -335,9 +402,9 @@
       "text": "What's the difference between machine learning and artificial intelligence?",
       "category": "qa",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Conceptual explanation of related technical terms",
       "difficulty": "medium",
@@ -353,8 +420,9 @@
       "text": "Condense this 50-page legal document into key legal obligations and requirements",
       "category": "summarization",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "gemini-2.5-flash-lite"
       ],
       "description": "Legal document analysis and summarization",
       "difficulty": "hard",
@@ -370,8 +438,14 @@
       "text": "Translate this poem from Spanish to English while maintaining the rhyme scheme and meter",
       "category": "translation",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "claude-3-haiku",
+        "grok-4-fast:free",
+        "gpt-3.5-turbo"
       ],
       "description": "Literary translation with artistic constraints",
       "difficulty": "hard",
@@ -387,8 +461,9 @@
       "text": "Given that the trolley problem has no clear ethical solution, how should autonomous vehicles be programmed to make decisions in unavoidable accident scenarios?",
       "category": "reasoning",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Complex ethical reasoning and practical application",
       "difficulty": "hard",
@@ -402,10 +477,11 @@
     },
     {
       "text": "I'm feeling overwhelmed with work and personal responsibilities. How can I better manage my time and stress?",
-      "category": "qa",
+      "category": "conversation",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Personal advice and emotional support",
       "difficulty": "medium",
@@ -421,7 +497,13 @@
       "text": "Write a limerick about a programmer who loves coffee",
       "category": "creative",
       "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4",
+        "gemini-2.5-flash-lite",
         "gpt-4",
+        "grok-4-fast:free",
+        "claude-3-haiku",
         "gpt-3.5-turbo"
       ],
       "description": "Humorous poetry with specific format",
@@ -438,7 +520,9 @@
       "text": "Build a React component for a responsive navigation menu with dropdown submenus",
       "category": "code",
       "preferred_models": [
-        "gpt-4"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.5-flash-lite"
       ],
       "description": "Frontend component development",
       "difficulty": "medium",
@@ -455,8 +539,9 @@
       "text": "Identify patterns in customer churn data and predict which customers are most likely to cancel",
       "category": "analysis",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gpt-4"
       ],
       "description": "Predictive analytics and pattern recognition",
       "difficulty": "hard",
@@ -472,8 +557,14 @@
       "text": "Why do cats purr?",
       "category": "qa",
       "preferred_models": [
-        "gpt-3.5-turbo",
-        "gpt-4"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Simple factual question about animal behavior",
       "difficulty": "easy",
@@ -489,8 +580,9 @@
       "text": "Extract the main findings and methodology from this scientific research paper",
       "category": "summarization",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4"
       ],
       "description": "Academic paper analysis and extraction",
       "difficulty": "hard",
@@ -506,8 +598,9 @@
       "text": "Convert this English business email to formal Japanese business correspondence",
       "category": "translation",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4"
       ],
       "description": "Business translation with cultural adaptation",
       "difficulty": "hard",
@@ -522,11 +615,14 @@
     },
     {
       "text": "A farmer has 17 sheep. All but 9 die. How many sheep are left? Explain your reasoning.",
-      "category": "reasoning",
+      "category": "math",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "gpt-4"
       ],
       "description": "Word problem requiring careful reading and logic",
       "difficulty": "easy",
@@ -540,10 +636,11 @@
     },
     {
       "text": "Can you recommend some good books similar to 'The Hitchhiker's Guide to the Galaxy'?",
-      "category": "qa",
+      "category": "conversation",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Recommendation request based on preferences",
       "difficulty": "easy",
@@ -559,8 +656,9 @@
       "text": "Create a detailed character backstory for a cyberpunk detective in Neo-Tokyo",
       "category": "creative",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
       ],
       "description": "Character development for specific genre and setting",
       "difficulty": "medium",
@@ -577,7 +675,14 @@
       "text": "Write a SQL query to find the top 10 customers by total purchase amount in the last 6 months",
       "category": "code",
       "preferred_models": [
-        "gpt-4"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Database query for business analytics",
       "difficulty": "medium",
@@ -593,8 +698,9 @@
       "text": "Create a statistical model to forecast next quarter's revenue based on historical data",
       "category": "analysis",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gpt-4"
       ],
       "description": "Financial forecasting and statistical modeling",
       "difficulty": "hard",
@@ -608,10 +714,11 @@
     },
     {
       "text": "Explain quantum computing in simple terms that a high school student could understand",
-      "category": "qa",
+      "category": "science",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "gpt-4"
       ],
       "description": "Complex technical explanation simplified for general audience",
       "difficulty": "medium",
@@ -627,8 +734,14 @@
       "text": "Summarize the key takeaways from our 2-hour board meeting into actionable next steps",
       "category": "summarization",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
+        "gpt-3.5-turbo"
       ],
       "description": "Meeting summary with action item extraction",
       "difficulty": "medium",
@@ -644,8 +757,9 @@
       "text": "Translate this medical diagnosis from Latin medical terms to plain English for patient understanding",
       "category": "translation",
       "preferred_models": [
+        "gpt-5",
         "gpt-4",
-        "claude-3-haiku"
+        "claude-sonnet-4"
       ],
       "description": "Medical translation and simplification",
       "difficulty": "hard",
@@ -661,8 +775,9 @@
       "text": "If you could travel back in time and change one historical event, what would it be and what might be the consequences?",
       "category": "reasoning",
       "preferred_models": [
-        "gpt-4",
-        "claude-3-haiku"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Hypothetical reasoning about historical cause and effect",
       "difficulty": "hard",
@@ -676,10 +791,15 @@
     },
     {
       "text": "I'm new to gardening. What vegetables are easiest to grow for a beginner?",
-      "category": "qa",
+      "category": "conversation",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
-        "gpt-3.5-turbo"
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
       ],
       "description": "Practical advice for beginners",
       "difficulty": "easy",
@@ -695,8 +815,9 @@
       "text": "Write a Python function to sort a list of numbers",
       "category": "code",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gpt-4"
       ],
       "description": "Basic Python sorting function",
       "difficulty": "easy",
@@ -712,8 +833,9 @@
       "text": "Create a simple Python function to reverse a string",
       "category": "code",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Basic string manipulation in Python",
       "difficulty": "easy",
@@ -729,7 +851,13 @@
       "text": "Write a Python function to find the maximum number in a list",
       "category": "code",
       "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
         "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku",
         "gpt-3.5-turbo"
       ],
       "description": "Basic list processing in Python",
@@ -746,8 +874,9 @@
       "text": "Create a Python function to check if a number is prime",
       "category": "code",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Basic mathematical function in Python",
       "difficulty": "easy",
@@ -763,8 +892,9 @@
       "text": "Write a Python function to count words in a string",
       "category": "code",
       "preferred_models": [
-        "gpt-4",
-        "gpt-3.5-turbo"
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
       ],
       "description": "Basic text processing in Python",
       "difficulty": "easy",
@@ -774,6 +904,469 @@
         "python",
         "text",
         "basic"
+      ]
+    },
+    {
+      "text": "Calculate the derivative of f(x) = x^3 + 2x^2 - 5x + 1",
+      "category": "math",
+      "preferred_models": [
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "gpt-4"
+      ],
+      "description": "Calculus problem requiring mathematical computation",
+      "difficulty": "medium",
+      "expected_length": "short",
+      "domain": "mathematics",
+      "tags": [
+        "calculus",
+        "derivative",
+        "polynomial"
+      ]
+    },
+    {
+      "text": "Solve the quadratic equation: x^2 - 7x + 12 = 0",
+      "category": "math",
+      "preferred_models": [
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4"
+      ],
+      "description": "Algebra problem requiring quadratic formula",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "mathematics",
+      "tags": [
+        "algebra",
+        "quadratic",
+        "equation"
+      ]
+    },
+    {
+      "text": "What is the probability of rolling two sixes with a pair of dice?",
+      "category": "math",
+      "preferred_models": [
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4"
+      ],
+      "description": "Probability calculation problem",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "mathematics",
+      "tags": [
+        "probability",
+        "dice",
+        "statistics"
+      ]
+    },
+    {
+      "text": "Find the area of a circle with radius 5 cm",
+      "category": "math",
+      "preferred_models": [
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gemini-2.5-flash-lite",
+        "gpt-4"
+      ],
+      "description": "Basic geometry calculation",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "mathematics",
+      "tags": [
+        "geometry",
+        "circle",
+        "area"
+      ]
+    },
+    {
+      "text": "Calculate the compound interest on $1000 invested at 5% annual rate for 3 years",
+      "category": "math",
+      "preferred_models": [
+        "gpt-5",
+        "grok-4-fast:free",
+        "claude-sonnet-4"
+      ],
+      "description": "Financial mathematics problem",
+      "difficulty": "medium",
+      "expected_length": "short",
+      "domain": "mathematics",
+      "tags": [
+        "compound_interest",
+        "finance",
+        "calculation"
+      ]
+    },
+    {
+      "text": "Write a professional email to a client explaining a project delay",
+      "category": "writing",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.5-flash-lite"
+      ],
+      "description": "Business communication writing",
+      "difficulty": "medium",
+      "expected_length": "medium",
+      "domain": "business",
+      "tags": [
+        "email",
+        "professional",
+        "communication"
+      ]
+    },
+    {
+      "text": "Draft a product description for an eco-friendly water bottle",
+      "category": "writing",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
+      ],
+      "description": "Marketing copy writing",
+      "difficulty": "easy",
+      "expected_length": "medium",
+      "domain": "marketing",
+      "tags": [
+        "product_description",
+        "marketing",
+        "eco_friendly"
+      ]
+    },
+    {
+      "text": "Write a persuasive essay arguing for renewable energy adoption",
+      "category": "writing",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
+      ],
+      "description": "Persuasive writing with argumentation",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "academic",
+      "tags": [
+        "essay",
+        "persuasive",
+        "renewable_energy"
+      ]
+    },
+    {
+      "text": "Create a technical specification document for a mobile app feature",
+      "category": "writing",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
+      ],
+      "description": "Technical documentation writing",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "technology",
+      "tags": [
+        "technical_writing",
+        "specification",
+        "mobile_app"
+      ]
+    },
+    {
+      "text": "Write a user manual for a coffee maker",
+      "category": "writing",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
+      ],
+      "description": "Instructional writing",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "consumer_goods",
+      "tags": [
+        "user_manual",
+        "instructions",
+        "coffee_maker"
+      ]
+    },
+    {
+      "text": "Explain the process of cellular respiration in plants",
+      "category": "science",
+      "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "gpt-4"
+      ],
+      "description": "Biological process explanation",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "biology",
+      "tags": [
+        "cellular_respiration",
+        "plants",
+        "biology"
+      ]
+    },
+    {
+      "text": "Describe the structure and function of DNA",
+      "category": "science",
+      "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
+      ],
+      "description": "Molecular biology explanation",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "biology",
+      "tags": [
+        "dna",
+        "molecular_biology",
+        "genetics"
+      ]
+    },
+    {
+      "text": "Explain how a solar panel converts sunlight into electricity",
+      "category": "science",
+      "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4",
+        "gpt-4"
+      ],
+      "description": "Physics and engineering explanation",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "physics",
+      "tags": [
+        "solar_panel",
+        "physics",
+        "renewable_energy"
+      ]
+    },
+    {
+      "text": "What causes earthquakes and how are they measured?",
+      "category": "science",
+      "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
+      ],
+      "description": "Geological phenomenon explanation",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "geology",
+      "tags": [
+        "earthquakes",
+        "geology",
+        "seismology"
+      ]
+    },
+    {
+      "text": "Explain the greenhouse effect and its impact on climate change",
+      "category": "science",
+      "preferred_models": [
+        "gpt-5",
+        "gemini-2.0-flash-001",
+        "claude-sonnet-4"
+      ],
+      "description": "Environmental science explanation",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "environmental_science",
+      "tags": [
+        "greenhouse_effect",
+        "climate_change",
+        "environment"
+      ]
+    },
+    {
+      "text": "How can I help you today?",
+      "category": "conversation",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
+      ],
+      "description": "General conversational greeting",
+      "difficulty": "easy",
+      "expected_length": "short",
+      "domain": "general",
+      "tags": [
+        "greeting",
+        "conversation",
+        "general"
+      ]
+    },
+    {
+      "text": "I'm having trouble with my computer. Can you help me troubleshoot?",
+      "category": "conversation",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
+      ],
+      "description": "Technical support conversation",
+      "difficulty": "medium",
+      "expected_length": "medium",
+      "domain": "technology",
+      "tags": [
+        "troubleshooting",
+        "computer",
+        "technical_support"
+      ]
+    },
+    {
+      "text": "What's your opinion on the latest developments in artificial intelligence?",
+      "category": "conversation",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
+      ],
+      "description": "Opinion-based discussion",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "technology",
+      "tags": [
+        "opinion",
+        "ai",
+        "discussion"
+      ]
+    },
+    {
+      "text": "I'm looking for a good restaurant recommendation in downtown Seattle",
+      "category": "conversation",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001",
+        "gpt-4",
+        "gemini-2.5-flash-lite",
+        "grok-4-fast:free",
+        "claude-3-haiku"
+      ],
+      "description": "Recommendation request",
+      "difficulty": "easy",
+      "expected_length": "medium",
+      "domain": "lifestyle",
+      "tags": [
+        "recommendation",
+        "restaurant",
+        "seattle"
+      ]
+    },
+    {
+      "text": "Can you help me understand this complex legal contract?",
+      "category": "conversation",
+      "preferred_models": [
+        "gpt-5",
+        "claude-sonnet-4",
+        "gemini-2.0-flash-001"
+      ],
+      "description": "Complex topic explanation request",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "legal",
+      "tags": [
+        "legal",
+        "contract",
+        "explanation"
+      ]
+    },
+    {
+      "text": "Create a function that calls the weather API and returns the current temperature",
+      "category": "tool_use",
+      "preferred_models": [
+        "gpt-5"
+      ],
+      "description": "Function calling and API integration",
+      "difficulty": "medium",
+      "expected_length": "medium",
+      "domain": "programming",
+      "tags": [
+        "function_calling",
+        "api",
+        "weather"
+      ]
+    },
+    {
+      "text": "Write code that uses a calculator tool to solve complex mathematical equations",
+      "category": "tool_use",
+      "preferred_models": [
+        "gpt-5"
+      ],
+      "description": "Tool integration for mathematical computation",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "programming",
+      "tags": [
+        "tool_use",
+        "calculator",
+        "math"
+      ]
+    },
+    {
+      "text": "Create a script that uses a file system tool to organize documents by date",
+      "category": "tool_use",
+      "preferred_models": [
+        "gpt-5"
+      ],
+      "description": "File system manipulation using tools",
+      "difficulty": "medium",
+      "expected_length": "long",
+      "domain": "programming",
+      "tags": [
+        "file_system",
+        "organization",
+        "automation"
+      ]
+    },
+    {
+      "text": "Write a function that uses a database tool to query user information",
+      "category": "tool_use",
+      "preferred_models": [
+        "gpt-5"
+      ],
+      "description": "Database interaction using tools",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "programming",
+      "tags": [
+        "database",
+        "query",
+        "user_data"
+      ]
+    },
+    {
+      "text": "Create a web scraper that uses a browser tool to extract product prices",
+      "category": "tool_use",
+      "preferred_models": [
+        "gpt-5"
+      ],
+      "description": "Web scraping using browser automation tools",
+      "difficulty": "hard",
+      "expected_length": "long",
+      "domain": "programming",
+      "tags": [
+        "web_scraping",
+        "browser",
+        "automation"
       ]
     }
   ]

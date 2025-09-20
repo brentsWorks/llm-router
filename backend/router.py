@@ -141,7 +141,7 @@ class RouterService:
                     selected_model=model_candidate,
                     classification=classification,
                     routing_time_ms=10.5,  # Mock routing time
-                    confidence=selected_score,
+                    confidence=classification.confidence,  # Use classification confidence, not model score
                     reasoning=f"Selected {provider}/{model} for {classification.category} task. {classification.reasoning} (model score: {selected_score:.2f})"
                 )
 

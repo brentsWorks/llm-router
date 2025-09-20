@@ -30,7 +30,7 @@ class RAGClassifier:
         vector_service: VectorService,
         gemini_client: Optional[Any] = None,
         api_key: str = "",
-        confidence_threshold: float = 0.5,
+        confidence_threshold: float = 0.6,
         max_similar_examples: int = 3,
         model_name: str = "gemini-2.5-flash-lite"
     ):
@@ -104,8 +104,17 @@ class RAGClassifier:
                 # Create PromptClassification object with similarity-based confidence
                 return self._create_classification(classification_data, rag_confidence)
             else:
-                # Low similarity - RAG is not confident enough
-                raise RAGClassificationError(f"RAG confidence too low: {rag_confidence:.3f} < {self.confidence_threshold}")
+                # Low similarity - return a low confidence classification instead of raising error
+                # This allows the hybrid classifier to fall back to LLM
+                logger.warning(f"RAG confidence too low: {rag_confidence:.3f} < {self.confidence_threshold}, returning low confidence result")
+                
+                # Return a generic low confidence classification
+                return PromptClassification(
+                    category="qa",  # Default fallback category
+                    confidence=rag_confidence,  # Use the actual low confidence
+                    embedding=[],
+                    reasoning=f"RAG found low similarity matches (confidence: {rag_confidence:.3f}). This prompt may need LLM fallback classification."
+                )
             
         except Exception as e:
             if isinstance(e, RAGClassificationError):
@@ -153,12 +162,17 @@ class RAGClassifier:
         # Use the highest similarity score as the base confidence
         max_similarity = max(example.similarity for example in similar_examples)
         
-        # Apply a scaling factor to convert similarity to confidence
-        # Similarity scores are typically 0.0-1.0, but we want to be more conservative
-        # Scale by 2.0 to make the threshold more meaningful for our similarity range
-        confidence = min(max_similarity * 2.0, 1.0)
+        # More conservative scaling - similarity scores are already 0.0-1.0
+        # Use a gentler scaling to make thresholds more meaningful
+        confidence = min(max_similarity * 1.5, 1.0)
         
-        logger.debug(f"Similarity confidence: {confidence:.3f} (max similarity: {max_similarity:.3f})")
+        # Apply additional confidence boost for multiple good matches
+        if len(similar_examples) >= 2:
+            second_best = sorted([ex.similarity for ex in similar_examples], reverse=True)[1]
+            if second_best > 0.7:  # Multiple high-quality matches
+                confidence = min(confidence * 1.1, 1.0)
+        
+        logger.debug(f"Similarity confidence: {confidence:.3f} (max similarity: {max_similarity:.3f}, examples: {len(similar_examples)})")
         return confidence
 
     def _query_gemini(self, prompt: str, similar_examples: List[SearchResult]) -> str:
@@ -227,7 +241,7 @@ USER PROMPT: "{prompt}"
 
 Based on the similar examples and prompt content, provide a JSON response with the following structure:
 {{
-    "category": "one of: code, creative, qa, summarization, reasoning, tool_use, translation, analysis",
+    "category": "one of: code, creative, qa, summarization, reasoning, tool_use, translation, analysis, math, science, writing, conversation",
     "confidence": 0.85,
     "recommended_models": ["model1", "model2"],
     "reasoning": "Detailed explanation of why this classification was chosen"
@@ -242,6 +256,10 @@ Category mapping:
 - tool_use: Function calling, API usage, tool integration
 - translation: Language translation tasks
 - analysis: Data analysis, research, pattern recognition
+- math: Mathematical calculations, equations, numerical problems
+- science: Scientific explanations, processes, natural phenomena
+- writing: Professional writing, emails, documents, communication
+- conversation: Interactive dialogue, personal advice, casual chat
 
 Guidelines:
 - Use the similar examples to inform your classification
@@ -297,7 +315,8 @@ Respond with ONLY the JSON object, no additional text."""
             # Validate category
             valid_categories = [
                 "code", "creative", "qa", "summarization", 
-                "reasoning", "tool_use", "translation", "analysis"
+                "reasoning", "tool_use", "translation", "analysis",
+                "math", "science", "writing", "conversation"
             ]
             
             if data["category"] not in valid_categories:

@@ -29,6 +29,11 @@ class PromptCategory(Enum):
     SUMMARIZATION = "summarization"
     TRANSLATION = "translation"
     REASONING = "reasoning"
+    MATH = "math"
+    SCIENCE = "science"
+    WRITING = "writing"
+    CONVERSATION = "conversation"
+    TOOL_USE = "tool_use"
 
 
 @dataclass

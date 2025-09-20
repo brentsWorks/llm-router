@@ -20,6 +20,10 @@ class TaskType(Enum):
     TOOL_USE = "tool_use"
     TRANSLATION = "translation"
     ANALYSIS = "analysis"
+    MATH = "math"
+    SCIENCE = "science"
+    WRITING = "writing"
+    CONVERSATION = "conversation"
 
 
 class SafetyLevel(Enum):

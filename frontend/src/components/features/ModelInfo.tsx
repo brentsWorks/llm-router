@@ -13,6 +13,9 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
   showDetails = true,
 }) => {
   const formatPrice = (price: number) => {
+    if (price === 0) {
+      return 'Free';
+    }
     return `$${price.toFixed(4)}`;
   };
 
@@ -81,36 +84,34 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
               {formatLatency(modelData.estimatedLatency)} latency
             </div>
             <div className="text-gray-600">
-              {modelData.estimatedCost > 0 ? `$${modelData.estimatedCost.toFixed(4)} cost` : 'Cost not available'}
+              {modelData.estimatedCost > 0 ? formatPrice(modelData.estimatedCost) + ' cost' : 'Free'}
             </div>
           </div>
         </div>
 
-        {/* Selection reasoning highlights */}
+        {/* Performance Metrics */}
         {isSelected && (
           <div className="mt-3 pt-3 border-t border-gray-200">
-            <div className="text-xs text-gray-500 mb-2">Why this model excels:</div>
-            <div className="flex flex-wrap gap-1">
-              {modelData.qualityMatch > 0.8 && (
-                <span className="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
-                  High Quality Match
+            <div className="text-xs text-gray-500 mb-2">Performance Metrics:</div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="flex justify-between">
+                <span className="text-gray-500">Quality:</span>
+                <span className="font-medium">{(modelData.qualityMatch * 100).toFixed(0)}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Speed:</span>
+                <span className="font-medium">{modelData.estimatedLatency < 1000 ? 'Fast' : 'Moderate'}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Cost:</span>
+                <span className="font-medium">
+                  {modelData.estimatedCost === 0 ? 'Free' : modelData.estimatedCost < 0.01 ? 'Low' : 'Moderate'}
                 </span>
-              )}
-              {modelData.estimatedCost < 0.01 && (
-                <span className="px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">
-                  Cost Effective
-                </span>
-              )}
-              {modelData.estimatedLatency < 1000 && (
-                <span className="px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
-                  Fast Response
-                </span>
-              )}
-              {modelData.constraintViolations.length === 0 && (
-                <span className="px-2 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full">
-                  No Constraints
-                </span>
-              )}
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-500">Constraints:</span>
+                <span className="font-medium">{modelData.constraintViolations.length === 0 ? 'None' : modelData.constraintViolations.length}</span>
+              </div>
             </div>
           </div>
         )}
