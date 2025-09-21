@@ -699,11 +699,6 @@ bundle-analyzer-report.html
 .firebase
 .surge
 
-# Docker for frontend
-frontend/Dockerfile
-frontend/docker-compose.yml
-frontend/.dockerignore
-
 # =======================================================================================
 # End of .gitignore
 # =======================================================================================
