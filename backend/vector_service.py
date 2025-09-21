@@ -55,7 +55,7 @@ class VectorService:
         )
         
         # Initialize embedding service
-        self.embedding_service = EmbeddingService(use_cache=True)
+        self.embedding_service = EmbeddingService(use_cache=False)  # Disable cache for development
         
         logger.info(f"Vector service initialized with Pinecone index: {self.index_name}")
     

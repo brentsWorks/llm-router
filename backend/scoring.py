@@ -69,7 +69,7 @@ class ScoringEngine:
         """Initialize the scoring engine."""
         # Reference values for normalization (can be updated based on registry data)
         self._reference_cost = 0.01  # $0.01 per 1K tokens as baseline
-        self._reference_latency = 100.0  # 100ms as baseline
+        self._reference_latency = 300.0  # 300ms as baseline (GPT-3.5 Turbo)
         self._max_acceptable_latency = 10000.0  # 10 seconds as maximum
 
     def calculate_score(
@@ -139,21 +139,26 @@ class ScoringEngine:
         # Calculate total cost for estimated tokens
         total_cost = self.calculate_actual_cost(model, estimated_tokens)
         
-        # Handle zero cost (e.g., local models)
+        # Handle zero cost (e.g., free models) - give them the highest score
         if total_cost == 0.0:
             return 1.0
         
-        # Score based on cost relative to reference
-        if total_cost <= self._reference_cost:
-            return 1.0  # Very cheap
-        elif total_cost <= self._reference_cost * 10:
-            return 0.8  # Cheap
-        elif total_cost <= self._reference_cost * 100:
-            return 0.6  # Moderate
-        elif total_cost <= self._reference_cost * 1000:
-            return 0.4  # Expensive
+        # Use logarithmic scaling to better differentiate between cheap models
+        # This ensures free models (1.0) are clearly better than cheap models
+        if total_cost <= self._reference_cost * 0.1:  # Very cheap (under $0.001)
+            return 0.95
+        elif total_cost <= self._reference_cost:  # Cheap (under $0.01)
+            return 0.85
+        elif total_cost <= self._reference_cost * 2:  # Moderate cheap (under $0.02)
+            return 0.75
+        elif total_cost <= self._reference_cost * 5:  # Moderate (under $0.05)
+            return 0.60
+        elif total_cost <= self._reference_cost * 10:  # Expensive (under $0.10)
+            return 0.40
+        elif total_cost <= self._reference_cost * 50:  # Very expensive (under $0.50)
+            return 0.20
         else:
-            return 0.2  # Very expensive
+            return 0.10  # Extremely expensive
 
     def _calculate_latency_score(self, model: ProviderModel) -> float:
         """Calculate latency score (0=slow, 1=fast)."""

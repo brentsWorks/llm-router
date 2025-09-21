@@ -359,6 +359,27 @@ async def health_check():
         total_requests=REQUEST_METRICS["total_requests"]
     )
 
+@app.post("/clear-cache")
+async def clear_cache():
+    """Clear all caches (for development)."""
+    try:
+        # Clear embedding cache if available
+        if hasattr(classifier, 'embedding_service') and hasattr(classifier.embedding_service, 'clear_cache'):
+            classifier.embedding_service.clear_cache()
+        
+        return {
+            "status": "success",
+            "message": "Caches cleared successfully",
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
+        }
+    except Exception as e:
+        logger.error(f"Failed to clear cache: {str(e)}")
+        return {
+            "status": "error",
+            "message": f"Failed to clear cache: {str(e)}",
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime())
+        }
+
 @app.get("/metrics", response_model=MetricsResponse)
 async def get_metrics():
     """Get API performance metrics."""

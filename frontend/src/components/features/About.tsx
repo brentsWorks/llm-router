@@ -120,6 +120,52 @@ export const About: React.FC = () => {
         </Card>
       </div>
 
+      {/* Quick Model Overview */}
+      <Card padding="lg">
+        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+          🤖 Supported Models
+        </h3>
+        <p className="text-sm text-gray-600 mb-4">
+          Our router supports 8 state-of-the-art language models from leading providers. 
+          Visit the <strong>Models</strong> tab to explore detailed performance metrics, 
+          compare capabilities, and filter by specific criteria.
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">Claude Sonnet 4</div>
+            <div className="text-xs text-gray-500">Anthropic</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">GPT-5</div>
+            <div className="text-xs text-gray-500">OpenAI</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">Gemini 2.0 Flash</div>
+            <div className="text-xs text-gray-500">Google</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">GPT-4</div>
+            <div className="text-xs text-gray-500">OpenAI</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">Gemini 2.5 Flash Lite</div>
+            <div className="text-xs text-gray-500">Google</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">Grok-4 Fast</div>
+            <div className="text-xs text-gray-500">xAI</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">Claude 3 Haiku</div>
+            <div className="text-xs text-gray-500">Anthropic</div>
+          </div>
+          <div className="text-center p-3 bg-gray-50 rounded-lg">
+            <div className="font-medium text-gray-900">GPT-3.5 Turbo</div>
+            <div className="text-xs text-gray-500">OpenAI</div>
+          </div>
+        </div>
+      </Card>
+
       {/* Technical Details */}
       <Card padding="lg">
         <h3 className="text-xl font-semibold text-gray-900 mb-4">
@@ -145,7 +191,7 @@ export const About: React.FC = () => {
             <ul className="text-sm text-gray-600 ml-4 space-y-1">
               <li>• <strong>Quality Score:</strong> How well the model performs for the specific capability needed (e.g., 95% for GPT-5 on code tasks, 89% for Gemini on creative writing)</li>
               <li>• <strong>Cost Efficiency:</strong> Price per 1K tokens with realistic input/output splits</li>
-              <li>• <strong>Latency:</strong> Average response time in milliseconds</li>
+              <li>• <strong>Latency:</strong> Median response time to first token, in milliseconds</li>
             </ul>
             <p className="text-xs text-gray-500 mt-2 italic">
               The quality score helps you understand not just that a model was selected, but how well-suited it is for your specific type of prompt.
