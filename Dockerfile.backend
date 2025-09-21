@@ -13,11 +13,12 @@ RUN apt-get update && apt-get install -y \
 
 # Copy requirements and source code
 COPY pyproject.toml ./
+COPY README.md ./
 COPY backend/ ./backend/
 COPY scripts/ ./scripts/
 
-# Install dependencies from pyproject.toml
-RUN pip install --no-cache-dir -e .
+# Install dependencies directly from pyproject.toml without editable install
+RUN pip install --no-cache-dir .
 
 # Create non-root user
 RUN useradd --create-home --shell /bin/bash app && \
