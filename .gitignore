@@ -448,7 +448,6 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Package manager lock files (keep one, ignore others)
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
