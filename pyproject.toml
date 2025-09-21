@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "llm-router"
-dynamic = ["version"]
+version = "1.0.0"
 description = "Hybrid LLM Router backed by semantic prompt analysis and LLM-assisted fallback decision making"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -65,8 +65,6 @@ Homepage = "https://github.com/yourusername/llm-router"
 "Bug Reports" = "https://github.com/yourusername/llm-router/issues"
 "Source" = "https://github.com/yourusername/llm-router"
 
-[tool.hatch.version]
-path = "llm_router/__init__.py"
 
 [tool.pytest.ini_options]
 minversion = "7.0"
