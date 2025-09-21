@@ -1,16 +1,18 @@
 FROM node:18-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (including dev dependencies for build)
+# Install dependencies
 RUN npm ci
 
 # Copy source code
 COPY . ./
+
+# Set environment variable for production build
+ENV VITE_API_BASE_URL=https://llm-router-production-bce4.up.railway.app
 
 # Build the application
 RUN npm run build
@@ -18,21 +20,27 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
-# Install curl for health checks
-RUN apk add --no-cache curl
-
 # Copy built assets
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Create minimal nginx config for React SPA
+RUN echo 'server { \
+    listen 80; \
+    server_name _; \
+    root /usr/share/nginx/html; \
+    index index.html; \
+    location / { \
+        try_files $uri $uri/ /index.html; \
+    } \
+    location /health { \
+        return 200 "OK"; \
+        add_header Content-Type text/plain; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
-# Expose port
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf.default 2>/dev/null || true
+
 EXPOSE 80
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
-
-# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
