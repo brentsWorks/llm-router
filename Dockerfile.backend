@@ -26,7 +26,7 @@ RUN useradd --create-home --shell /bin/bash app && \
 USER app
 
 # Expose port
-EXPOSE 8000
+EXPOSE $PORT
 
 # Add current directory to Python path for imports
 ENV PYTHONPATH=/app
