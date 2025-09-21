@@ -32,10 +32,6 @@ RUN echo 'server { \
     location / { \
         try_files $uri $uri/ /index.html; \
     } \
-    location /health { \
-        return 200 "OK"; \
-        add_header Content-Type text/plain; \
-    } \
 }' > /etc/nginx/conf.d/default.conf
 
 # Remove default nginx config
