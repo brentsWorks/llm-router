@@ -17,11 +17,17 @@ ENV VITE_API_BASE_URL=https://llm-router-production-bce4.up.railway.app
 # Build the application
 RUN npm run build
 
+# Debug: List build output
+RUN ls -la /app/dist
+
 # Production stage
 FROM nginx:alpine
 
 # Copy built assets
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Debug: Verify files copied
+RUN ls -la /usr/share/nginx/html
 
 # Create minimal nginx config for React SPA
 RUN echo 'server { \
