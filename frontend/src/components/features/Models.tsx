@@ -169,7 +169,7 @@ export const Models: React.FC = () => {
 
         {/* Models List */}
         <div className="space-y-3">
-          {getFilteredModels().map((model, index) => (
+          {getFilteredModels().map((model) => (
             <div key={model.name} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center space-x-3">

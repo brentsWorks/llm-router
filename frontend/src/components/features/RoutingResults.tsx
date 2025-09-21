@@ -1,6 +1,5 @@
 import type { RouteResponse } from '../../types/api.ts';
 import { ModelInfo } from './ModelInfo.tsx';
-import { Card } from '../ui/Card.tsx';
 import { Button } from '../ui/Button.tsx';
 
 interface RoutingResultsProps {

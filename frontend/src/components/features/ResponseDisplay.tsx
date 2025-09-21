@@ -1,4 +1,3 @@
-import { Card } from '../ui/Card.tsx';
 import { Button } from '../ui/Button.tsx';
 
 interface ResponseDisplayProps {

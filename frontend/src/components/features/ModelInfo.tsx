@@ -23,9 +23,6 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
     return `${latency}ms`;
   };
 
-  const getQualityScore = (scores: Record<string, any>, category: string) => {
-    return scores?.[category] || 0;
-  };
 
   // Handle ModelCandidate structure from backend
   const getModelData = (model: any) => {

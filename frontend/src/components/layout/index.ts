@@ -1,3 +1,2 @@
 // Layout Components
-export { Header } from './Header'
-export { Footer } from './Footer'
+// TODO: Add Header and Footer components when needed
