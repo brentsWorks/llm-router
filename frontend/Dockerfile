@@ -31,7 +31,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
 # Start nginx
