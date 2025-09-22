@@ -7,8 +7,7 @@ import type {
   HealthResponse, 
   ModelsResponse 
 } from '../types/api.ts';
-
-const API_BASE_URL = 'http://localhost:8000';
+import { API_BASE_URL } from '../constants/index.ts';
 
 class ApiError extends Error {
   status: number;
