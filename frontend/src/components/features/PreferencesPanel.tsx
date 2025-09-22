@@ -42,7 +42,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
   className = '',
 }) => {
   const [localPreferences, setLocalPreferences] = useState<Preferences>(preferences);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     setLocalPreferences(preferences);
