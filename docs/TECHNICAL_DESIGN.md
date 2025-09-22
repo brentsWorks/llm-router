@@ -5,7 +5,6 @@
 A complete full-stack web application that provides intelligent LLM routing as a service. The application automatically selects the optimal language model for each task and executes prompts through OpenRouter's unified API, providing real-time LLM responses with intelligent model selection.
 
 **Business Model**: Production-ready web application with OpenRouter integration
-**Development Approach**: Test-Driven Development (TDD) with Red-Green-Refactor cycles
 **Current Status**: **PROJECT COMPLETE** - Full-stack application with React frontend and FastAPI backend
 
 ## Architecture
@@ -98,13 +97,13 @@ async def execute_prompt(request: ExecuteRequest):
 - **Technology**: Pinecone vector search + Gemini Pro/Flash for edge cases
 - **Components**:
   - Embedding Service (sentence-transformers with caching)
-  - Vector Store (Pinecone with 120 curated examples)
+  - Vector Store (Pinecone with 70 curated examples)
   - RAG Classifier (semantic similarity with confidence thresholds)
   - LLM Fallback (Gemini Pro/Flash for novel prompt types)
   - Confidence Manager (intelligent fallback decisions)
 
 #### 4. OpenRouter Integration - ✅ COMPLETED
-- **Purpose**: Unified access to 100+ models from all major providers
+- **Purpose**: Unified access to (currently) 7+ models from all major providers
 - **Technology**: OpenRouter API with real LLM execution
 - **Components**:
   - OpenRouter Client (unified API for all providers)
@@ -114,7 +113,7 @@ async def execute_prompt(request: ExecuteRequest):
 
 #### 5. Provider Registry - ✅ COMPLETED
 - **Purpose**: Central repository of available models and their capabilities
-- **Status**: Fully implemented with 12+ models and comprehensive data
+- **Status**: Fully implemented with 7+ models and comprehensive data
 - **Schema**:
   ```json
   {
@@ -152,11 +151,6 @@ async def execute_prompt(request: ExecuteRequest):
 
 #### 6. Scoring Engine - ✅ COMPLETED
 - **Purpose**: Calculate optimal model based on weighted preferences
-- **Status**: Fully implemented with comprehensive testing
-- **Scoring Function**:
-  ```
-  Score = w₁×Quality + w₂×(1/Cost) + w₃×(1/Latency) + w₄×ContextMatch
-  ```
 - **Components**:
   - Weight Configuration Manager
   - Constraint Validator (hard constraints)
@@ -198,20 +192,12 @@ async def execute_prompt(request: ExecuteRequest):
   - Quality requirements
   - Provider preferences
 
-## Test-Driven Development Strategy
-
-### Testing Philosophy
-1. **Red-Green-Refactor**: Write failing tests first, implement minimal code to pass, then refactor
-2. **Test Pyramid**: Unit tests (70%) → Integration tests (20%) → End-to-end tests (10%)
-3. **Behavior-Driven**: Tests describe business value and expected behaviors
-4. **Fast Feedback**: Tests must be fast and reliable for continuous development
-
 ### Production Status
 - **Project Status**: **COMPLETE** - Full-stack application deployed and ready
 - **Frontend**: React application with three-tab interface (Router, Models, About)
 - **Backend**: FastAPI with OpenRouter integration and hybrid classification
 - **Deployment**: Railway with Docker containers and Nginx configuration
-- **Data**: 120 curated examples, 12+ models with accurate pricing and latency data
+- **Data**: 70 curated examples, 7+ models with accurate pricing and latency data
 
 ### Production Features
 
@@ -447,7 +433,7 @@ interface RouteResponse {
 ## Current Implementation Status
 
 ### ✅ **Completed Components (100%)**
-- **Provider Registry**: Full implementation with 12+ models and comprehensive data
+- **Provider Registry**: Full implementation with 7+ models and comprehensive data
 - **Scoring Engine**: Multi-factor scoring with custom weights and constraints
 - **Constraint Validation**: 6 constraint types with comprehensive validation
 - **Model Ranking**: Intelligent ranking with performance measurement
@@ -481,7 +467,7 @@ interface RouteResponse {
 - **Frontend**: React application with three-tab interface (Router, Models, About)
 - **Backend**: FastAPI with OpenRouter integration and hybrid classification
 - **Deployment**: Railway with Docker containers and Nginx configuration
-- **Data**: 120 curated examples, 12+ models with accurate pricing and latency
+- **Data**: 70 curated examples, 7+ models with accurate pricing and latency
 
 ### 🚀 **Production Ready Features**
 - **Real LLM Execution**: Complete OpenRouter integration with 100+ models

@@ -168,14 +168,14 @@ This roadmap breaks down the LLM Router project into atomic, implementable tasks
 
 ### 7.2 Example Dataset ✅ COMPLETED
 - [x] **Task**: Create and load example prompt dataset (COMPLETED)
-  - [x] Create curated example dataset with 120 high-quality prompts
+  - [x] Create curated example dataset with 70 high-quality prompts
   - [x] Implement dataset loader with Pydantic validation
   - [x] **Result**: Comprehensive dataset with embeddings and metadata for training/testing
 
 ### 7.3 Vector Similarity Search ✅ COMPLETED
 - [x] **Task**: Implement semantic similarity search (COMPLETED)
   - [x] Implement Pinecone vector store with production deployment
-  - [x] **Result**: Production Pinecone deployment with 120 examples and semantic search
+  - [x] **Result**: Production Pinecone deployment with 70 examples and semantic search
 
 ### 7.4 RAG Integration ✅ COMPLETED
 - [x] **Task**: Implement hybrid classification with semantic retrieval (COMPLETED)
@@ -247,11 +247,11 @@ This roadmap breaks down the LLM Router project into atomic, implementable tasks
 - **Frontend**: React application with three-tab interface (Router, Models, About)
 - **Backend**: FastAPI with OpenRouter integration and hybrid classification
 - **Deployment**: Railway with Docker containers and Nginx configuration
-- **Data**: 120 curated examples, 12+ models with accurate pricing and latency data
+- **Data**: 70 curated examples, 7+ models with accurate pricing and latency data
 
 ### 🚀 Ready for Use
 - **Intelligent Routing**: Hybrid RAG + LLM classification with confidence thresholds
-- **Real LLM Execution**: Complete OpenRouter integration with 100+ models
+- **Real LLM Execution**: Complete OpenRouter integration with (currently) 7+ models
 - **Interactive UI**: Model comparison, capability filtering, and real-time routing
 - **Production Features**: Error handling, monitoring, caching, and security
 
