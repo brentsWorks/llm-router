@@ -168,11 +168,11 @@ export const Models: React.FC = () => {
         </div>
 
         {/* Models List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {getFilteredModels().map((model) => (
-            <div key={model.name} className="p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <div className="flex items-start justify-between mb-2">
-                <div className="flex items-center space-x-3">
+            <div key={model.name} className="p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 sm:mb-2">
+                <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-3 mb-2 sm:mb-0">
                   <div className="text-sm font-medium text-gray-900">
                     {model.name}
                   </div>
@@ -185,7 +185,7 @@ export const Models: React.FC = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${model.badgeColor}`}>
                     {model.badge}
                   </span>

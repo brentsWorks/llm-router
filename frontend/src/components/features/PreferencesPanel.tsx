@@ -74,15 +74,47 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
     const otherTotal = otherKeys.reduce((sum, k) => sum + localPreferences[k], 0);
     const remaining = 1 - value;
     
-    if (remaining <= 0) return;
+    // Handle edge cases
+    if (remaining <= 0) {
+      // If this slider is set to 1.0, set others to 0
+      const updated = { ...localPreferences };
+      updated[key] = 1;
+      otherKeys.forEach(k => {
+        updated[k] = 0;
+      });
+      setLocalPreferences(updated);
+      onPreferencesChange(updated);
+      return;
+    }
+    
+    if (remaining >= 1) {
+      // If this slider is set to 0, distribute remaining equally
+      const updated = { ...localPreferences };
+      updated[key] = 0;
+      const equalShare = remaining / otherKeys.length;
+      otherKeys.forEach(k => {
+        updated[k] = equalShare;
+      });
+      setLocalPreferences(updated);
+      onPreferencesChange(updated);
+      return;
+    }
     
     const updated = { ...localPreferences };
     updated[key] = value;
     
-    // Distribute remaining weight proportionally
-    otherKeys.forEach(k => {
-      updated[k] = (localPreferences[k] / otherTotal) * remaining;
-    });
+    // Distribute remaining weight proportionally (avoid division by zero)
+    if (otherTotal > 0) {
+      otherKeys.forEach(k => {
+        updated[k] = (localPreferences[k] / otherTotal) * remaining;
+      });
+    } else {
+      // If other weights are all 0, distribute equally
+      const equalShare = remaining / otherKeys.length;
+      otherKeys.forEach(k => {
+        updated[k] = equalShare;
+      });
+    }
     
     setLocalPreferences(updated);
     onPreferencesChange(updated);
@@ -118,7 +150,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
               onChange={(value) => handleWeightChange('cost_weight', value)}
               min={0}
               max={1}
-              step={0.05}
+              step={0.01}
             />
             
             <Slider
@@ -127,7 +159,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
               onChange={(value) => handleWeightChange('latency_weight', value)}
               min={0}
               max={1}
-              step={0.05}
+              step={0.01}
             />
             
             <Slider
@@ -136,7 +168,7 @@ export const PreferencesPanel: React.FC<PreferencesPanelProps> = ({
               onChange={(value) => handleWeightChange('quality_weight', value)}
               min={0}
               max={1}
-              step={0.05}
+              step={0.01}
             />
           </div>
         </div>

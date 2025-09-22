@@ -165,10 +165,10 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences, o
 
         {/* Results Grid - Side by side when available */}
         {(routingResults || executionResults) && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
             {/* Routing Results - Left side */}
             {routingResults && (
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
                 <RoutingResults 
                   results={routingResults}
                   onExecute={handleExecute}
@@ -179,7 +179,7 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences, o
 
             {/* Execution Results - Right side */}
             {executionResults && (
-              <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <div className="bg-white rounded-lg border border-gray-200 p-3 sm:p-4">
                 <ResponseDisplay
                   response={executionResults.llm_response}
                   modelUsed={executionResults.model_used}

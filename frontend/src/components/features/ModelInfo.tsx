@@ -5,12 +5,14 @@ interface ModelInfoProps {
   model: ModelInfoType;
   isSelected?: boolean;
   showDetails?: boolean;
+  category?: string;
 }
 
 export const ModelInfo: React.FC<ModelInfoProps> = ({
   model,
   isSelected = false,
   showDetails = true,
+  category,
 }) => {
   const formatPrice = (price: number) => {
     if (price === 0) {
@@ -65,7 +67,7 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
           <div>
             <span className="text-gray-500">Score:</span>
             <div className="font-medium flex items-center gap-1">
-              {modelData.score.toFixed(3)}
+              {modelData.score.toFixed(2)}
               {isSelected && modelData.score > 0.8 && (
                 <span className="text-xs text-green-600">⭐</span>
               )}
@@ -92,7 +94,9 @@ export const ModelInfo: React.FC<ModelInfoProps> = ({
             <div className="text-xs text-gray-500 mb-2">Performance Metrics:</div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-gray-500">Quality:</span>
+                <span className="text-gray-500">
+                  {category ? `${category.charAt(0).toUpperCase() + category.slice(1)} Quality:` : 'Quality:'}
+                </span>
                 <span className="font-medium">{(modelData.qualityMatch * 100).toFixed(0)}%</span>
               </div>
               <div className="flex justify-between">

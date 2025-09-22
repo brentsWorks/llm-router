@@ -23,6 +23,20 @@ export const Slider: React.FC<SliderProps> = ({
 }) => {
   const percentage = ((value - min) / (max - min)) * 100;
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = parseFloat(e.target.value);
+    
+    // Snap to edges for easier 0/1 selection
+    const snapThreshold = 0.05;
+    if (newValue <= min + snapThreshold) {
+      newValue = min;
+    } else if (newValue >= max - snapThreshold) {
+      newValue = max;
+    }
+    
+    onChange(newValue);
+  };
+
   return (
     <div className={`w-full ${className}`}>
       {label && (
@@ -37,7 +51,7 @@ export const Slider: React.FC<SliderProps> = ({
           max={max}
           step={step}
           value={value}
-          onChange={(e) => onChange(parseFloat(e.target.value))}
+          onChange={handleChange}
           disabled={disabled}
           className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider"
           style={{
@@ -45,9 +59,13 @@ export const Slider: React.FC<SliderProps> = ({
           }}
         />
         <div className="flex justify-between text-xs text-gray-500 mt-1">
-          <span>{min}</span>
+          <span className={`${value === min ? 'font-bold text-blue-600' : ''}`}>
+            {min === 0 ? '0% (Off)' : min}
+          </span>
           <span className="font-medium">0.5</span>
-          <span>{max}</span>
+          <span className={`${value === max ? 'font-bold text-blue-600' : ''}`}>
+            {max === 1 ? '100% (Only)' : max}
+          </span>
         </div>
       </div>
     </div>

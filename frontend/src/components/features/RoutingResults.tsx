@@ -50,35 +50,35 @@ export const RoutingResults: React.FC<RoutingResultsProps> = ({
           </div>
         </div>
         
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Overall Confidence */}
-          <div className="text-center p-2">
+          <div className="text-center p-3 sm:p-2">
             <div className="text-xl font-bold text-blue-900">
               {formatConfidence(results.confidence)}
             </div>
-            <div className="text-xs text-blue-600 leading-tight">
-              Routing<br/>Confidence
+            <div className="text-xs text-blue-600 leading-tight font-medium">
+              Routing Confidence
             </div>
-            <div className="text-xs text-blue-500 mt-1 opacity-75">
+            <div className="text-xs text-blue-500 mt-1 opacity-75 hidden sm:block">
               How certain we are about this choice
             </div>
           </div>
           
           {/* Model Performance Score */}
-          <div className="text-center p-2">
+          <div className="text-center p-3 sm:p-2">
             <div className="text-xl font-bold text-green-600">
               {((results.selected_model as any)?.score * 100 || 0).toFixed(0)}%
             </div>
-            <div className="text-xs text-green-600 leading-tight">
-              Overall<br/>Score
+            <div className="text-xs text-green-600 leading-tight font-medium">
+              Overall Score
             </div>
-            <div className="text-xs text-green-500 mt-1 opacity-75">
-              Weighted score for your preferences
+            <div className="text-xs text-green-500 mt-1 opacity-75 hidden sm:block">
+              Weighted model score based on your preferences
             </div>
           </div>
 
           {/* Quality Indicator */}
-          <div className="text-center p-2">
+          <div className="text-center p-3 sm:p-2">
             <div className="text-xl font-bold text-purple-600">
               {(() => {
                 const model = results.selected_model as any;
@@ -87,10 +87,10 @@ export const RoutingResults: React.FC<RoutingResultsProps> = ({
                 return Math.round(qualityScore);
               })()}%
             </div>
-            <div className="text-xs text-purple-600 leading-tight">
-              Model<br/>Quality
+            <div className="text-xs text-purple-600 leading-tight font-medium">
+              Model Quality
             </div>
-            <div className="text-xs text-purple-500 mt-1 opacity-75">
+            <div className="text-xs text-purple-500 mt-1 opacity-75 hidden sm:block">
               Expected output quality
             </div>
           </div>
@@ -125,6 +125,7 @@ export const RoutingResults: React.FC<RoutingResultsProps> = ({
           model={results.selected_model as any} 
           isSelected={true}
           showDetails={false}
+          category={getClassification(results.classification).category}
         />
         
         {/* Execute Button */}

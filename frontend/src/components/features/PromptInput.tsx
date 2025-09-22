@@ -74,7 +74,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
           )}
         </div>
         
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
           <div className="text-sm text-gray-500">
             {prompt.length}/10,000 characters
             {prompt.length > 0 && (
@@ -84,11 +84,12 @@ export const PromptInput: React.FC<PromptInputProps> = ({
             )}
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               onClick={() => setPrompt('')}
               disabled={isLoading || !prompt}
+              className="flex-1 sm:flex-none"
             >
               Clear
             </Button>
@@ -96,6 +97,7 @@ export const PromptInput: React.FC<PromptInputProps> = ({
               variant="primary"
               onClick={handleSubmit}
               disabled={isLoading || !prompt.trim()}
+              className="flex-1 sm:flex-none min-w-0"
             >
               {isLoading ? 'Processing...' : 'Route Prompt'}
             </Button>
