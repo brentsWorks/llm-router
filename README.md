@@ -99,7 +99,7 @@ In today's AI landscape, choosing the right language model is increasingly compl
 - **Real LLM Execution** - Complete OpenRouter integration with 100+ models
 - **Interactive UI** - Model comparison, capability filtering, and visual feedback
 - **Production Deployment** - Railway with Docker containers and Nginx configuration
-- **Comprehensive Data** - 120 curated examples, 12+ models with accurate pricing and latency data
+- **Comprehensive Data** - 70 curated examples, 7+ models with accurate pricing and latency data
 
 ### 🏗️ Complete Architecture
 - **✅ Foundation**: Core data models, configuration, and validation
@@ -156,7 +156,7 @@ User Interface → Hybrid Classification → Model Selection → OpenRouter API 
 - **Real LLM Execution**: Returns actual LLM responses through OpenRouter's unified API
 - **Interactive UI**: Three-tab interface with model comparison and real-time routing
 - **Graceful Degradation**: Handles rate limits and API failures elegantly
-- **Multiple Providers**: Access to 100+ models from OpenAI, Anthropic, Google, and more via OpenRouter
+- **Multiple Providers**: Access to (currently) 7 models from OpenAI, Anthropic, Google, and more via OpenRouter
 
 ---
 
@@ -202,7 +202,7 @@ graph TD
 - **🤖 LLM Fallback**: Intelligent analysis for edge cases (Phase 8)
 - **📊 Scoring Engine**: Multi-factor optimization with constraints ✅
 - **🏪 Provider Registry**: Model capabilities and performance data ✅
-- **🔌 OpenRouter Integration**: Unified access to 100+ models from all providers (Phase 9.1)
+- **🔌 OpenRouter Integration**: Unified access to models from all providers (Phase 9.1)
 - **🌐 Frontend Web App**: React/Vue interface with server-side execution (Phase 9.2)
 - **⚡ Server-Side Execution**: Real-time LLM execution through OpenRouter (Phase 9.3)
 
@@ -216,10 +216,6 @@ graph TD
 - **Classification Accuracy**: >90% on test datasets
 - **Cost Optimization**: 20-30% reduction vs single model
 - **Quality Maintenance**: Task success rate maintained or improved
-
-### Scale
-- **Throughput**: 1000+ requests per second
-- **Concurrency**: 100+ concurrent routing decisions
 - **Provider Support**: OpenAI, Anthropic, and extensible architecture
 
 ---
@@ -227,7 +223,6 @@ graph TD
 ## 🛠️ Development
 
 ### Built with Modern Practices
-- **🧪 Test-Driven Development**: 402 tests (unit + integration + e2e), 90% coverage
 - **🔒 Type Safety**: Full Pydantic validation and mypy compatibility
 - **📐 Clean Architecture**: Modular design with clear separation of concerns
 - **🚀 Production Ready**: Comprehensive error handling and observability
