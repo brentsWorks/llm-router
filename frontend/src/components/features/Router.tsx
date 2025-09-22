@@ -7,9 +7,13 @@ interface RouterProps {
   preferences: any;
   onPreferencesChange: (preferences: any) => void;
   onResetPreferences: () => void;
+  onStatusChange: (status: {
+    state: 'ready' | 'routing' | 'routed' | 'executing' | 'executed' | 'error';
+    message: string;
+  }) => void;
 }
 
-export function Router({ preferences, onPreferencesChange, onResetPreferences }: RouterProps) {
+export function Router({ preferences, onPreferencesChange, onResetPreferences, onStatusChange }: RouterProps) {
   const [currentPrompt, setCurrentPrompt] = useState<string>('');
   const [routingResults, setRoutingResults] = useState<RouteResponse | null>(null);
   const [executionResults, setExecutionResults] = useState<ExecuteResponse | null>(null);
@@ -21,6 +25,7 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
     setIsLoading(true);
     setError(null);
     setCurrentPrompt(prompt);
+    onStatusChange({ state: 'routing', message: 'Finding optimal model...' });
     
     try {
       console.log('Routing prompt:', prompt, 'with preferences:', preferences);
@@ -41,8 +46,13 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
         }
       });
       setRoutingResults(results);
+      onStatusChange({ 
+        state: 'routed', 
+        message: `${results.selected_model.provider}/${results.selected_model.model} selected` 
+      });
     } catch (err: any) {
       setError(err.message || 'Failed to route prompt');
+      onStatusChange({ state: 'error', message: 'Routing failed' });
       console.error('Routing error:', err);
     } finally {
       setIsLoading(false);
@@ -54,6 +64,7 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
     
     setIsExecuting(true);
     setError(null);
+    onStatusChange({ state: 'executing', message: 'Generating response...' });
     
     try {
       console.log('Executing with model:', routingResults.selected_model.model);
@@ -80,8 +91,10 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
         }
       });
       setExecutionResults(results);
+      onStatusChange({ state: 'executed', message: 'Response generated successfully' });
     } catch (err: any) {
       setError(err.message || 'Failed to execute prompt');
+      onStatusChange({ state: 'error', message: 'Execution failed' });
       console.error('Execution error:', err);
     } finally {
       setIsExecuting(false);
@@ -98,6 +111,7 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
     
     setIsExecuting(true);
     setError(null);
+    onStatusChange({ state: 'executing', message: 'Regenerating response...' });
     
     try {
       console.log('Regenerating response with model:', routingResults.selected_model.model);
@@ -119,8 +133,10 @@ export function Router({ preferences, onPreferencesChange, onResetPreferences }:
         }
       });
       setExecutionResults(results);
+      onStatusChange({ state: 'executed', message: 'Response regenerated successfully' });
     } catch (err: any) {
       setError(err.message || 'Failed to regenerate response');
+      onStatusChange({ state: 'error', message: 'Regeneration failed' });
       console.error('Regeneration error:', err);
     } finally {
       setIsExecuting(false);
