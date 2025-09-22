@@ -19,7 +19,7 @@ A comprehensive demo script to showcase the full functionality of the LLM Router
 ### Show Model Catalog
 - Click on **Models** tab
 - Scroll through the available models (GPT-4, Claude, Gemini, etc.)
-- Point out the **12+ models** from major providers
+- Point out the **8+ models** from major providers
 
 ### Demonstrate Filtering
 - Click on **"Code Generation"** filter
@@ -27,7 +27,7 @@ A comprehensive demo script to showcase the full functionality of the LLM Router
 - Try **"Creative Writing"** filter
 - Show the **latency** and **cost** sorting options
 
-**Script**: *"We have 12+ models from major providers. You can filter by capability - see how the rankings change when we filter for code generation versus creative writing. Each model has real performance data for different task types."*
+**Script**: *"We have 8+ models from major providers. You can filter by capability - see how the rankings change when we filter for code generation versus creative writing. Each model has real performance data for different task types."*
 
 ---
 

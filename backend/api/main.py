@@ -454,6 +454,11 @@ async def route_prompt(request: RouteRequest):
 
         # Route the prompt using our service
         result = router_service.route(request.prompt, preferences=request.preferences, constraints=request.constraints)
+        
+        # DEBUG: Log the actual selection
+        if result:
+            logger.info(f"DEBUG: Backend selected {result.selected_model.provider}/{result.selected_model.model}")
+            print(f"DEBUG: Backend selected {result.selected_model.provider}/{result.selected_model.model}")  # Also print to console
 
         if result is None:
             # Log routing error

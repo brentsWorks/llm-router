@@ -139,26 +139,27 @@ class ScoringEngine:
         # Calculate total cost for estimated tokens
         total_cost = self.calculate_actual_cost(model, estimated_tokens)
         
-        # Handle zero cost (e.g., free models) - give them the highest score
+        # Handle zero cost (e.g., free models) - treat as very cheap but not perfect
+        # This prevents free models from dominating when quality should matter more
         if total_cost == 0.0:
-            return 1.0
+            return 0.67  # Slightly better than cheapest paid models, but not perfect
         
-        # Use logarithmic scaling to better differentiate between cheap models
-        # This ensures free models (1.0) are clearly better than cheap models
-        if total_cost <= self._reference_cost * 0.1:  # Very cheap (under $0.001)
-            return 0.95
-        elif total_cost <= self._reference_cost:  # Cheap (under $0.01)
-            return 0.85
-        elif total_cost <= self._reference_cost * 2:  # Moderate cheap (under $0.02)
-            return 0.75
-        elif total_cost <= self._reference_cost * 5:  # Moderate (under $0.05)
+        # RADICAL FIX: Nearly flatten cost scores to let quality dominate
+        # Cost should be a minor factor, not the deciding factor
+        import math
+        
+        # Calculate cost per 1k tokens
+        cost_per_1k = total_cost * (1000 / estimated_tokens)
+        
+        # Extremely compressed range - only 10 point spread maximum
+        if cost_per_1k <= 0.001:  # Very cheap
+            return 0.65
+        elif cost_per_1k <= 0.01:  # Moderate
             return 0.60
-        elif total_cost <= self._reference_cost * 10:  # Expensive (under $0.10)
-            return 0.40
-        elif total_cost <= self._reference_cost * 50:  # Very expensive (under $0.50)
-            return 0.20
-        else:
-            return 0.10  # Extremely expensive
+        elif cost_per_1k <= 0.1:  # Expensive
+            return 0.58
+        else:  # Very expensive
+            return 0.55
 
     def _calculate_latency_score(self, model: ProviderModel) -> float:
         """Calculate latency score (0=slow, 1=fast)."""
@@ -170,19 +171,16 @@ class ScoringEngine:
         elif latency == float('inf'):
             return 0.0  # Infinite latency
         
-        # Score based on latency relative to reference
-        if latency <= self._reference_latency:
-            return 1.0  # Very fast
-        elif latency <= self._reference_latency * 2:
-            return 0.9  # Fast
-        elif latency <= self._reference_latency * 5:
-            return 0.7  # Moderate
-        elif latency <= self._reference_latency * 10:
-            return 0.5  # Slow
-        elif latency <= self._max_acceptable_latency:
-            return 0.3  # Very slow but acceptable
+        # RADICAL FIX: Nearly flatten latency scores to let quality dominate
+        # Latency should be a minor factor, not the deciding factor
+        if latency <= 500:
+            return 0.65  # Fast
+        elif latency <= 1000:
+            return 0.62  # Moderate
+        elif latency <= 2000:
+            return 0.60  # Slow
         else:
-            return 0.1  # Unacceptably slow
+            return 0.58  # Very slow
 
     def _calculate_quality_score(self, model: ProviderModel, category: str) -> float:
         """Calculate quality score (0=poor, 1=excellent) for a specific category."""
