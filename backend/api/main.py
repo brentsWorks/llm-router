@@ -330,7 +330,11 @@ async def enhanced_request_middleware(request: Request, call_next):
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cooperative-reflection-production-89f2.up.railway.app/"],
+    allow_origins=[
+        "https://cooperative-reflection-production-89f2.up.railway.app",
+        "http://localhost:3000",
+        "http://localhost:5173"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
