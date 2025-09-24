@@ -330,7 +330,7 @@ async def enhanced_request_middleware(request: Request, call_next):
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # TODO: Replace with specific frontend domain in production
+    allow_origins=["https://cooperative-reflection-production-89f2.up.railway.app/"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
