@@ -327,18 +327,42 @@ async def enhanced_request_middleware(request: Request, call_next):
             }
         )
 
-# Add CORS middleware
+# Add CORS middleware with debugging
+allowed_origins = [
+    "https://cooperative-reflection-production-89f2.up.railway.app",
+    "https://cooperative-reflection-production-89f2.up.railway.app/",
+    "http://localhost:3000",
+    "http://localhost:5173"
+]
+
+# Log CORS configuration at startup
+logger.info(f"CORS configuration - Allowed origins: {allowed_origins}")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://cooperative-reflection-production-89f2.up.railway.app",
-        "http://localhost:3000",
-        "http://localhost:5173"
-    ],
+    allow_origins=["*"],  # Temporarily allow all origins for debugging
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Add middleware to log CORS debugging (after CORS middleware)
+@app.middleware("http")
+async def cors_debug_middleware(request: Request, call_next):
+    """Debug CORS issues by logging request origins."""
+    origin = request.headers.get("origin")
+    if origin:
+        logger.info(f"Request from origin: {origin}")
+
+    response = await call_next(request)
+
+    # Log CORS headers in response
+    if "access-control-allow-origin" in response.headers:
+        logger.info(f"CORS Allow-Origin set to: {response.headers['access-control-allow-origin']}")
+    else:
+        logger.warning(f"No CORS Allow-Origin header set for origin: {origin}")
+
+    return response
 
 # Global startup time for health checks
 START_TIME = time.time()
